@@ -30,17 +30,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="CLASS TIMES"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />
-    </LinearLayout>
 
-    <View
-        android:id="@+id/newTimeSeparatorTop"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+        <View
+            android:id="@+id/newTimeSeparatorTop"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/addNewTime_button"
@@ -50,8 +49,8 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:text="+ Click to add time"
-        android:textAppearance="?android:attr/textAppearanceMedium" 
-        android:textColor="@android:color/darker_gray"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/darker_gray" />
 
     <View
         android:id="@+id/newTimeSeparatorBottom"

@@ -36,7 +36,8 @@
         </activity>
         <activity
             android:name="com.gamecockmobile.AddDayAndTime"
-            android:label="@string/title_activity_add_day_and_time" >
+            android:label="@string/title_activity_add_day_and_time" 
+            android:theme="@style/AddCourseActionBarTheme">
         </activity>
     </application>
 

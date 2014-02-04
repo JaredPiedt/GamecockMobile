@@ -89,22 +89,16 @@ public class AddCourse extends Activity implements OnClickListener {
     // check if the request code is same as what is passed here it is 2 and check that the Intent is
     // not equal to null so app doesn't crash when back button is pressed
     if (requestCode == 2 && data != null) {
-      
+
       ClassTime tempClassTime;
       String tempDays = data.getStringExtra("Days");
       String tempStartTime = data.getStringExtra("StartTime");
       String tempEndTime = data.getStringExtra("EndTime");
-      
+
       tempClassTime = new ClassTime(tempDays, tempStartTime, tempEndTime);
 
       // initialize the layout that the new text view will be added to
       LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
-
-      // initialize the divider, set it's properties, and add it to the layout
-      View divider = new View(this);
-      divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
-      divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-      layout.addView(divider);
 
       // initialize the TextView that the class day and time will be displayed in, set the text, and
       // add it to the layout
@@ -118,6 +112,13 @@ public class AddCourse extends Activity implements OnClickListener {
       textView.setPadding(0, 10, 0, 10);
       textView.setLineSpacing(8, 1);
       layout.addView(textView);
+
+      // initialize the divider, set it's properties, and add it to the layout
+      View divider = new View(this);
+      divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
+      divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+      layout.addView(divider);
+
     }
 
   }

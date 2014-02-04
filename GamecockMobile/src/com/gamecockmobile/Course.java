@@ -36,4 +36,12 @@ public class Course {
     this.classTimes.add(classTime);
   }
   
+  public String toString(){
+    String s = "";
+    
+    s += courseName.toString();
+    
+    return s;
+  }
+  
 }
