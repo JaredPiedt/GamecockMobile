@@ -15,12 +15,28 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.gamecockmobile.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/HomeActionBarTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.gamecockmobile.CourseList"
+            android:label="@string/title_activity_course_list"
+            android:parentActivityName="com.gamecockmobile.MainActivity"
+            android:theme="@style/CourseListActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.gamecockmobile.AddCourse"
+            android:label="@string/title_activity_add_course"
+            android:theme="@style/AddCourseActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.gamecockmobile.AddDayAndTime"
+            android:label="@string/title_activity_add_day_and_time" >
         </activity>
     </application>
 
