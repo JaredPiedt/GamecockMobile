@@ -1,5 +1,7 @@
 package com.gamecockmobile;
 
+import java.io.File;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +23,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    
+    getApplicationContext().deleteFile("courses");
 
     mGridView = (GridView) findViewById(R.id.home_gridview);
     mGridView.setAdapter(new GridItemAdapter(this, ICON_DATA));
@@ -33,7 +37,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // TODO Auto-generated method stub
         switch (position) {
         case 0:
-          Intent intent = new Intent(MainActivity.this, CourseList.class);
+          Intent intent = new Intent(MainActivity.this, CourseListActivity.class);
           startActivity(intent);
           break;
         default:

@@ -24,18 +24,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gamecockmobile.CourseList"
+            android:name="com.gamecockmobile.CourseListActivity"
             android:label="@string/title_activity_course_list"
             android:parentActivityName="com.gamecockmobile.MainActivity"
             android:theme="@style/CourseListActionBarTheme" >
         </activity>
         <activity
-            android:name="com.gamecockmobile.AddCourse"
+            android:name="com.gamecockmobile.AddCourseActivity"
             android:label="@string/title_activity_add_course"
             android:theme="@style/AddCourseActionBarTheme" >
         </activity>
         <activity
-            android:name="com.gamecockmobile.AddDayAndTime"
+            android:name="com.gamecockmobile.AddDayAndTimeActivity"
             android:label="@string/title_activity_add_day_and_time" 
             android:theme="@style/AddCourseActionBarTheme">
         </activity>

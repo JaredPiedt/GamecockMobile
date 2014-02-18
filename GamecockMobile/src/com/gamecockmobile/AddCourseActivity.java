@@ -1,22 +1,34 @@
 package com.gamecockmobile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class AddCourse extends Activity implements OnClickListener {
+public class AddCourseActivity extends Activity implements OnClickListener {
 
   TextView mAddDayAndTime;
+  EditText mCourseNameEditText;
+  
+  private Course mCourse;
+  private ArrayList<ClassTime> mClassTimes = new ArrayList<ClassTime>();
+  
+  public static final String FILE_NAME = "courses";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +43,17 @@ public class AddCourse extends Activity implements OnClickListener {
           @Override
           public void onClick(View v) {
             // "Done"
+            Intent intent = new Intent();
+            
+            mCourse.setCourseName(mCourseNameEditText.getText().toString());
+            mCourse.setClassTimes(mClassTimes);
+            
+            intent.putExtra("course", mCourse);
+            
+            setResult(1, intent);
+            
+            Log.d("Result", "result was set");
+ //           writeCourseToFile();
             finish();
           }
         });
@@ -51,6 +74,8 @@ public class AddCourse extends Activity implements OnClickListener {
         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     mAddDayAndTime = (TextView) findViewById(R.id.addNewTime_button);
+    mCourseNameEditText = (EditText) findViewById(R.id.courseName_editText);
+    mCourse = new Course();
 
     mAddDayAndTime.setOnClickListener(this);
 
@@ -70,7 +95,7 @@ public class AddCourse extends Activity implements OnClickListener {
   public void onClick(View v) {
     switch (v.getId()) {
     case R.id.addNewTime_button:
-      Intent intent = new Intent(this, AddDayAndTime.class);
+      Intent intent = new Intent(this, AddDayAndTimeActivity.class);
       startActivityForResult(intent, 2);
       break;
 
@@ -90,12 +115,13 @@ public class AddCourse extends Activity implements OnClickListener {
     // not equal to null so app doesn't crash when back button is pressed
     if (requestCode == 2 && data != null) {
 
-      ClassTime tempClassTime;
-      String tempDays = data.getStringExtra("Days");
-      String tempStartTime = data.getStringExtra("StartTime");
-      String tempEndTime = data.getStringExtra("EndTime");
+      ClassTime tempClassTime = (ClassTime) data.getParcelableExtra("classTime");
+      mClassTimes.add(tempClassTime);
+     // mCourse.addClassTime(tempClassTime);
 
-      tempClassTime = new ClassTime(tempDays, tempStartTime, tempEndTime);
+      // String tempDays = data.getStringExtra("Days");
+      // String tempStartTime = data.getStringExtra("StartTime");
+      // String tempEndTime = data.getStringExtra("EndTime");
 
       // initialize the layout that the new text view will be added to
       LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
@@ -106,9 +132,9 @@ public class AddCourse extends Activity implements OnClickListener {
       textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
           LayoutParams.WRAP_CONTENT));
       textView.setTextSize(18);
-      textView.setText(data.getStringExtra("Days"));
-      textView.append("\n" + data.getStringExtra("StartTime") + " - "
-          + data.getStringExtra("EndTime"));
+      textView.setText(tempClassTime.getDays().toString());
+      textView.append("\n" + tempClassTime.getStartTimeAsString(getApplicationContext()) + " - "
+          + tempClassTime.getEndTimeAsString(getApplicationContext()));
       textView.setPadding(0, 10, 0, 10);
       textView.setLineSpacing(8, 1);
       layout.addView(textView);
@@ -118,9 +144,35 @@ public class AddCourse extends Activity implements OnClickListener {
       divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
       divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
       layout.addView(divider);
+      
 
     }
 
   }
+  
+//  public void writeCourseToFile(){
+//    File file = new File(getApplicationContext().getFilesDir(), FILE_NAME);
+//    FileOutputStream outputStream;
+//    ArrayList<ClassTime> classTimes = mCourse.getClassTimes();
+//    ClassTime tempClassTime;
+//    
+//    try {
+//      outputStream = openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+//      outputStream.write(mCourse.getCourseName().getBytes());
+//      
+//      for(int i = 0; i < classTimes.size(); i++){
+//        tempClassTime = classTimes.get(i);
+//        
+//        outputStream.write(tempClassTime.getDays().toString().getBytes());
+//        outputStream.write(tempClassTime.getStartTimeAsString(getApplicationContext()).getBytes());
+//        outputStream.write(tempClassTime.getEndTimeAsString(getApplicationContext()).getBytes());
+//      }
+//      
+//      outputStream.flush();
+//      outputStream.close();
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//  }
 
 }

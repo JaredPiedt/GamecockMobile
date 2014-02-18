@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TimePicker;
 
-public class AddDayAndTime extends Activity implements OnClickListener {
+public class AddDayAndTimeActivity extends Activity implements OnClickListener {
 
   Button mSelectDaysButton;
   Button mStartTimeButton;
@@ -40,6 +41,7 @@ public class AddDayAndTime extends Activity implements OnClickListener {
 
   private CharSequence[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
   private ArrayList<CharSequence> selectedDays = new ArrayList<CharSequence>();
+  private ClassTime mClassTime;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +57,15 @@ public class AddDayAndTime extends Activity implements OnClickListener {
           public void onClick(View v) {
             // "Done"
             Intent intent = new Intent();
-            intent.putExtra("Days", mSelectDaysButton.getText());
-            intent.putExtra("StartTime", mStartTimeButton.getText());
-            intent.putExtra("EndTime", mEndTimeButton.getText());
+
+            mClassTime.setDays(selectedDays);
+//            classTime.setStartTime();
+//            classTime.setEndTime(mEndTimeButton.getText().toString());
+            intent.putExtra("classTime", mClassTime);
+
+            // intent.putExtra("Days", mSelectDaysButton.getText());
+            // intent.putExtra("StartTime", mStartTimeButton.getText());
+            // intent.putExtra("EndTime", mEndTimeButton.getText());
             setResult(2, intent);
             finish();
           }
@@ -78,6 +86,7 @@ public class AddDayAndTime extends Activity implements OnClickListener {
     actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+    mClassTime = new ClassTime();
     // initialize all of the buttons
     mSelectDaysButton = (Button) findViewById(R.id.selectDays_button);
     mStartTimeButton = (Button) findViewById(R.id.startTime_button);
@@ -135,15 +144,22 @@ public class AddDayAndTime extends Activity implements OnClickListener {
       // TODO Auto-generated method stub
       Time startTime = mStartTime;
       Time endTime = mEndTime;
+      
+      long startMillis;
+      long endMillis;
 
       if (mIsStartTime == true) {
         startTime.hour = hourOfDay;
         startTime.minute = minute;
-        mStartTimeButton.setText(displayTime(startTime));
+        startMillis = startTime.normalize(true);
+        mClassTime.setStartTime(startMillis);
+        setTime(mStartTimeButton, startMillis);
       } else if (mIsStartTime == false) {
         endTime.hour = hourOfDay;
         endTime.minute = minute;
-        mEndTimeButton.setText(displayTime(endTime));
+        endMillis = startTime.normalize(true);
+        mClassTime.setEndTime(endMillis);
+        setTime(mEndTimeButton, endMillis);
       }
 
     }
@@ -238,34 +254,39 @@ public class AddDayAndTime extends Activity implements OnClickListener {
   /**
    * Method that is used like a toString for the time.
    */
-  public String displayTime(Time time) {
-    String s = "";
+  public void setTime(Button button, long millis) {
+    
+    int flags = DateUtils.FORMAT_SHOW_TIME;
+    flags |= DateUtils.FORMAT_CAP_NOON_MIDNIGHT;
+    String timeString = DateUtils.formatDateTime(getApplicationContext(), millis, flags);
+    
+    button.setText(timeString);
 
     // make sure number 0-9 have a leading zero
-    String minute = new DecimalFormat("00").format(time.minute);
-
-    if (time.hour == 12) {
-      s += "12";
-      s += ":";
-      s += minute;
-      s += " PM";
-    } else if ((time.hour >= 12) && (time.hour <= 24)) {
-      s += time.hour % 12;
-      s += ":";
-      s += minute;
-      s += " PM";
-    } else if ((time.hour == 24)) {
-      s += "24";
-      s += ":";
-      s += minute;
-      s += " AM";
-    } else {
-      s += time.hour;
-      s += ":";
-      s += minute;
-      s += " AM";
-    }
-    return s;
+//    String minute = new DecimalFormat("00").format(time.minute);
+//
+//    if (time.hour == 12) {
+//      s += "12";
+//      s += ":";
+//      s += minute;
+//      s += " PM";
+//    } else if ((time.hour >= 12) && (time.hour <= 24)) {
+//      s += time.hour % 12;
+//      s += ":";
+//      s += minute;
+//      s += " PM";
+//    } else if ((time.hour == 24)) {
+//      s += "24";
+//      s += ":";
+//      s += minute;
+//      s += " AM";
+//    } else {
+//      s += time.hour;
+//      s += ":";
+//      s += minute;
+//      s += " AM";
+//    }
+//    return s;
   }
 
 }
