@@ -26,7 +26,7 @@ public class AddCourseActivity extends Activity implements OnClickListener {
   EditText mCourseNameEditText;
   
   private Course mCourse;
-  private ArrayList<ClassTime> mClassTimes = new ArrayList<ClassTime>();
+  private ArrayList<ClassTime> mClassTimes;
   
   public static final String FILE_NAME = "courses";
 
@@ -47,6 +47,8 @@ public class AddCourseActivity extends Activity implements OnClickListener {
             
             mCourse.setCourseName(mCourseNameEditText.getText().toString());
             mCourse.setClassTimes(mClassTimes);
+            
+            Log.d("ClassTime", Integer.toString(mClassTimes.size()));
             
             intent.putExtra("course", mCourse);
             
@@ -76,6 +78,44 @@ public class AddCourseActivity extends Activity implements OnClickListener {
     mAddDayAndTime = (TextView) findViewById(R.id.addNewTime_button);
     mCourseNameEditText = (EditText) findViewById(R.id.courseName_editText);
     mCourse = new Course();
+    mClassTimes = new ArrayList<ClassTime>();
+    
+    Bundle bundle = getIntent().getExtras();
+    
+    if(bundle != null){
+        Course tempCourse = bundle.getParcelable("course");
+        
+        mCourseNameEditText.setText(tempCourse.getCourseName());
+        
+        ArrayList<ClassTime> classTimes = tempCourse.getClassTimes();
+        
+        Log.d("ClassTimes", Integer.toString(classTimes.size()));
+        
+        for(ClassTime ct: classTimes){
+       // initialize the layout that the new text view will be added to
+          LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
+
+          // initialize the TextView that the class day and time will be displayed in, set the text, and
+          // add it to the layout
+          TextView textView = new TextView(this);
+          textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+              LayoutParams.WRAP_CONTENT));
+          textView.setTextSize(18);
+          System.out.println(ct.getDays());
+          textView.setText(ct.getDays().toString());
+          textView.append("\n" + ct.getStartTimeAsString(getApplicationContext()) + " - "
+              + ct.getEndTimeAsString(getApplicationContext()));
+          textView.setPadding(0, 10, 0, 10);
+          textView.setLineSpacing(8, 1);
+          layout.addView(textView);
+
+          // initialize the divider, set it's properties, and add it to the layout
+          View divider = new View(this);
+          divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
+          divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+          layout.addView(divider);
+        }
+    }
 
     mAddDayAndTime.setOnClickListener(this);
 

@@ -31,10 +31,12 @@ public class ClassTime implements Parcelable {
   }
   
   public void setDaysFromString(String s){
+    System.out.println("enter setDaysFromString");
     int end = s.indexOf("]");
     s = s.substring(1, end);
     List<String> sdays = Arrays.asList(s.split(","));
     for(String string : sdays){
+      System.out.println(string);
       this.addDay(string);
     }
     
@@ -77,9 +79,13 @@ public class ClassTime implements Parcelable {
   }
   
   public void addDay(String s){
-    for (CharSequence ch : days) {
-      if(ch == s){
+    System.out.println("enter addDay");
+    System.out.println(s);
+     for (CharSequence ch : days) {
+       System.out.println(ch);
+      if(s.equals(ch)){
         selectedDays.add(ch);
+        System.out.println(ch + "was added");
       }
     }
   }

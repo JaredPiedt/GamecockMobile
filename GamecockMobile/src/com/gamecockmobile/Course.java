@@ -8,6 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateFormat;
 import android.text.format.Time;
+import android.util.Log;
 
 public class Course implements Parcelable {
 
@@ -25,12 +26,13 @@ public class Course implements Parcelable {
     this.courseName = courseName;
     this.classTimes = classTimes;
   }
-  
-  public Course(int id, String courseName, String classTimes){
+
+  public Course(int id, String courseName, String classTimes) {
     this.id = id;
     this.courseName = courseName;
     setClassTimesFromString(classTimes);
   }
+
   public Course(String courseName, String classTimes) {
     this.courseName = courseName;
     setClassTimesFromString(classTimes);
@@ -79,35 +81,30 @@ public class Course implements Parcelable {
   }
 
   public void setClassTimesFromString(String string) {
+    
+    
     Scanner scanner = new Scanner(string);
     String token;
     int counter = 1;
     ClassTime tempClassTime;
 
+    classTimes = new ArrayList<ClassTime>();
     while (scanner.hasNext()) {
-      token = scanner.next();
-      if (token.startsWith("[")) {
-        tempClassTime = new ClassTime();
-        int end = token.indexOf(",");
-        tempClassTime.addDay(token);
-        token = token.substring(1, end);
-      } else if (token.endsWith("]")) {
-        int end = token.indexOf("]");
-        token = token.substring(0, end);
-        counter++;
-      } else if (counter == 2) {
-        scanner.nextLong();
-        System.out.println("start time");
-        counter++;
-      } else if (token.startsWith("*") && counter == 3) {
-        token = token.substring(1);
-        System.out.println("end time");
-        counter = 1;
-      } else {
-        int end = token.indexOf(",");
-        token = token.substring(0, end);
+      tempClassTime = new ClassTime();
+      String s = "";
+      while (!(token = scanner.next()).contains("]")) {
+        s += token;
+        Log.d("token", token);
       }
-
+      s += token;
+      Log.d("token", token);
+      System.out.println(s);
+      tempClassTime.setDaysFromString(s);
+      tempClassTime.setStartTime(scanner.nextLong());
+ //     Log.d("start time", Long.toString(scanner.nextLong()));
+      tempClassTime.setEndTime(scanner.nextLong());
+ //     Log.d("end time", Long.toString(scanner.nextLong()));
+      classTimes.add(tempClassTime);
     }
 
   }
@@ -117,12 +114,16 @@ public class Course implements Parcelable {
 
     s += courseName.toString();
 
+    for (int i = 0; i < classTimes.size(); i++) {
+      classTimes.get(i).getDays().toString();
+    }
+
     return s;
   }
 
-//  public Course createFromParcel(Parcel in) {
-//    return new Course(in);
-//  }
+  // public Course createFromParcel(Parcel in) {
+  // return new Course(in);
+  // }
 
   @Override
   public int describeContents() {
@@ -137,7 +138,7 @@ public class Course implements Parcelable {
     dest.writeString(courseName);
     dest.writeTypedList(classTimes);
   }
-  
+
   public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
     public Course createFromParcel(Parcel in) {
       return new Course(in);

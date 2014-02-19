@@ -18,11 +18,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class CourseListActivity extends Activity {
+public class CourseListActivity extends Activity implements OnClickListener {
 
   DatabaseHandler db;
   private ArrayList<Course> mCourses = new ArrayList<Course>();
@@ -35,13 +36,15 @@ public class CourseListActivity extends Activity {
     setContentView(R.layout.activity_course_list);
     // readFile(FILE_NAME);
 
-    // getApplicationContext().deleteDatabase("CoursesManager.db");
+  //  getApplicationContext().deleteDatabase("CoursesManager.db");
 
     db = new DatabaseHandler(this);
     Log.d("db", Integer.toString(db.getCoursesCount()));
     ArrayList<Course> courses = db.getAllCourses();
 
     for (Course c : courses) {
+
+      // Log.d("Insert", c.toString());
 
       // initialize the layout that the new text view will be added to
       LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
@@ -61,6 +64,7 @@ public class CourseListActivity extends Activity {
       layout.addView(textView);
 
       textView.setId(c.getID());
+      textView.setOnClickListener(this);
 
       // initialize the divider, set it's properties, and add it to the layout
       View divider = new View(this);
@@ -83,6 +87,19 @@ public class CourseListActivity extends Activity {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.course_list, menu);
     return true;
+  }
+
+  @Override
+  public void onClick(View v) {
+    // TODO Auto-generated method stub
+    int id = v.getId();
+    Intent intent = new Intent(CourseListActivity.this, AddCourseActivity.class);
+    Log.d("Click", id + " was clicked");
+
+    Course tempCourse = db.getCourse(id);
+    intent.putExtra("course", tempCourse);
+    startActivityForResult(intent, 1);
+
   }
 
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -124,8 +141,6 @@ public class CourseListActivity extends Activity {
       Log.d("Insert:", "Inserting...");
 
       db.addCourse(tempCourse, getApplicationContext());
-
-      Log.d("db", Integer.toString(db.getCoursesCount()));
 
     }
 
@@ -194,4 +209,5 @@ public class CourseListActivity extends Activity {
 
     }
   }
+
 }

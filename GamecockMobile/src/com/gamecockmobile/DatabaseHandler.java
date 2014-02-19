@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
   private static final int DATABASE_VERSION = 1;
@@ -44,6 +45,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, course.getCourseName());
     values.put(KEY_CLASS_TIMES, course.classTimesToString(context));
+    
+    Log.d("Inserting", course.classTimesToString(context));
     
     db.insert(TABLE_COURSES, null, values);
     db.close();
