@@ -88,6 +88,12 @@ public class AddCourseActivity extends Activity implements OnClickListener {
     // added to the database and the user wants to edit it
     if (mBundle != null) {
       Course tempCourse = mBundle.getParcelable("course");
+      mCourse.setID(tempCourse.getID());
+      mCourse.setCourseName(tempCourse.getCourseName());
+      
+      for (ClassTime cT : tempCourse.getClassTimes()) {
+        mClassTimes.add(cT);
+      }
 
       mCourseNameEditText.setText(tempCourse.getCourseName());
 

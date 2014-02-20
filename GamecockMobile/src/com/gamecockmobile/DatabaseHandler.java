@@ -16,11 +16,11 @@ import android.util.Log;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
   private static final int DATABASE_VERSION = 1;
-  private static final String DATABASE_NAME = "CoursesManager.db";
-  private static final String TABLE_COURSES = "courses";
+  static final String DATABASE_NAME = "CoursesManager.db";
+  static final String TABLE_COURSES = "courses";
 
   private static final String KEY_ID = "id";
-  private static final String KEY_NAME = "name";
+  static final String KEY_NAME = "name";
   private static final String KEY_CLASS_TIMES = "class_times";
 
   public DatabaseHandler(Context context) {
@@ -96,7 +96,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     Course course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
         cursor.getString(2));
-    // return contact
+    // return course
+    return course;
+  }
+
+  public Course getCourseByName(String name) {
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    Cursor cursor = db.query(TABLE_COURSES, new String[] { KEY_ID, KEY_NAME, KEY_CLASS_TIMES },
+        KEY_NAME + "=?", new String[] { name }, null, null, null, null);
+    if(cursor != null)
+      cursor.moveToFirst();
+    
+    Course course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
+        cursor.getString(2));
+    
     return course;
   }
 

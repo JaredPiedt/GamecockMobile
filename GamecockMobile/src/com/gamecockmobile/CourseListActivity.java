@@ -4,21 +4,34 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import android.os.Bundle;
+import android.app.LoaderManager;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class CourseListActivity extends Activity implements OnClickListener {
+public class CourseListActivity extends Activity implements OnClickListener,
+    OnLongClickListener {
 
+ 
+  
   DatabaseHandler db;
-  private ArrayList<Course> mCourses = new ArrayList<Course>();
+
+  private ArrayList<String> mCourses = new ArrayList<String>();
 
   public static final String FILE_NAME = "courses";
 
@@ -34,19 +47,21 @@ public class CourseListActivity extends Activity implements OnClickListener {
     ArrayList<Course> courses = db.getAllCourses();
 
     for (Course c : courses) {
+      Log.d("Insert", c.toString());
 
-      // Log.d("Insert", c.toString());
+     mCourses.add(c.getCourseName());
+     
+     LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
 
-      // initialize the layout that the new text view will be added to
-      LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
 
-      // initialize the TextView that the class day and time will be displayed in, set the text, and
+      // initialize the TextView that the class day and time will be displayed in, set the text,
+      // and
       // add it to the layout
       TextView textView = new TextView(this);
       textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
           LayoutParams.WRAP_CONTENT));
       textView.setTextSize(18);
-      textView.setText(c.getID() + " " + c.getCourseName());
+      textView.setText(c.getCourseName());
       // textView.append("\n" + tempClassTime.getStartTimeAsString(getApplicationContext()) + " - "
       // + tempClassTime.getEndTimeAsString(getApplicationContext()));
       textView.setPadding(10, 10, 10, 10);
@@ -56,14 +71,15 @@ public class CourseListActivity extends Activity implements OnClickListener {
 
       textView.setId(c.getID());
       textView.setOnClickListener(this);
+      textView.setLongClickable(true);
+      textView.setOnLongClickListener(this);
 
       // initialize the divider, set it's properties, and add it to the layout
       View divider = new View(this);
       divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
       divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
       layout.addView(divider);
-
-    }
+   }
 
   }
 
@@ -87,45 +103,103 @@ public class CourseListActivity extends Activity implements OnClickListener {
 
   }
 
+  @Override
+  public boolean onLongClick(View v) {
+    final View view = v;
+    final Course course = db.getCourse(v.getId());
+    final CharSequence[] mDialogList = { "Delete" };
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(course.getCourseName());
+    builder.setItems(mDialogList, new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int which) {
+        if (which == 0) {
+          db.deleteCourse(course);
+
+          LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
+
+          layout.removeView(view);
+
+        }
+      }
+    });
+    AlertDialog dialog = builder.create();
+
+    dialog.show();
+
+    return true;
+
+  }
+
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     // check if the request code is same as what is passed here it is 2 and check that the Intent is
     // not equal to null so app doesn't crash when back button is pressed
     if (requestCode == 1 && data != null) {
+
       Course tempCourse = (Course) data.getParcelableExtra("course");
 
       Log.d("Adding", "course added: " + tempCourse.getCourseName());
 
-      // initialize the layout that the new text view will be added to
-      LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
+      if (findViewById(tempCourse.getID()) != null) {
+        db.updateCourse(tempCourse, getApplicationContext());
 
-      // initialize the TextView that the class day and time will be displayed in, set the text, and
-      // add it to the layout
-      TextView textView = new TextView(this);
-      textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-          LayoutParams.WRAP_CONTENT));
-      textView.setTextSize(18);
-      textView.setText(tempCourse.getCourseName());
-      // textView.append("\n" + tempClassTime.getStartTimeAsString(getApplicationContext()) + " - "
-      // + tempClassTime.getEndTimeAsString(getApplicationContext()));
-      textView.setPadding(0, 10, 0, 10);
-      textView.setLineSpacing(8, 1);
-      layout.addView(textView);
+        TextView tv = (TextView) findViewById(tempCourse.getID());
+        tv.setText(tempCourse.getCourseName());
+      } else {
+        Log.d("Insert:", "Inserting...");
+        db.addCourse(tempCourse, getApplicationContext());
+        
+        ArrayList<Course> courses = db.getAllCourses();
+        
+        for(int i = 0; i < courses.size(); i++){
+          Course course = courses.get(i);
+          
+          System.out.println(tempCourse.getCourseName());
+          System.out.println(course.getCourseName());
+          
+          if(tempCourse.getCourseName().equals(course.getCourseName())){
+            tempCourse = course;
+            
+            System.out.println(tempCourse.getID());
+          }
+        }
+        
+        
 
-      textView.setId(tempCourse.getID());
+        // initialize the layout that the new text view will be added to
+        LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
 
-      // initialize the divider, set it's properties, and add it to the layout
-      View divider = new View(this);
-      divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
-      divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-      layout.addView(divider);
+        // initialize the TextView that the class day and time will be displayed in, set the text,
+        // and
+        // add it to the layout
+        TextView textView = new TextView(this);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT));
+        textView.setTextSize(18);
+        textView.setText(tempCourse.getCourseName());
+        // textView.append("\n" + tempClassTime.getStartTimeAsString(getApplicationContext()) +
+        // " - "
+        // + tempClassTime.getEndTimeAsString(getApplicationContext()));
+        textView.setPadding(10, 10, 10, 10);
+        textView.setLineSpacing(8, 1);
+        textView.setBackgroundColor(getResources().getColor(android.R.color.white));
+        layout.addView(textView);
 
-      DatabaseHandler db = new DatabaseHandler(this);
+        // set the id equal to the courses count because it was the last one added in the db
+        textView.setId(tempCourse.getID());
 
-      Log.d("Insert:", "Inserting...");
+        textView.setOnClickListener(this);
+        textView.setOnLongClickListener(this);
 
-      db.addCourse(tempCourse, getApplicationContext());
+        // initialize the divider, set it's properties, and add it to the layout
+        View divider = new View(this);
+        divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
+        divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        layout.addView(divider);
+
+      }
 
     }
 
@@ -144,7 +218,7 @@ public class CourseListActivity extends Activity implements OnClickListener {
 
   public void displayCourses(String content) {
     // initialize the layout that the new text view will be added to
-    LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
+    ListView lv = (ListView) findViewById(R.id.courseList_Layout);
 
     // initialize the TextView that the class day and time will be displayed in, set the text, and
     // add it to the layout
@@ -157,8 +231,10 @@ public class CourseListActivity extends Activity implements OnClickListener {
 
     textView.setPadding(10, 10, 10, 10);
     textView.setLineSpacing(8, 1);
-    layout.addView(textView);
+    lv.addView(textView);
 
   }
+  
+ 
 
 }
