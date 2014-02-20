@@ -1,7 +1,5 @@
 package com.gamecockmobile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import android.os.Bundle;
@@ -24,10 +22,12 @@ public class AddCourseActivity extends Activity implements OnClickListener {
 
   TextView mAddDayAndTime;
   EditText mCourseNameEditText;
-  
+
+  Bundle mBundle;
+
   private Course mCourse;
   private ArrayList<ClassTime> mClassTimes;
-  
+
   public static final String FILE_NAME = "courses";
 
   @Override
@@ -44,18 +44,18 @@ public class AddCourseActivity extends Activity implements OnClickListener {
           public void onClick(View v) {
             // "Done"
             Intent intent = new Intent();
-            
+
             mCourse.setCourseName(mCourseNameEditText.getText().toString());
             mCourse.setClassTimes(mClassTimes);
-            
+
             Log.d("ClassTime", Integer.toString(mClassTimes.size()));
-            
+
             intent.putExtra("course", mCourse);
-            
+
             setResult(1, intent);
-            
+
             Log.d("Result", "result was set");
- //           writeCourseToFile();
+            // writeCourseToFile();
             finish();
           }
         });
@@ -75,46 +75,50 @@ public class AddCourseActivity extends Activity implements OnClickListener {
     actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+    // initialize all views
     mAddDayAndTime = (TextView) findViewById(R.id.addNewTime_button);
     mCourseNameEditText = (EditText) findViewById(R.id.courseName_editText);
+
+    // initialize variables
     mCourse = new Course();
     mClassTimes = new ArrayList<ClassTime>();
-    
-    Bundle bundle = getIntent().getExtras();
-    
-    if(bundle != null){
-        Course tempCourse = bundle.getParcelable("course");
-        
-        mCourseNameEditText.setText(tempCourse.getCourseName());
-        
-        ArrayList<ClassTime> classTimes = tempCourse.getClassTimes();
-        
-        Log.d("ClassTimes", Integer.toString(classTimes.size()));
-        
-        for(ClassTime ct: classTimes){
-       // initialize the layout that the new text view will be added to
-          LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
+    mBundle = getIntent().getExtras();
 
-          // initialize the TextView that the class day and time will be displayed in, set the text, and
-          // add it to the layout
-          TextView textView = new TextView(this);
-          textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-              LayoutParams.WRAP_CONTENT));
-          textView.setTextSize(18);
-          System.out.println(ct.getDays());
-          textView.setText(ct.getDays().toString());
-          textView.append("\n" + ct.getStartTimeAsString(getApplicationContext()) + " - "
-              + ct.getEndTimeAsString(getApplicationContext()));
-          textView.setPadding(0, 10, 0, 10);
-          textView.setLineSpacing(8, 1);
-          layout.addView(textView);
+    // check to make sure if the bundle contains something which means the course has already been
+    // added to the database and the user wants to edit it
+    if (mBundle != null) {
+      Course tempCourse = mBundle.getParcelable("course");
 
-          // initialize the divider, set it's properties, and add it to the layout
-          View divider = new View(this);
-          divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
-          divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-          layout.addView(divider);
-        }
+      mCourseNameEditText.setText(tempCourse.getCourseName());
+
+      ArrayList<ClassTime> classTimes = tempCourse.getClassTimes();
+
+      Log.d("ClassTimes", Integer.toString(classTimes.size()));
+
+      for (ClassTime ct : classTimes) {
+        // initialize the layout that the new text view will be added to
+        LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
+
+        // initialize the TextView that the class day and time will be displayed in, set the text,
+        // and add it to the layout
+        TextView textView = new TextView(this);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT));
+        textView.setTextSize(18);
+        System.out.println(ct.getDays());
+        textView.setText(ct.getDays().toString());
+        textView.append("\n" + ct.getStartTimeAsString(getApplicationContext()) + " - "
+            + ct.getEndTimeAsString(getApplicationContext()));
+        textView.setPadding(0, 10, 0, 10);
+        textView.setLineSpacing(8, 1);
+        layout.addView(textView);
+
+        // initialize the divider, set it's properties, and add it to the layout
+        View divider = new View(this);
+        divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
+        divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        layout.addView(divider);
+      }
     }
 
     mAddDayAndTime.setOnClickListener(this);
@@ -157,11 +161,6 @@ public class AddCourseActivity extends Activity implements OnClickListener {
 
       ClassTime tempClassTime = (ClassTime) data.getParcelableExtra("classTime");
       mClassTimes.add(tempClassTime);
-     // mCourse.addClassTime(tempClassTime);
-
-      // String tempDays = data.getStringExtra("Days");
-      // String tempStartTime = data.getStringExtra("StartTime");
-      // String tempEndTime = data.getStringExtra("EndTime");
 
       // initialize the layout that the new text view will be added to
       LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
@@ -184,35 +183,9 @@ public class AddCourseActivity extends Activity implements OnClickListener {
       divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
       divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
       layout.addView(divider);
-      
 
     }
 
   }
-  
-//  public void writeCourseToFile(){
-//    File file = new File(getApplicationContext().getFilesDir(), FILE_NAME);
-//    FileOutputStream outputStream;
-//    ArrayList<ClassTime> classTimes = mCourse.getClassTimes();
-//    ClassTime tempClassTime;
-//    
-//    try {
-//      outputStream = openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-//      outputStream.write(mCourse.getCourseName().getBytes());
-//      
-//      for(int i = 0; i < classTimes.size(); i++){
-//        tempClassTime = classTimes.get(i);
-//        
-//        outputStream.write(tempClassTime.getDays().toString().getBytes());
-//        outputStream.write(tempClassTime.getStartTimeAsString(getApplicationContext()).getBytes());
-//        outputStream.write(tempClassTime.getEndTimeAsString(getApplicationContext()).getBytes());
-//      }
-//      
-//      outputStream.flush();
-//      outputStream.close();
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//  }
 
 }

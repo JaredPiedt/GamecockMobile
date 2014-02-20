@@ -1,13 +1,5 @@
 package com.gamecockmobile;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,9 +26,8 @@ public class CourseListActivity extends Activity implements OnClickListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_course_list);
-    // readFile(FILE_NAME);
 
-  //  getApplicationContext().deleteDatabase("CoursesManager.db");
+    // getApplicationContext().deleteDatabase("CoursesManager.db");
 
     db = new DatabaseHandler(this);
     Log.d("db", Integer.toString(db.getCoursesCount()));
@@ -75,12 +66,6 @@ public class CourseListActivity extends Activity implements OnClickListener {
     }
 
   }
-
-  // protected void onResume() {
-  // super.onResume();
-  // Log.d("onResume", "resumed");
-  // readFile(FILE_NAME);
-  // }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,32 +142,6 @@ public class CourseListActivity extends Activity implements OnClickListener {
     }
   }
 
-  public void readFile(String fileName) {
-    File file = new File(getApplicationContext().getFilesDir(), fileName);
-    Scanner scanner = null;
-    String content = "";
-
-    try {
-      scanner = new Scanner(file);
-
-      while (scanner.hasNext()) {
-        Log.d("readFile", "reading the file...");
-        parseLine(scanner.nextLine());
-      }
-
-    } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    // catch (IOException e) {
-    // e.printStackTrace();
-    // }
-    Log.d("readFile", content);
-    if (content != null) {
-      displayCourses(content);
-    }
-  }
-
   public void displayCourses(String content) {
     // initialize the layout that the new text view will be added to
     LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
@@ -200,14 +159,6 @@ public class CourseListActivity extends Activity implements OnClickListener {
     textView.setLineSpacing(8, 1);
     layout.addView(textView);
 
-  }
-
-  public void parseLine(String line) {
-    Scanner scanner = new Scanner(line);
-
-    while (scanner.hasNext()) {
-
-    }
   }
 
 }

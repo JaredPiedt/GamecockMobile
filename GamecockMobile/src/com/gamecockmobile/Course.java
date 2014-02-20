@@ -6,8 +6,6 @@ import java.util.Scanner;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.format.DateFormat;
-import android.text.format.Time;
 import android.util.Log;
 
 public class Course implements Parcelable {
@@ -15,7 +13,6 @@ public class Course implements Parcelable {
   private int id;
   private String courseName;
   private ArrayList<ClassTime> classTimes;
-  private static int numberOfCourses = 0;
 
   public Course() {
 
@@ -81,11 +78,9 @@ public class Course implements Parcelable {
   }
 
   public void setClassTimesFromString(String string) {
-    
-    
+
     Scanner scanner = new Scanner(string);
     String token;
-    int counter = 1;
     ClassTime tempClassTime;
 
     classTimes = new ArrayList<ClassTime>();
@@ -101,11 +96,12 @@ public class Course implements Parcelable {
       System.out.println(s);
       tempClassTime.setDaysFromString(s);
       tempClassTime.setStartTime(scanner.nextLong());
- //     Log.d("start time", Long.toString(scanner.nextLong()));
+      // Log.d("start time", Long.toString(scanner.nextLong()));
       tempClassTime.setEndTime(scanner.nextLong());
- //     Log.d("end time", Long.toString(scanner.nextLong()));
+      // Log.d("end time", Long.toString(scanner.nextLong()));
       classTimes.add(tempClassTime);
     }
+    scanner.close();
 
   }
 
@@ -120,10 +116,6 @@ public class Course implements Parcelable {
 
     return s;
   }
-
-  // public Course createFromParcel(Parcel in) {
-  // return new Course(in);
-  // }
 
   @Override
   public int describeContents() {
