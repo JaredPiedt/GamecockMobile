@@ -19,4 +19,8 @@
 
     <string name="title_activity_add_day_and_time">AddDayAndTime</string>
 
+    <string-array name="schedule_action_list">
+        <item>Course List</item>
+        <item>Events</item>
+    </string-array>
 </resources>

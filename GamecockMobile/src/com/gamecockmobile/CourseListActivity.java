@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import android.os.Bundle;
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.LoaderManager;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,20 +22,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CourseListActivity extends Activity implements OnClickListener,
-    OnLongClickListener {
+public class CourseListActivity extends Activity implements OnClickListener, OnLongClickListener, OnNavigationListener {
 
- 
-  
   DatabaseHandler db;
 
   private ArrayList<String> mCourses = new ArrayList<String>();
 
   public static final String FILE_NAME = "courses";
+  private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,15 @@ public class CourseListActivity extends Activity implements OnClickListener,
     setContentView(R.layout.activity_course_list);
 
     // getApplicationContext().deleteDatabase("CoursesManager.db");
+    
+    String[] strings = getResources().getStringArray(R.array.schedule_action_list);
+    
+    ArrayAdapter<String> aAdapt = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, android.R.id.text1, strings);
+    
+    final ActionBar actionBar = getActionBar();
+    actionBar.setDisplayShowTitleEnabled(false);
+    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);    
+    actionBar.setListNavigationCallbacks(aAdapt, this);
 
     db = new DatabaseHandler(this);
     Log.d("db", Integer.toString(db.getCoursesCount()));
@@ -49,10 +59,9 @@ public class CourseListActivity extends Activity implements OnClickListener,
     for (Course c : courses) {
       Log.d("Insert", c.toString());
 
-     mCourses.add(c.getCourseName());
-     
-     LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
+      mCourses.add(c.getCourseName());
 
+      LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
 
       // initialize the TextView that the class day and time will be displayed in, set the text,
       // and
@@ -79,8 +88,23 @@ public class CourseListActivity extends Activity implements OnClickListener,
       divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 2));
       divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
       layout.addView(divider);
-   }
+    }
 
+  }
+  
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+    // Restore the previously serialized current dropdown position.
+    if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+      getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+    }
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    // Serialize the current dropdown position.
+    outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+        .getSelectedNavigationIndex());
   }
 
   @Override
@@ -107,7 +131,7 @@ public class CourseListActivity extends Activity implements OnClickListener,
   public boolean onLongClick(View v) {
     final View view = v;
     final Course course = db.getCourse(v.getId());
-    final CharSequence[] mDialogList = { "Delete" };
+    final CharSequence[] mDialogList = { "Delete", "Edit" };
 
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(course.getCourseName());
@@ -120,6 +144,10 @@ public class CourseListActivity extends Activity implements OnClickListener,
 
           layout.removeView(view);
 
+        } else if (which == 1) {
+          Intent intent = new Intent(CourseListActivity.this, AddCourseActivity.class);
+          intent.putExtra("course", course);
+          startActivityForResult(intent, 1);
         }
       }
     });
@@ -150,23 +178,21 @@ public class CourseListActivity extends Activity implements OnClickListener,
       } else {
         Log.d("Insert:", "Inserting...");
         db.addCourse(tempCourse, getApplicationContext());
-        
+
         ArrayList<Course> courses = db.getAllCourses();
-        
-        for(int i = 0; i < courses.size(); i++){
+
+        for (int i = 0; i < courses.size(); i++) {
           Course course = courses.get(i);
-          
+
           System.out.println(tempCourse.getCourseName());
           System.out.println(course.getCourseName());
-          
-          if(tempCourse.getCourseName().equals(course.getCourseName())){
+
+          if (tempCourse.getCourseName().equals(course.getCourseName())) {
             tempCourse = course;
-            
+
             System.out.println(tempCourse.getID());
           }
         }
-        
-        
 
         // initialize the layout that the new text view will be added to
         LinearLayout layout = (LinearLayout) findViewById(R.id.courseList_Layout);
@@ -234,7 +260,11 @@ public class CourseListActivity extends Activity implements OnClickListener,
     lv.addView(textView);
 
   }
-  
- 
+
+  @Override
+  public boolean onNavigationItemSelected(int position, long id) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
 }

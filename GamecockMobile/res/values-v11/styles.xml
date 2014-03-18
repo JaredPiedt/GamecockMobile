@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
@@ -26,7 +26,7 @@
     </style>
 
     <style name="CourseListActionBar" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#73000F</item>
+        <item name="android:background">@color/garnet</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
     </style>
 
@@ -35,7 +35,7 @@
     </style>
 
     <style name="AddCourseActionBar" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#73000F</item>
+        <item name="android:background">@color/garnet</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
     </style>
 
@@ -44,7 +44,7 @@
     </style>
 
     <style name="AddDayAndTimeActionBar" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#73000F</item>
+        <item name="android:background">@color/garnet</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
     </style>
 

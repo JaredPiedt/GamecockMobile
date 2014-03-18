@@ -18,13 +18,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
   private static final int DATABASE_VERSION = 1;
   static final String DATABASE_NAME = "CoursesManager.db";
   static final String TABLE_COURSES = "courses";
+  Context context;
 
   private static final String KEY_ID = "id";
   static final String KEY_NAME = "name";
   private static final String KEY_CLASS_TIMES = "class_times";
+  private static final String KEY_EVENTS_DB = "events_db";
 
   public DatabaseHandler(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    this.context = context;
   }
 
   /**
@@ -36,7 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
   @Override
   public void onCreate(SQLiteDatabase db) {
     String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES + "(" + KEY_ID
-        + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_CLASS_TIMES + " TEXT" + ")";
+        + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_CLASS_TIMES + " TEXT" + KEY_EVENTS_DB + " TEXT" + ")";
     db.execSQL(CREATE_COURSES_TABLE);
   }
 
@@ -72,7 +75,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, course.getCourseName());
     values.put(KEY_CLASS_TIMES, course.classTimesToString(context));
-
+    values.put(KEY_EVENTS_DB, course.getCourseName() + ".db");
+    
     Log.d("Inserting", course.classTimesToString(context));
 
     db.insert(TABLE_COURSES, null, values);
@@ -188,5 +192,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     db.delete(TABLE_COURSES, KEY_ID + " = ?", new String[] { String.valueOf(course.getID()) });
     db.close();
   }
+  
+  
 
 }
