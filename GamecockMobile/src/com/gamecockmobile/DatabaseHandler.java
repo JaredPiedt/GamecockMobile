@@ -39,7 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
   @Override
   public void onCreate(SQLiteDatabase db) {
     String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES + "(" + KEY_ID
-        + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_CLASS_TIMES + " TEXT" + KEY_EVENTS_DB + " TEXT" + ")";
+        + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_CLASS_TIMES + " TEXT," + KEY_EVENTS_DB + " TEXT" + ")";
     db.execSQL(CREATE_COURSES_TABLE);
   }
 
@@ -75,7 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, course.getCourseName());
     values.put(KEY_CLASS_TIMES, course.classTimesToString(context));
-    values.put(KEY_EVENTS_DB, course.getCourseName() + ".db");
+    values.put(KEY_EVENTS_DB, course.getCourseName().replaceAll("\\s+", "") + ".db");
     
     Log.d("Inserting", course.classTimesToString(context));
 

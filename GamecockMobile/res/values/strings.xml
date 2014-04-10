@@ -15,12 +15,15 @@
     <string name="action_settings">Settings</string>
 
     <color name="gray_background">#D8D8D8</color>
-    <color name="white">#FFFFFF</color>
-
+    
     <string name="title_activity_add_day_and_time">AddDayAndTime</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="schedule_action_list">
         <item>Course List</item>
         <item>Events</item>
+        <item>Buses</item>
     </string-array>
+
 </resources>

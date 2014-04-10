@@ -24,16 +24,21 @@ public class AddCourseActivity extends Activity implements OnClickListener {
   EditText mCourseNameEditText;
 
   Bundle mBundle;
+  DatabaseHandler db;
 
   private Course mCourse;
   private ArrayList<ClassTime> mClassTimes;
 
   public static final String FILE_NAME = "courses";
+  boolean mUpdateCourse;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_course);
+
+    db = new DatabaseHandler(this);
+    mUpdateCourse = false;
 
     final LayoutInflater inflater = (LayoutInflater) this
         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,6 +52,16 @@ public class AddCourseActivity extends Activity implements OnClickListener {
 
             mCourse.setCourseName(mCourseNameEditText.getText().toString());
             mCourse.setClassTimes(mClassTimes);
+            
+            System.out.println(mUpdateCourse);
+
+            if (mUpdateCourse == true) {
+              db.updateCourse(mCourse, getApplicationContext());
+              System.out.println("Course was updated: " + mCourse.getCourseName());
+            } else {
+              db.addCourse(mCourse, getApplicationContext());
+              System.out.println("Course added to database: " + mCourse.getCourseName());
+            }
 
             Log.d("ClassTime", Integer.toString(mClassTimes.size()));
 
@@ -87,10 +102,12 @@ public class AddCourseActivity extends Activity implements OnClickListener {
     // check to make sure if the bundle contains something which means the course has already been
     // added to the database and the user wants to edit it
     if (mBundle != null) {
+      mUpdateCourse = true;
       Course tempCourse = mBundle.getParcelable("course");
       mCourse.setID(tempCourse.getID());
       mCourse.setCourseName(tempCourse.getCourseName());
-      
+      System.out.println("Bundle: " + mCourse.getCourseName());
+
       for (ClassTime cT : tempCourse.getClassTimes()) {
         mClassTimes.add(cT);
       }
