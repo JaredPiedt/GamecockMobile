@@ -2,14 +2,18 @@
 <resources>
 
     <string name="cancel">Cancel</string>
+    <string name="course">COURSE</string>
     <string name="course_name">Course name</string>
+    <string name="title_activity_course_list">Course List</string>
+    <string name="date">DATE</string>
     <string name="action_discard">Discard</string>
     <string name="done">Done</string>
-    <string name="title_activity_course_list">Course List</string>
+    <string name="event_name">Event name</string>
     <string name="app_name">Gamecock Mobile</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_new">New</string>
     <string name="title_activity_add_course">New Course</string>
+    <string name="reminders">REMINDERS</string>
     <string name="action_save">Save</string>
     <string name="set">Set</string>
     <string name="action_settings">Settings</string>
