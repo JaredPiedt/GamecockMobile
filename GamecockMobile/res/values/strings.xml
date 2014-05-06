@@ -15,7 +15,7 @@
     <string name="action_settings">Settings</string>
 
     <color name="gray_background">#D8D8D8</color>
-    
+
     <string name="title_activity_add_day_and_time">AddDayAndTime</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -25,5 +25,8 @@
         <item>Events</item>
         <item>Buses</item>
     </string-array>
+
+    <string name="title_activity_buses_fragment">BusesFragment</string>
+    <string name="title_activity_add_event">AddEventActivity</string>
 
 </resources>

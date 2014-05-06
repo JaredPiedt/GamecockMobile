@@ -3,6 +3,9 @@ package com.gamecockmobile;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.gamecockmobile.buses.BusesFragment;
+import com.gamecockmobile.events.EventsFragment;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
@@ -166,6 +169,12 @@ public class MainActivity extends Activity {
     case 0:
       fragment = new CourseListFragment();
       break;
+    case 1:
+      fragment = new EventsFragment();
+      break;
+    case 2:
+      fragment = new BusesFragment();
+      break;
 
     default:
       break;
@@ -196,7 +205,6 @@ public class MainActivity extends Activity {
    * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and
    * onConfigurationChanged()...
    */
-
   @Override
   protected void onPostCreate(Bundle savedInstanceState) {
     super.onPostCreate(savedInstanceState);
@@ -211,52 +219,6 @@ public class MainActivity extends Activity {
     mDrawerToggle.onConfigurationChanged(newConfig);
   }
 
-  // /**
-  // * Fragment that appears in the "content_frame", shows a planet
-  // */
-  // public static class PlanetFragment extends Fragment {
-  // public static final String ARG_PLANET_NUMBER = "planet_number";
-  //
-  // public PlanetFragment() {
-  // // Empty constructor required for fragment subclasses
-  // }
-
-  // @Override
-  // public View onCreateView(LayoutInflater inflater, ViewGroup container,
-  // Bundle savedInstanceState) {
-  // View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-  // int i = getArguments().getInt(ARG_PLANET_NUMBER);
-  // String planet = getResources().getStringArray(R.array.planets_array)[i];
-  //
-  // int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-  // "drawable", getActivity().getPackageName());
-  // ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-  // getActivity().setTitle(planet);
-  // return rootView;
-  // }
 }
 
-// getApplicationContext().deleteFile("courses");
-//
-// mGridView = (GridView) findViewById(R.id.home_gridview);
-// mGridView.setAdapter(new GridItemAdapter(this, ICON_DATA));
-// mGridView.setOnItemClickListener(this);
-//
-// mGridView.setOnItemClickListener(new OnItemClickListener() {
-//
-// @Override
-// public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-// // TODO Auto-generated method stub
-// switch (position) {
-// case 0:
-// Intent intent = new Intent(MainActivity.this, CourseListActivity.class);
-// startActivity(intent);
-// break;
-// default:
-// break;
-// }
-//
-// }
-//
-// });
 

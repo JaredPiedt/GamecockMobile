@@ -36,8 +36,16 @@
         </activity>
         <activity
             android:name="com.gamecockmobile.AddDayAndTimeActivity"
-            android:label="@string/title_activity_add_day_and_time" 
-            android:theme="@style/AddCourseActionBarTheme">
+            android:label="@string/title_activity_add_day_and_time"
+            android:theme="@style/AddCourseActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.gamecockmobile.buses.BusesFragment"
+            android:label="@string/title_activity_buses_fragment" >
+        </activity>
+        <activity
+            android:name="com.gamecockmobile.events.AddEventActivity"
+            android:label="@string/title_activity_add_event" >
         </activity>
     </application>
 
