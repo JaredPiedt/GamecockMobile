@@ -45,7 +45,8 @@
         </activity>
         <activity
             android:name="com.gamecockmobile.events.AddEventActivity"
-            android:label="@string/title_activity_add_event" >
+            android:label="@string/title_activity_add_event" 
+            android:theme="@style/AddEventActionBarTheme">
         </activity>
     </application>
 

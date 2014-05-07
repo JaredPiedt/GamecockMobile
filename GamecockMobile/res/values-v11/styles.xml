@@ -47,5 +47,14 @@
         <item name="android:background">@color/garnet</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
     </style>
+    
+    <style name="AddEventActionBarTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/AddEventActionBar</item>
+    </style>
+    
+    <style name="AddEventActionBar" parent="android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/garnet</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
 
 </resources>
