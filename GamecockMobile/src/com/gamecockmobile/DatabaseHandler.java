@@ -41,6 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_COURSES + "(" + KEY_ID
         + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_CLASS_TIMES + " TEXT," + KEY_EVENTS_DB + " TEXT" + ")";
     db.execSQL(CREATE_COURSES_TABLE);
+    System.out.println("Events database successfully created");
   }
 
   /**

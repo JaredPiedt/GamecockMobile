@@ -9,6 +9,7 @@ import com.gamecockmobile.R;
 
 import android.app.ActionBar.OnNavigationListener;
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-public class EventsFragment extends ListFragment implements OnNavigationListener {
+public class EventsFragment extends Fragment implements OnNavigationListener {
 
   DatabaseHandler db;
-  
+  EventDatabaseHandler eDB;
+
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     ActionBar actionBar = getActivity().getActionBar();
@@ -32,7 +34,8 @@ public class EventsFragment extends ListFragment implements OnNavigationListener
     setHasOptionsMenu(true);
 
     db = new DatabaseHandler(getActivity());
-
+    eDB = new EventDatabaseHandler(getActivity());
+    
     ArrayList<Course> courses = db.getAllCourses();
     ArrayList<String> courseList = new ArrayList<String>();
 
@@ -43,14 +46,14 @@ public class EventsFragment extends ListFragment implements OnNavigationListener
       courseList.add(tempCourse.getCourseName());
     }
 
-   return super.onCreateView(inflater, container, savedInstanceState);
+    return super.onCreateView(inflater, container, savedInstanceState);
   }
-  
+
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.course_list, menu);
     super.onCreateOptionsMenu(menu, inflater);
   }
-  
+
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
     case R.id.action_new:
@@ -61,7 +64,15 @@ public class EventsFragment extends ListFragment implements OnNavigationListener
       return super.onOptionsItemSelected(item);
     }
   }
-  
+
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == 1) {
+
+      System.out.println(eDB.getEvent(1).toString());
+    }
+  }
+
   @Override
   public boolean onNavigationItemSelected(int arg0, long arg1) {
     // TODO Auto-generated method stub

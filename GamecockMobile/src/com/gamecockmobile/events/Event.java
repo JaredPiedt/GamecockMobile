@@ -7,39 +7,45 @@ public class Event {
 
   private int id;
   private String name;
-  private String type;
+  private String course;
+  private int type;
   private long date;
-  private ArrayList<String> notifications;
+  private ArrayList<Integer> notifications;
 
   public Event() {
     name = "";
-    type = "";
+    course = "";
+    type = 0;
     date = 0;
-    notifications = new ArrayList<String>();
+    notifications = new ArrayList<Integer>();
   }
 
-  public Event(String name, String type, long date, ArrayList<String> notifications) {
-    this.name = name;
-    this.type = type;
-    this.date = date;
-    this.notifications = notifications;
-
-  }
-  
-  public Event(int id, String name, String type, String date, String notificationns){
+  public Event(int id, String name, String course, String type, String date, String notifications) {
     this.id = id;
     this.name = name;
+    this.course = course;
+    this.type = Integer.valueOf(type);
+    this.date = Long.valueOf(date);
+    this.notifications = new ArrayList<Integer>();
+    this.setNotificationsFromString(notifications);
+
+  }
+
+  public Event(int id, String name, String course, int type, String date, String notifications) {
+    this.id = id;
+    this.name = name;
+    this.course = course;
     this.type = type;
   }
 
-  public int getId(){
+  public int getId() {
     return this.id;
   }
-  
-  public void setId(int id){
+
+  public void setId(int id) {
     this.id = id;
   }
-  
+
   public String getName() {
     return this.name;
   }
@@ -48,11 +54,19 @@ public class Event {
     this.name = name;
   }
 
-  public String getType() {
+  public String getCourse() {
+    return this.course;
+  }
+
+  public void setCourse(String course) {
+    this.course = course;
+  }
+
+  public int getType() {
     return this.type;
   }
 
-  public void setType(String type) {
+  public void setType(int type) {
     this.type = type;
   }
 
@@ -63,35 +77,47 @@ public class Event {
   public void setDate(long date) {
     this.date = date;
   }
-  
+
   public void setDateFromString(String date) {
     Scanner scanner = new Scanner(date);
-    
+
     this.date = scanner.nextLong();
-    
+
     scanner.close();
   }
 
-  public ArrayList<String> getNotifications() {
+  public ArrayList<Integer> getNotifications() {
     return this.notifications;
   }
 
-  public void setNotifications(ArrayList<String> notifications) {
+  public void setNotifications(ArrayList<Integer> notifications) {
     this.notifications = notifications;
   }
-  
+
   // method only used for testing
-  public void setNotificationsFromString(String string){
+  public void setNotificationsFromString(String string) {
     Scanner scanner = new Scanner(string);
-    
-    while(scanner.hasNext()) {
-      this.addNotifications(scanner.next());
+
+    while (scanner.hasNext()) {
+      this.addNotification(scanner.nextInt());
     }
-    
+
     scanner.close();
   }
 
-  public void addNotifications(String notification) {
-    notifications.add(notification);
+  public void addNotification(int notification) {
+    System.out.println(notification);
+    this.notifications.add(notification);
+
+  }
+
+  public String toString() {
+    String s = "";
+    s += this.name;
+    s += " " + this.course;
+    s += " " + this.date;
+    s += " " + this.type;
+    s += " " + this.notifications.toString();
+    return s;
   }
 }

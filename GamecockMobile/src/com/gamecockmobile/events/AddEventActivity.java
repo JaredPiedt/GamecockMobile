@@ -30,18 +30,24 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
 public class AddEventActivity extends Activity implements OnClickListener {
 
+  EditText mEventNameEditText;
   Spinner mSelectCourseSpinner;
+  Spinner mSelectTypeSpinner;
   Button mDateButton;
   Spinner mRemindersSpinner;
 
   private String mTimeZone;
 
   DatabaseHandler db;
+  EventDatabaseHandler eDB;
+  
+  private Event mEvent;
   private ArrayList<Course> mCourses = new ArrayList<Course>();
   private ArrayList<String> mCourseNames = new ArrayList<String>();
 
@@ -59,7 +65,15 @@ public class AddEventActivity extends Activity implements OnClickListener {
           public void onClick(View v) {
             // "Done"
             Intent intent = new Intent();
+            int name = mSelectCourseSpinner.getSelectedItemPosition();
+            mEvent.setCourse(mEventNameEditText.getText().toString());
+            mEvent.setName(mCourseNames.get(name));
+            mEvent.setType(mSelectCourseSpinner.getSelectedItemPosition());
+            mEvent.addNotification(mRemindersSpinner.getSelectedItemPosition());
+            eDB.addEvent(mEvent);
+            System.out.println("event add successfully");
 
+            setResult(1, intent);
             finish();
           }
         });
@@ -68,6 +82,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
           @Override
           public void onClick(View v) {
             // "Cancel"
+            setResult(2);
             finish();
           }
         });
@@ -80,7 +95,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     db = new DatabaseHandler(this);
+    eDB = new EventDatabaseHandler(this);
 
+    mEvent = new Event();
     mCourses = db.getAllCourses();
     mTimeZone = Time.getCurrentTimezone();
 
@@ -89,7 +106,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
       System.out.println(mCourses.get(i).getCourseName());
     }
 
+    mEventNameEditText = (EditText) findViewById(R.id.eventName_editText);
     mSelectCourseSpinner = (Spinner) findViewById(R.id.selectCourse_spinner);
+    mSelectTypeSpinner = (Spinner) findViewById(R.id.selectType_spinner);
     mDateButton = (Button) findViewById(R.id.date_button);
     mRemindersSpinner = (Spinner) findViewById(R.id.reminders_spinner);
 
@@ -98,6 +117,12 @@ public class AddEventActivity extends Activity implements OnClickListener {
         android.R.layout.simple_spinner_item, mCourseNames);
     selectCourseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     mSelectCourseSpinner.setAdapter(selectCourseAdapter);
+
+    // Create an ArrayAdapter using the string array and a default spinner layout
+    ArrayAdapter<CharSequence> selectTypeAdapter = ArrayAdapter.createFromResource(this,
+        R.array.types_array, android.R.layout.simple_spinner_item);
+    selectTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mSelectTypeSpinner.setAdapter(selectTypeAdapter);
 
     // Create an ArrayAdapter using the string array and a default spinner layout
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -149,14 +174,14 @@ public class AddEventActivity extends Activity implements OnClickListener {
       date.monthDay = day;
       long millis;
       millis = date.normalize(true);
-      
+      mEvent.setDate(millis);
+
       int flags = DateUtils.FORMAT_SHOW_DATE;
       flags |= DateUtils.FORMAT_SHOW_YEAR;
       String timeString = DateUtils.formatDateTime(getApplicationContext(), millis, flags);
-      
-      
-//      timeString += ", ";
-//      timeString += year;
+
+      // timeString += ", ";
+      // timeString += year;
       mDateButton.setText(timeString);
     }
 

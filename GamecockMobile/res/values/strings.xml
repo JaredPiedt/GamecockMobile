@@ -17,6 +17,7 @@
     <string name="action_save">Save</string>
     <string name="set">Set</string>
     <string name="action_settings">Settings</string>
+    <string name="type">TYPE</string>
 
     <color name="gray_background">#D8D8D8</color>
 
@@ -45,6 +46,13 @@
         <item>24 hours</item>
         <item>2 days</item>
         <item>1 week</item>
+    </string-array>
+    
+    <string-array name="types_array">
+        <item>Test</item>
+        <item>Quiz</item>
+        <item>Homework</item>
+        <item>Other</item>
     </string-array>
 
     <string name="title_activity_buses_fragment">BusesFragment</string>
