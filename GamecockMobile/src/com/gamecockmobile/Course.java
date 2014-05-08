@@ -8,33 +8,70 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+/**
+ * Class that is used to set up a Course.
+ * 
+ * @author Jared Piedt
+ *
+ */
 public class Course implements Parcelable {
 
+  /**
+   * Instance variables.
+   */
   private int id;
   private String courseName;
   private ArrayList<ClassTime> classTimes;
 
+  /**
+   * Default constructor.
+   */
   public Course() {
 
   }
 
+  /**
+   * Constructor.
+   * 
+   * @param id
+   * @param courseName
+   * @param classTimes
+   */
   public Course(int id, String courseName, ArrayList<ClassTime> classTimes) {
     this.id = id;
     this.courseName = courseName;
     this.classTimes = classTimes;
   }
 
+  /**
+   * Constructor.
+   * 
+   * @param id
+   * @param courseName
+   * @param classTimes
+   */
   public Course(int id, String courseName, String classTimes) {
     this.id = id;
     this.courseName = courseName;
     setClassTimesFromString(classTimes);
   }
 
+  /**
+   * Constructor.
+   * 
+   * @param courseName
+   * @param classTimes
+   */
   public Course(String courseName, String classTimes) {
     this.courseName = courseName;
     setClassTimesFromString(classTimes);
   }
 
+  /**
+   * Accessors and mutators.
+   * 
+   * @param id
+   */
   public void setID(int id) {
     this.id = id;
   }

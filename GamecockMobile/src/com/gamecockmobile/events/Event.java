@@ -3,8 +3,17 @@ package com.gamecockmobile.events;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Class used to set up an Event.
+ * 
+ * @author Jared W. Piedt
+ * 
+ */
 public class Event {
 
+  /**
+   * Instance variables.
+   */
   private int id;
   private String name;
   private String course;
@@ -12,6 +21,9 @@ public class Event {
   private long date;
   private ArrayList<Integer> notifications;
 
+  /**
+   * Default constructor.
+   */
   public Event() {
     name = "";
     course = "";
@@ -20,6 +32,9 @@ public class Event {
     notifications = new ArrayList<Integer>();
   }
 
+  /**
+   * Constructor used in the 'EventDatabaseHandler' class.
+   */
   public Event(int id, String name, String course, String type, String date, String notifications) {
     this.id = id;
     this.name = name;
@@ -38,6 +53,9 @@ public class Event {
     this.type = type;
   }
 
+  /**
+   * Accessors and mutators.
+   */
   public int getId() {
     return this.id;
   }
@@ -105,12 +123,21 @@ public class Event {
     scanner.close();
   }
 
+  /**
+   * Method to add a single notification.
+   * 
+   * @param notification
+   *          the notification to add
+   */
   public void addNotification(int notification) {
     System.out.println(notification);
     this.notifications.add(notification);
 
   }
 
+  /**
+   * Basic 'toString' for the class.
+   */
   public String toString() {
     String s = "";
     s += this.name;

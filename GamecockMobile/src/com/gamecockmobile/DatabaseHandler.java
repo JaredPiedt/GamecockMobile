@@ -122,7 +122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
   /**
    * Method to get all 'Courses'.
    * 
-   * @return and 'ArrayList' of all the 'Courses'
+   * @return an 'ArrayList' of all the 'Courses'
    */
   public ArrayList<Course> getAllCourses() {
     ArrayList<Course> courseList = new ArrayList<Course>();

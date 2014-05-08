@@ -34,6 +34,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+/**
+ * 'AddEventActivity' class.
+ * 
+ * This class is used to add a new 'Event'. The user inputs all of the event details and then the
+ * event is added to the database.
+ * 
+ * @author Jared W. Piedt
+ * 
+ */
 public class AddEventActivity extends Activity implements OnClickListener {
 
   EditText mEventNameEditText;
@@ -46,7 +55,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
   DatabaseHandler db;
   EventDatabaseHandler eDB;
-  
+
   private Event mEvent;
   private ArrayList<Course> mCourses = new ArrayList<Course>();
   private ArrayList<String> mCourseNames = new ArrayList<String>();
@@ -61,7 +70,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
     final View customActionBarView = inflater.inflate(R.layout.action_bar_add_course, null);
     customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
         new View.OnClickListener() {
-          @Override
+          //
           public void onClick(View v) {
             // "Done"
             Intent intent = new Intent();
@@ -94,6 +103,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
     actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+    // initialize the databases
     db = new DatabaseHandler(this);
     eDB = new EventDatabaseHandler(this);
 
@@ -101,35 +111,39 @@ public class AddEventActivity extends Activity implements OnClickListener {
     mCourses = db.getAllCourses();
     mTimeZone = Time.getCurrentTimezone();
 
+    // add course name to the 'ArrayList' of 'Courses' in order to create the 'Spinner' of 'Course'
+    // names
     for (int i = 0; i < mCourses.size(); i++) {
       mCourseNames.add(mCourses.get(i).getCourseName());
       System.out.println(mCourses.get(i).getCourseName());
     }
 
+    // initialize all of the 'Buttons' and 'Spinners'
     mEventNameEditText = (EditText) findViewById(R.id.eventName_editText);
     mSelectCourseSpinner = (Spinner) findViewById(R.id.selectCourse_spinner);
     mSelectTypeSpinner = (Spinner) findViewById(R.id.selectType_spinner);
     mDateButton = (Button) findViewById(R.id.date_button);
     mRemindersSpinner = (Spinner) findViewById(R.id.reminders_spinner);
 
-    // Create an ArrayAdapter using the string array and a default spinner layout
+    // Create an ArrayAdapter for the 'Spinner' used to select the 'Course' using the string array
+    // and a default spinner layout
     ArrayAdapter<String> selectCourseAdapter = new ArrayAdapter<String>(this,
         android.R.layout.simple_spinner_item, mCourseNames);
     selectCourseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     mSelectCourseSpinner.setAdapter(selectCourseAdapter);
 
-    // Create an ArrayAdapter using the string array and a default spinner layout
+    // Create an ArrayAdapter for the 'Spinner' used to select the type using the string array and a
+    // default spinner layout
     ArrayAdapter<CharSequence> selectTypeAdapter = ArrayAdapter.createFromResource(this,
         R.array.types_array, android.R.layout.simple_spinner_item);
     selectTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     mSelectTypeSpinner.setAdapter(selectTypeAdapter);
 
-    // Create an ArrayAdapter using the string array and a default spinner layout
+    // Create an ArrayAdapter for the 'Spinner' used to select reminder times using the string array
+    // and a default spinner layout
     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
         R.array.reminders_array, android.R.layout.simple_spinner_item);
-    // Specify the layout to use when the list of choices appears
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    // Apply the adapter to the spinner
     mRemindersSpinner.setAdapter(adapter);
 
   }
@@ -150,6 +164,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
     }
   }
 
+  /**
+   * This class is used to set up the 'DatePicker'.
+   */
   @SuppressLint("ValidFragment")
   private class DatePickerFragment extends DialogFragment implements
       DatePickerDialog.OnDateSetListener {
@@ -165,28 +182,32 @@ public class AddEventActivity extends Activity implements OnClickListener {
       return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
-    @Override
+    /**
+     * Method used to display the date when it is selected.
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
-      // TODO Auto-generated method stub
       Time date = new Time(mTimeZone);
+      long millis;
       date.year = year;
       date.month = month;
       date.monthDay = day;
-      long millis;
+
       millis = date.normalize(true);
       mEvent.setDate(millis);
 
+      // set up the flags and initialize the formatted date string
       int flags = DateUtils.FORMAT_SHOW_DATE;
       flags |= DateUtils.FORMAT_SHOW_YEAR;
       String timeString = DateUtils.formatDateTime(getApplicationContext(), millis, flags);
 
-      // timeString += ", ";
-      // timeString += year;
       mDateButton.setText(timeString);
     }
 
   }
 
+  /**
+   * Method used to display the 'DialogFragment' that contains the 'DatePicker'.
+   */
   public void showDatePickerDialog(View v) {
     DialogFragment newFragment = new DatePickerFragment();
     newFragment.show(getFragmentManager(), "datePicker");

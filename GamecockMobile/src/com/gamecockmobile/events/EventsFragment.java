@@ -21,6 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+/**
+ * The 'EventsFragment' class is used for setting up the fragment when the 'Events' navigation
+ * drawer is selected. It loads all of the events, organizing by date, into the frame.
+ * 
+ * @author Jared W. Piedt
+ * 
+ */
 public class EventsFragment extends Fragment implements OnNavigationListener {
 
   DatabaseHandler db;
@@ -29,22 +36,13 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     ActionBar actionBar = getActivity().getActionBar();
+    actionBar.setTitle("Events");
 
     // must call this method in order for the fragment to add items to the action bar
     setHasOptionsMenu(true);
 
-    db = new DatabaseHandler(getActivity());
+    // initialize the databases
     eDB = new EventDatabaseHandler(getActivity());
-    
-    ArrayList<Course> courses = db.getAllCourses();
-    ArrayList<String> courseList = new ArrayList<String>();
-
-    Course tempCourse = null;
-
-    for (int i = 0; i < courses.size(); i++) {
-      tempCourse = courses.get(i);
-      courseList.add(tempCourse.getCourseName());
-    }
 
     return super.onCreateView(inflater, container, savedInstanceState);
   }
