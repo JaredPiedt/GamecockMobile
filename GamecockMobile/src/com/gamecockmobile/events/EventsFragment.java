@@ -1,6 +1,8 @@
 package com.gamecockmobile.events;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.gamecockmobile.AddCourseActivity;
 import com.gamecockmobile.Course;
@@ -32,6 +34,8 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
 
   DatabaseHandler db;
   EventDatabaseHandler eDB;
+  HashMap<Long, ArrayList<Event>> mEventsMap;
+  ArrayList<Event> mEventsList;
 
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -43,6 +47,35 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
 
     // initialize the databases
     eDB = new EventDatabaseHandler(getActivity());
+    mEventsMap = new HashMap<Long, ArrayList<Event>>();
+
+    mEventsList = eDB.getAllEvents();
+    Event tempEvent;
+    long tempDate;
+    ArrayList<Event> values;
+    // add the events to the 'HashMap' using the date as the key and the events as the value
+    for (int i = 0; i < mEventsList.size(); i++) {
+      tempEvent = mEventsList.get(i);
+      tempDate = mEventsList.get(i).getDate();
+      values = mEventsMap.get(tempDate);
+
+      // if values is null, there are no events for that date so create a new key-value pair
+      if (values == null) {
+        values = new ArrayList<Event>();
+        mEventsMap.put(tempDate, values);
+      }
+      values.add(tempEvent);
+    }
+
+    // test method to iterate over the 'HashMap'
+    for (Map.Entry<Long, ArrayList<Event>> entry : mEventsMap.entrySet()) {
+      Long key = entry.getKey();
+      ArrayList<Event> events = entry.getValue();
+      System.out.println("Key = " + key);
+      for (int i = 0; i < events.size(); i++) {
+        System.out.println("Values = " + events.get(i).toString() + "\n");
+      }
+    }
 
     return super.onCreateView(inflater, container, savedInstanceState);
   }
