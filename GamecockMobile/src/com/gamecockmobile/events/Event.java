@@ -136,6 +136,33 @@ public class Event {
   }
 
   /**
+   * Method to compare two events.
+   * 
+   * We compare based on the data.
+   * 
+   */
+  public int compareTo(Event e) {
+    if (this.date == e.getDate()) {
+      return 0;
+    } else if (this.date > e.getDate()) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+
+  /**
+   * Method to test two events for equality.
+   * 
+   * @param e
+   *          the Event you want to compare
+   * @return the usual -1, 0, +1 for a comparison
+   */
+  public boolean equals(Object e) {
+    return 0 == this.compareTo((Event) e);
+  }
+  
+  /**
    * Basic 'toString' for the class.
    */
   public String toString() {

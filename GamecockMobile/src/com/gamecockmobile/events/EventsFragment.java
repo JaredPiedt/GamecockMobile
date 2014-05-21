@@ -3,6 +3,7 @@ package com.gamecockmobile.events;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.gamecockmobile.AddCourseActivity;
 import com.gamecockmobile.Course;
@@ -35,6 +36,7 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
   DatabaseHandler db;
   EventDatabaseHandler eDB;
   HashMap<Long, ArrayList<Event>> mEventsMap;
+  TreeMap<Long, ArrayList<Event>> mTreeMap;
   ArrayList<Event> mEventsList;
 
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,11 +50,13 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
     // initialize the databases
     eDB = new EventDatabaseHandler(getActivity());
     mEventsMap = new HashMap<Long, ArrayList<Event>>();
+    mTreeMap = new TreeMap<Long, ArrayList<Event>>();
 
     mEventsList = eDB.getAllEvents();
     Event tempEvent;
     long tempDate;
     ArrayList<Event> values;
+    ArrayList<Event> v;
     // add the events to the 'HashMap' using the date as the key and the events as the value
     for (int i = 0; i < mEventsList.size(); i++) {
       tempEvent = mEventsList.get(i);
@@ -65,14 +69,34 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
         mEventsMap.put(tempDate, values);
       }
       values.add(tempEvent);
+      
+      v = mTreeMap.get(tempDate);
+      
+      if(v == null) {
+        v = new ArrayList<Event>();
+        mTreeMap.put(tempDate, v);
+      }
+      v.add(tempEvent);
     }
 
     // test method to iterate over the 'HashMap'
+    System.out.println("*******Test HashMap*******");
     for (Map.Entry<Long, ArrayList<Event>> entry : mEventsMap.entrySet()) {
       Long key = entry.getKey();
       ArrayList<Event> events = entry.getValue();
       System.out.println("Key = " + key);
       for (int i = 0; i < events.size(); i++) {
+        System.out.println("Values = " + events.get(i).toString() + "\n");
+      }
+    }
+    
+    // test method to iterate over the 'TreeMap'
+    System.out.println("******Test TreeMap*******");
+    for(Map.Entry<Long, ArrayList<Event>> entry: mTreeMap.entrySet()) {
+      Long key = entry.getKey();
+      ArrayList<Event> events = entry.getValue();
+      System.out.println("Key = " + key);
+      for(int i = 0; i < events.size(); i++){
         System.out.println("Values = " + events.get(i).toString() + "\n");
       }
     }
