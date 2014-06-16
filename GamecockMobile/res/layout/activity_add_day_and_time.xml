@@ -28,7 +28,7 @@
             style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="- None Selected -"
+            android:text="@string/none_selected"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView

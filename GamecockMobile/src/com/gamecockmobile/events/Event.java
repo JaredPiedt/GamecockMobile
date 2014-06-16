@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public class Event {
 
-  /**
+  /****************************************************************
    * Instance variables.
    */
   private int id;
@@ -21,7 +21,7 @@ public class Event {
   private long date;
   private ArrayList<Integer> notifications;
 
-  /**
+  /****************************************************************
    * Default constructor.
    */
   public Event() {
@@ -32,7 +32,7 @@ public class Event {
     notifications = new ArrayList<Integer>();
   }
 
-  /**
+  /****************************************************************
    * Constructor used in the 'EventDatabaseHandler' class.
    */
   public Event(int id, String name, String course, String type, String date, String notifications) {
@@ -53,7 +53,7 @@ public class Event {
     this.type = type;
   }
 
-  /**
+  /****************************************************************
    * Accessors and mutators.
    */
   public int getId() {
@@ -123,7 +123,7 @@ public class Event {
     scanner.close();
   }
 
-  /**
+  /****************************************************************
    * Method to add a single notification.
    * 
    * @param notification
@@ -135,7 +135,7 @@ public class Event {
 
   }
 
-  /**
+  /****************************************************************
    * Method to compare two events.
    * 
    * We compare based on the data.
@@ -151,7 +151,7 @@ public class Event {
     }
   }
 
-  /**
+  /****************************************************************
    * Method to test two events for equality.
    * 
    * @param e
@@ -162,7 +162,7 @@ public class Event {
     return 0 == this.compareTo((Event) e);
   }
   
-  /**
+  /****************************************************************
    * Basic 'toString' for the class.
    */
   public String toString() {

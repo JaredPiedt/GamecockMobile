@@ -27,7 +27,9 @@ public class Course implements Parcelable {
    * Default constructor.
    */
   public Course() {
-
+    this.id = 0;
+    this.courseName = "";
+    classTimes = new ArrayList<ClassTime>();
   }
 
   /**
@@ -106,12 +108,24 @@ public class Course implements Parcelable {
 
     for (int i = 0; i < classTimes.size(); i++) {
       tempClassTime = classTimes.get(i);
+      s += tempClassTime.getID() + " ";
       s += tempClassTime.getDays() + " ";
       s += tempClassTime.getStartTime() + " ";
       s += tempClassTime.getEndTime() + " ";
     }
 
     return s;
+  }
+  
+  public void removeClassTime(int id)
+  {
+    for(int i = 0; i < this.classTimes.size(); i++)
+    {
+      if(this.classTimes.get(i).getID() == id)
+      {
+        this.classTimes.remove(i);
+      }
+    }
   }
 
   public void setClassTimesFromString(String string) {
@@ -123,6 +137,7 @@ public class Course implements Parcelable {
     classTimes = new ArrayList<ClassTime>();
     while (scanner.hasNext()) {
       tempClassTime = new ClassTime();
+      tempClassTime.setID(scanner.nextInt());
       String s = "";
       while (!(token = scanner.next()).contains("]")) {
         s += token;

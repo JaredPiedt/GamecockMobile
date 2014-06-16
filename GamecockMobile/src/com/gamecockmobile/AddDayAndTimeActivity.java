@@ -56,18 +56,33 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
           @Override
           public void onClick(View v) {
             // "Done"
-            Intent intent = new Intent();
+            System.out.println("****" + mSelectDaysButton.getText().toString() + "****");
+            if (mSelectDaysButton.getText().toString().startsWith("-")) {
 
-            mClassTime.setDays(selectedDays);
-//            classTime.setStartTime();
-//            classTime.setEndTime(mEndTimeButton.getText().toString());
-            intent.putExtra("classTime", mClassTime);
+              System.out.println("No days selected");
 
-            // intent.putExtra("Days", mSelectDaysButton.getText());
-            // intent.putExtra("StartTime", mStartTimeButton.getText());
-            // intent.putExtra("EndTime", mEndTimeButton.getText());
-            setResult(2, intent);
-            finish();
+              String message = "Please selected the class day(s).";
+              showAlertDialog(message);
+            } else if (mStartTimeButton.getText().toString().trim().length() == 0) {
+              String message = "Please select the start time.";
+              showAlertDialog(message);
+            } else if (mEndTimeButton.getText().toString().trim().length() == 0) {
+              String message = "Please select the end time.";
+              showAlertDialog(message);
+            } else {
+              Intent intent = new Intent();
+
+              mClassTime.setDays(selectedDays);
+              // classTime.setStartTime();
+              // classTime.setEndTime(mEndTimeButton.getText().toString());
+              intent.putExtra("classTime", mClassTime);
+
+              // intent.putExtra("Days", mSelectDaysButton.getText());
+              // intent.putExtra("StartTime", mStartTimeButton.getText());
+              // intent.putExtra("EndTime", mEndTimeButton.getText());
+              setResult(2, intent);
+              finish();
+            }
           }
         });
     customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(
@@ -131,9 +146,45 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
       int hour = c.get(Calendar.HOUR_OF_DAY);
       int minute = c.get(Calendar.MINUTE);
 
-      // Create a new instance of TimePickerDialog and return it
-      return new TimePickerDialog(getActivity(), this, hour, minute,
-          DateFormat.is24HourFormat(getActivity()));
+      if ((mIsStartTime == true) && (mStartTimeButton.getText() != "")) {
+        return new TimePickerDialog(getActivity(), this, mStartTime.hour, mStartTime.minute,
+            DateFormat.is24HourFormat(getActivity()));
+      } else if ((mIsStartTime == false) && (mEndTimeButton.getText() != "")) {
+        // set the end time button picker an hour and a half after the start time
+
+        return new TimePickerDialog(getActivity(), this, mEndTime.hour, mEndTime.minute,
+            DateFormat.is24HourFormat(getActivity()));
+      } else {
+        System.out.println(mStartTimeButton.getText().toString().trim().length());
+        if (mStartTimeButton.getText().toString().trim().length() > 0) {
+          int hr = mStartTime.hour;
+
+          System.out.println(hr);
+
+          int min = mStartTime.minute;
+
+          System.out.println(min);
+
+          if (min >= 45) {
+            hr += 2;
+          } else {
+            hr += 1;
+          }
+
+          System.out.println(hr);
+
+          min = ((min + 75) % 60);
+
+          System.out.println(min);
+
+          return new TimePickerDialog(getActivity(), this, hr, min,
+              DateFormat.is24HourFormat(getActivity()));
+        } else {
+          // Create a new instance of TimePickerDialog and return it
+          return new TimePickerDialog(getActivity(), this, 8, 30,
+              DateFormat.is24HourFormat(getActivity()));
+        }
+      }
     }
 
     /**
@@ -144,7 +195,7 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
       // TODO Auto-generated method stub
       Time startTime = mStartTime;
       Time endTime = mEndTime;
-      
+
       long startMillis;
       long endMillis;
 
@@ -157,7 +208,7 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
       } else if (mIsStartTime == false) {
         endTime.hour = hourOfDay;
         endTime.minute = minute;
-        endMillis = startTime.normalize(true);
+        endMillis = endTime.normalize(true);
         mClassTime.setEndTime(endMillis);
         setTime(mEndTimeButton, endMillis);
       }
@@ -174,11 +225,11 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
     DialogFragment newFragment = new TimePickerFragment();
     if (v.getId() == R.id.startTime_button) {
       mIsStartTime = true;
-
     } else // if (v.getId() == R.id.endTime_button)
     {
       mIsStartTime = false;
     }
+
     newFragment.show(getFragmentManager(), "timePicker");
   }
 
@@ -255,38 +306,53 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
    * Method that is used like a toString for the time.
    */
   public void setTime(Button button, long millis) {
-    
+
     int flags = DateUtils.FORMAT_SHOW_TIME;
     flags |= DateUtils.FORMAT_CAP_NOON_MIDNIGHT;
     String timeString = DateUtils.formatDateTime(getApplicationContext(), millis, flags);
-    
+
     button.setText(timeString);
 
     // make sure number 0-9 have a leading zero
-//    String minute = new DecimalFormat("00").format(time.minute);
-//
-//    if (time.hour == 12) {
-//      s += "12";
-//      s += ":";
-//      s += minute;
-//      s += " PM";
-//    } else if ((time.hour >= 12) && (time.hour <= 24)) {
-//      s += time.hour % 12;
-//      s += ":";
-//      s += minute;
-//      s += " PM";
-//    } else if ((time.hour == 24)) {
-//      s += "24";
-//      s += ":";
-//      s += minute;
-//      s += " AM";
-//    } else {
-//      s += time.hour;
-//      s += ":";
-//      s += minute;
-//      s += " AM";
-//    }
-//    return s;
+    // String minute = new DecimalFormat("00").format(time.minute);
+    //
+    // if (time.hour == 12) {
+    // s += "12";
+    // s += ":";
+    // s += minute;
+    // s += " PM";
+    // } else if ((time.hour >= 12) && (time.hour <= 24)) {
+    // s += time.hour % 12;
+    // s += ":";
+    // s += minute;
+    // s += " PM";
+    // } else if ((time.hour == 24)) {
+    // s += "24";
+    // s += ":";
+    // s += minute;
+    // s += " AM";
+    // } else {
+    // s += time.hour;
+    // s += ":";
+    // s += minute;
+    // s += " AM";
+    // }
+    // return s;
+  }
+
+  private void showAlertDialog(String message) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage(message);
+    builder.setPositiveButton(R.string.ok_text, new DialogInterface.OnClickListener() {
+
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        // TODO Auto-generated method stub
+
+      }
+    });
+    AlertDialog dialog = builder.create();
+    dialog.show();
   }
 
 }

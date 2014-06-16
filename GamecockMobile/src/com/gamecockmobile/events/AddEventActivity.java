@@ -3,6 +3,7 @@ package com.gamecockmobile.events;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.gamecockmobile.ClassTime;
 import com.gamecockmobile.Course;
 import com.gamecockmobile.DatabaseHandler;
 import com.gamecockmobile.R;
@@ -59,7 +60,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
   private Event mEvent;
   private ArrayList<Course> mCourses = new ArrayList<Course>();
   private ArrayList<String> mCourseNames = new ArrayList<String>();
+  
 
+ 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -191,6 +194,23 @@ public class AddEventActivity extends Activity implements OnClickListener {
       date.year = year;
       date.month = month;
       date.monthDay = day;
+
+      Course c = db
+          .getCourseByName(mCourseNames.get(mSelectCourseSpinner.getSelectedItemPosition()));
+      ArrayList<ClassTime> cTimes = c.getClassTimes();
+      int f = DateUtils.FORMAT_SHOW_WEEKDAY;
+      String s = DateUtils.formatDateTime(getApplicationContext(), date.normalize(true), f);
+
+      System.out.println("****Set Date****" + s);
+
+      for (ClassTime cT : cTimes) {
+        ArrayList<CharSequence> days = cT.getDays();
+        
+        
+        
+        for (int i = 0; i < days.size(); i++) {
+        }
+      }
 
       millis = date.normalize(true);
       mEvent.setDate(millis);

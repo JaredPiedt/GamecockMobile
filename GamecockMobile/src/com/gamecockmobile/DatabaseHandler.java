@@ -76,6 +76,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, course.getCourseName());
     values.put(KEY_CLASS_TIMES, course.classTimesToString(context));
+    System.out.println(course.classTimesToString(context));
     values.put(KEY_EVENTS_DB, course.getCourseName().replaceAll("\\s+", "") + ".db");
     
     Log.d("Inserting", course.classTimesToString(context));
@@ -101,6 +102,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     Course course = new Course(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
         cursor.getString(2));
+    System.out.println(cursor.getString(2));
     // return course
     return course;
   }

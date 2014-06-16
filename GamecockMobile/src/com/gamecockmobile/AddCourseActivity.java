@@ -5,20 +5,23 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class AddCourseActivity extends Activity implements OnClickListener {
+public class AddCourseActivity extends Activity implements OnClickListener, OnLongClickListener {
 
   TextView mAddDayAndTime;
   EditText mCourseNameEditText;
@@ -27,7 +30,7 @@ public class AddCourseActivity extends Activity implements OnClickListener {
   DatabaseHandler db;
 
   private Course mCourse;
-  private ArrayList<ClassTime> mClassTimes;
+  private int counter = 1;
 
   public static final String FILE_NAME = "courses";
   boolean mUpdateCourse;
@@ -48,30 +51,34 @@ public class AddCourseActivity extends Activity implements OnClickListener {
           @Override
           public void onClick(View v) {
             // "Done"
-            Intent intent = new Intent();
+            System.out.println("*****EDIT TEXT*****" + mCourseNameEditText.getText().toString());
 
-            mCourse.setCourseName(mCourseNameEditText.getText().toString());
-            mCourse.setClassTimes(mClassTimes);
-            
-            System.out.println(mUpdateCourse);
-
-            if (mUpdateCourse == true) {
-              db.updateCourse(mCourse, getApplicationContext());
-              System.out.println("Course was updated: " + mCourse.getCourseName());
+            if (mCourseNameEditText.getText().toString().trim().length() == 0) {
+              System.out.println("Edit text was blank");
+              createBlankNameAlertDialog();
             } else {
-              db.addCourse(mCourse, getApplicationContext());
-              System.out.println("Course added to database: " + mCourse.getCourseName());
+              Intent intent = new Intent();
+              mCourse.setCourseName(mCourseNameEditText.getText().toString());
+              // mCourse.setClassTimes(mClassTimes);
+
+              System.out.println(mUpdateCourse);
+
+              if (mUpdateCourse == true) {
+                db.updateCourse(mCourse, getApplicationContext());
+                System.out.println("Course was updated: " + mCourse.getCourseName());
+              } else {
+                db.addCourse(mCourse, getApplicationContext());
+                System.out.println("Course added to database: " + mCourse.getCourseName());
+              }
+
+              intent.putExtra("course", mCourse);
+
+              setResult(1, intent);
+
+              Log.d("Result", "result was set");
+              // writeCourseToFile();
+              finish();
             }
-
-            Log.d("ClassTime", Integer.toString(mClassTimes.size()));
-
-            intent.putExtra("course", mCourse);
-
-            setResult(1, intent);
-
-            Log.d("Result", "result was set");
-            // writeCourseToFile();
-            finish();
           }
         });
     customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(
@@ -96,7 +103,6 @@ public class AddCourseActivity extends Activity implements OnClickListener {
 
     // initialize variables
     mCourse = new Course();
-    mClassTimes = new ArrayList<ClassTime>();
     mBundle = getIntent().getExtras();
 
     // check to make sure if the bundle contains something which means the course has already been
@@ -106,19 +112,12 @@ public class AddCourseActivity extends Activity implements OnClickListener {
       Course tempCourse = mBundle.getParcelable("course");
       mCourse.setID(tempCourse.getID());
       mCourse.setCourseName(tempCourse.getCourseName());
+      mCourse.setClassTimes(tempCourse.getClassTimes());
       System.out.println("Bundle: " + mCourse.getCourseName());
-
-      for (ClassTime cT : tempCourse.getClassTimes()) {
-        mClassTimes.add(cT);
-      }
 
       mCourseNameEditText.setText(tempCourse.getCourseName());
 
-      ArrayList<ClassTime> classTimes = tempCourse.getClassTimes();
-
-      Log.d("ClassTimes", Integer.toString(classTimes.size()));
-
-      for (ClassTime ct : classTimes) {
+      for (ClassTime ct : mCourse.getClassTimes()) {
         // initialize the layout that the new text view will be added to
         LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
 
@@ -128,12 +127,26 @@ public class AddCourseActivity extends Activity implements OnClickListener {
         textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
             LayoutParams.WRAP_CONTENT));
         textView.setTextSize(18);
-        System.out.println(ct.getDays());
-        textView.setText(ct.getDays().toString());
+
+        // set up the display string for days of the week
+        String dayStr = "";
+        ArrayList<CharSequence> days = ct.getDays();
+        for (int i = 0; i < days.size(); i++) {
+          if (i == days.size() - 1) {
+            dayStr += days.get(i);
+          } else {
+            dayStr += days.get(i) + ", ";
+          }
+        }
+        textView.setText(dayStr);
         textView.append("\n" + ct.getStartTimeAsString(getApplicationContext()) + " - "
             + ct.getEndTimeAsString(getApplicationContext()));
         textView.setPadding(0, 10, 0, 10);
         textView.setLineSpacing(8, 1);
+        textView.setId(ct.getID());
+        System.out.println(ct.getID());
+        textView.setOnLongClickListener(this);
+
         layout.addView(textView);
 
         // initialize the divider, set it's properties, and add it to the layout
@@ -183,7 +196,7 @@ public class AddCourseActivity extends Activity implements OnClickListener {
     if (requestCode == 2 && data != null) {
 
       ClassTime tempClassTime = (ClassTime) data.getParcelableExtra("classTime");
-      mClassTimes.add(tempClassTime);
+      mCourse.addClassTime(tempClassTime);
 
       // initialize the layout that the new text view will be added to
       LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
@@ -194,11 +207,30 @@ public class AddCourseActivity extends Activity implements OnClickListener {
       textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
           LayoutParams.WRAP_CONTENT));
       textView.setTextSize(18);
-      textView.setText(tempClassTime.getDays().toString());
+
+      // set up the display string for days of the week
+      String dayStr = "";
+      ArrayList<CharSequence> days = tempClassTime.getDays();
+      for (int i = 0; i < days.size(); i++) {
+        if (i == days.size() - 1) {
+          dayStr += days.get(i);
+        } else {
+          dayStr += days.get(i) + ", ";
+        }
+      }
+
+      textView.setText(dayStr);
       textView.append("\n" + tempClassTime.getStartTimeAsString(getApplicationContext()) + " - "
           + tempClassTime.getEndTimeAsString(getApplicationContext()));
       textView.setPadding(0, 10, 0, 10);
       textView.setLineSpacing(8, 1);
+      textView.setId(counter);
+      System.out.println(textView.getId());
+
+      tempClassTime.setID(counter);
+      textView.setOnLongClickListener(this);
+      System.out.println(tempClassTime.getID());
+      counter++;
       layout.addView(textView);
 
       // initialize the divider, set it's properties, and add it to the layout
@@ -211,4 +243,51 @@ public class AddCourseActivity extends Activity implements OnClickListener {
 
   }
 
+  @Override
+  public boolean onLongClick(final View v) {
+    // TODO Auto-generated method stub
+    System.out.println(v.getId());
+    ArrayList<ClassTime> cTs = mCourse.getClassTimes();
+
+    for (final ClassTime cT : cTs) {
+      if (v.getId() == cT.getID()) {
+        final CharSequence[] mDialogList = { "Delete" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(cT.getStartTimeAsString(getApplicationContext()) + " - "
+            + cT.getEndTimeAsString(getApplicationContext()));
+        builder.setItems(mDialogList, new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            if (which == 0) {
+              mCourse.removeClassTime(cT.getID());
+              db.updateCourse(mCourse, getApplicationContext());
+              LinearLayout layout = (LinearLayout) findViewById(R.id.addCourse_layout);
+              layout.removeView(v);
+            }
+          }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void createBlankNameAlertDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage(R.string.dialog_empty_name);
+    builder.setPositiveButton(R.string.ok_text, new DialogInterface.OnClickListener() {
+
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        // TODO Auto-generated method stub
+
+      }
+    });
+    AlertDialog dialog = builder.create();
+    dialog.show();
+  }
 }
