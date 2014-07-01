@@ -15,7 +15,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="event_name">Event name</string>
-    <color name="gray_background">#D8D8D8</color>
+    <color name="gray_background">#E8E8E8</color>
     <string name="hello_world">Hello world!</string>
     <string name="none_selected">- None Selected -</string>
     <string name="ok_text">OK</string>

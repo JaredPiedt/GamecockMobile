@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,8 +31,8 @@ public class ClassTime implements Parcelable {
   public void setID(int id) {
     this.id = id;
   }
-  
-  public int getID(){
+
+  public int getID() {
     return this.id;
   }
 
@@ -141,6 +142,20 @@ public class ClassTime implements Parcelable {
       this.addDay(string);
     }
 
+  }
+
+  public String toString() {
+    String s = "";
+
+    for (int i = 0; i < selectedDays.size(); i++) {
+      if (i == selectedDays.size() - 1) {
+        s += " " + selectedDays.get(i) + " ";
+      } else {
+        s += selectedDays.get(i) + ", ";
+      }
+    }
+    
+    return s;
   }
 
 }

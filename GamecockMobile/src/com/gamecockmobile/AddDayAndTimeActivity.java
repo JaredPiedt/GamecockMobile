@@ -61,7 +61,7 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
 
               System.out.println("No days selected");
 
-              String message = "Please selected the class day(s).";
+              String message = "Please select the class day(s).";
               showAlertDialog(message);
             } else if (mStartTimeButton.getText().toString().trim().length() == 0) {
               String message = "Please select the start time.";

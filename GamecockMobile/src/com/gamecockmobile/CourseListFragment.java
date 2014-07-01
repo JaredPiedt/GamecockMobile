@@ -24,7 +24,8 @@ public class CourseListFragment extends ListFragment implements OnNavigationList
     OnItemLongClickListener {
   
   DatabaseHandler db;
-  ArrayAdapter<String> mAdapter;
+  //ArrayAdapter<String> mAdapter;
+  CourseListAdapter mAdapter;
 
  private ArrayList<String> mCourses = new ArrayList<String>();
 
@@ -47,8 +48,8 @@ public class CourseListFragment extends ListFragment implements OnNavigationList
       courseList.add(tempCourse.getCourseName());
     }
 
-    mAdapter = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,
-        courseList);
+    mAdapter = new CourseListAdapter(getActivity(), R.layout.course_list_item,
+        courses);
     setListAdapter(mAdapter);
 
     return super.onCreateView(inflater, container, savedInstanceState);
@@ -62,6 +63,8 @@ public class CourseListFragment extends ListFragment implements OnNavigationList
 
     // call the ListView to set the long click listener for courses
     getListView().setOnItemLongClickListener(this);
+    getListView().setDivider(null);
+    getListView().setBackgroundColor(getResources().getColor(R.color.gray_background));
   }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -149,9 +152,8 @@ public class CourseListFragment extends ListFragment implements OnNavigationList
     int count = db.getCoursesCount();
 
     for (int i = 1; i <= count; i++) {
-      String name = db.getCourse(i).getCourseName();
-      System.out.println(name);
-      mAdapter.add(name);
+      Course course = db.getCourse(i);
+      mAdapter.add(course);
     }
 
     mAdapter.notifyDataSetChanged();

@@ -8,6 +8,7 @@ import com.gamecockmobile.events.EventsFragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
+  private final Handler mDrawerHandler = new Handler();
 
   // nav drawer title
   private CharSequence mDrawerTitle;
@@ -57,8 +59,8 @@ public class MainActivity extends Activity {
   @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    
-  //  deleteDatabase("CoursesManager.db");
+
+    // deleteDatabase("CoursesManager.db");
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
@@ -162,7 +164,7 @@ public class MainActivity extends Activity {
   /**
    * Diplaying fragment view for selected nav drawer list item
    * */
-  private void displayView(int position) {
+  private void displayView(final int position) {
     // update the main content by replacing fragments
     Fragment fragment = null;
     switch (position) {
@@ -183,11 +185,12 @@ public class MainActivity extends Activity {
     if (fragment != null) {
       FragmentManager fragmentManager = getFragmentManager();
       fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
-      
-     // update selected item and title, then close the drawer
+
+      // update selected item and title, then close the drawer
       mDrawerList.setItemChecked(position, true);
       mDrawerList.setSelection(position);
       setTitle(navMenuTitles[position]);
+
       mDrawerLayout.closeDrawer(mDrawerList);
     } else {
       // error in creating fragment
@@ -220,5 +223,3 @@ public class MainActivity extends Activity {
   }
 
 }
-
-

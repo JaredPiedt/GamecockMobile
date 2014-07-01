@@ -38,24 +38,21 @@
             android:id="@+id/newTimeSeparatorTop"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray" />
     </LinearLayout>
 
-    <TextView
+    <Button
         android:id="@+id/addNewTime_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="4dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:text="+ Click to add time"
+        android:text="Add Time"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/darker_gray" />
-
-    <View
-        android:id="@+id/newTimeSeparatorBottom"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@drawable/garnet_button"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

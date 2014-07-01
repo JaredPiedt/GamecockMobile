@@ -40,6 +40,8 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_course);
 
+    overridePendingTransition(R.animator.slide_left_in, R.animator.hold);
+
     db = new DatabaseHandler(this);
     mUpdateCourse = false;
 
@@ -78,6 +80,7 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
               Log.d("Result", "result was set");
               // writeCourseToFile();
               finish();
+              overridePendingTransition(R.animator.hold, R.animator.slide_right_out);
             }
           }
         });
@@ -87,6 +90,8 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
           public void onClick(View v) {
             // "Cancel"
             finish();
+            overridePendingTransition(R.animator.hold, R.animator.slide_right_out);
+
           }
         });
 
