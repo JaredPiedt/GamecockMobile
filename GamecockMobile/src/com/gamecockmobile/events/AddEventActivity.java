@@ -17,9 +17,11 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
@@ -50,9 +52,14 @@ public class AddEventActivity extends Activity implements OnClickListener {
   Spinner mSelectCourseSpinner;
   Spinner mSelectTypeSpinner;
   Button mDateButton;
+  Button mStartTimeButton;
+  Button mEndTimeButton;
   Spinner mRemindersSpinner;
 
   private String mTimeZone;
+  private boolean mIsStartTime;
+  private Time mStartTime;
+  private Time mEndTime;
 
   DatabaseHandler db;
   EventDatabaseHandler eDB;
@@ -111,8 +118,10 @@ public class AddEventActivity extends Activity implements OnClickListener {
     eDB = new EventDatabaseHandler(this);
 
     mEvent = new Event();
-    mCourses = db.getAllCourses();
+    mCourses = db.getAllCourses();   
     mTimeZone = Time.getCurrentTimezone();
+    mStartTime = new Time(mTimeZone);
+    mEndTime = new Time(mTimeZone);
 
     // add course name to the 'ArrayList' of 'Courses' in order to create the 'Spinner' of 'Course'
     // names
@@ -126,6 +135,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
     mSelectCourseSpinner = (Spinner) findViewById(R.id.selectCourse_spinner);
     mSelectTypeSpinner = (Spinner) findViewById(R.id.selectType_spinner);
     mDateButton = (Button) findViewById(R.id.date_button);
+    mStartTimeButton = (Button) findViewById(R.id.event_startTime_button);
+    mEndTimeButton = (Button) findViewById(R.id.event_endTime_button);
     mRemindersSpinner = (Spinner) findViewById(R.id.reminders_spinner);
 
     // Create an ArrayAdapter for the 'Spinner' used to select the 'Course' using the string array
@@ -231,5 +242,117 @@ public class AddEventActivity extends Activity implements OnClickListener {
   public void showDatePickerDialog(View v) {
     DialogFragment newFragment = new DatePickerFragment();
     newFragment.show(getFragmentManager(), "datePicker");
+  }
+  
+  /**
+   * This class is used to create a TimePickerDialog when the start and end time buttons are pressed
+   */
+
+  @SuppressLint("ValidFragment")
+  private class TimePickerFragment extends DialogFragment implements
+      TimePickerDialog.OnTimeSetListener {
+
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+      final Calendar c = Calendar.getInstance();
+      int hour = c.get(Calendar.HOUR_OF_DAY);
+      int minute = c.get(Calendar.MINUTE);
+
+      if ((mIsStartTime == true) && (mStartTimeButton.getText() != "")) {
+        return new TimePickerDialog(getActivity(), this, mStartTime.hour, mStartTime.minute,
+            DateFormat.is24HourFormat(getActivity()));
+      } else if ((mIsStartTime == false) && (mEndTimeButton.getText() != "")) {
+        // set the end time button picker an hour and a half after the start time
+
+        return new TimePickerDialog(getActivity(), this, mEndTime.hour, mEndTime.minute,
+            DateFormat.is24HourFormat(getActivity()));
+      } else {
+        System.out.println(mStartTimeButton.getText().toString().trim().length());
+        if (mStartTimeButton.getText().toString().trim().length() > 0) {
+          int hr = mStartTime.hour;
+
+          System.out.println(hr);
+
+          int min = mStartTime.minute;
+
+          System.out.println(min);
+
+          if (min >= 45) {
+            hr += 2;
+          } else {
+            hr += 1;
+          }
+
+          System.out.println(hr);
+
+          min = ((min + 75) % 60);
+
+          System.out.println(min);
+
+          return new TimePickerDialog(getActivity(), this, hr, min,
+              DateFormat.is24HourFormat(getActivity()));
+        } else {
+          // Create a new instance of TimePickerDialog and return it
+          return new TimePickerDialog(getActivity(), this, 8, 30,
+              DateFormat.is24HourFormat(getActivity()));
+        }
+      }
+    }
+
+    /**
+     * Displays the text on the button when the time is set
+     */
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+      // TODO Auto-generated method stub
+      Time startTime = mStartTime;
+      Time endTime = mEndTime;
+
+      long startMillis;
+      long endMillis;
+
+      if (mIsStartTime == true) {
+        startTime.hour = hourOfDay;
+        startTime.minute = minute;
+        startMillis = startTime.normalize(true);
+        mEvent.setStartTime(startMillis);
+        setTime(mStartTimeButton, startMillis);
+      } else if (mIsStartTime == false) {
+        endTime.hour = hourOfDay;
+        endTime.minute = minute;
+        endMillis = endTime.normalize(true);
+        mEvent.setEndTime(endMillis);
+        setTime(mEndTimeButton, endMillis);
+      }
+
+    }
+
+  }
+
+  /**
+   * Show the time picker dialog and also listen to see which one is pressed so that you know which
+   * button to display the time on
+   */
+  public void showTimePickerDialog(View v) {
+    DialogFragment newFragment = new TimePickerFragment();
+    if (v.getId() == R.id.event_startTime_button) {
+      mIsStartTime = true;
+    } else // if (v.getId() == R.id.endTime_button)
+    {
+      mIsStartTime = false;
+    }
+
+    newFragment.show(getFragmentManager(), "timePicker");
+  }
+  
+  /**
+   * Method that is used like a toString for the time.
+   */
+  public void setTime(Button button, long millis) {
+
+    int flags = DateUtils.FORMAT_SHOW_TIME;
+    flags |= DateUtils.FORMAT_CAP_NOON_MIDNIGHT;
+    String timeString = DateUtils.formatDateTime(getApplicationContext(), millis, flags);
+
+    button.setText(timeString);
   }
 }

@@ -23,6 +23,8 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
   private static final String KEY_COURSE = "course";
   private static final String KEY_NAME = "title";
   private static final String KEY_DATE = "date";
+  private static final String KEY_START_TIME = "startTime";
+  private static final String KEY_END_TIME = "endTime";
   private static final String KEY_TYPE = "type";
   private static final String KEY_NOTIFICATIONS = "notifications";
 
@@ -41,8 +43,8 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
   public void onCreate(SQLiteDatabase db) {
     // TODO Auto-generated method stub
     String CREATE_COURSES_TABLE = "CREATE TABLE " + TABLE_EVENTS + "(" + KEY_ID
-        + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_COURSE + " TEXT," + KEY_DATE
-        + " TEXT," + KEY_TYPE + " TEXT," + KEY_NOTIFICATIONS + " TEXT" + ")";
+        + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_COURSE + " TEXT,"  + KEY_TYPE + " TEXT," + KEY_DATE
+        + " TEXT," + KEY_START_TIME + " TEXT," + KEY_END_TIME + " TEXT," + KEY_NOTIFICATIONS + " TEXT" + ")";
     db.execSQL(CREATE_COURSES_TABLE);
   }
 
@@ -75,10 +77,11 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, event.getName());
     values.put(KEY_COURSE, event.getCourse());
-    values.put(KEY_DATE, Long.toString(event.getDate()));
     values.put(KEY_TYPE, event.getType());
+    values.put(KEY_DATE, Long.toString(event.getDate()));
+    values.put(KEY_START_TIME, Long.toString(event.getStartTime()));
+    values.put(KEY_END_TIME, Long.toString(event.getEndTime()));
     values.put(KEY_NOTIFICATIONS, "3");
-
     db.insert(TABLE_EVENTS, null, values);
     db.close();
   }
@@ -94,13 +97,13 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getReadableDatabase();
 
     Cursor cursor = db.query(TABLE_EVENTS, new String[] { KEY_ID, KEY_NAME, KEY_COURSE, KEY_TYPE,
-        KEY_DATE, KEY_NOTIFICATIONS }, KEY_ID + "=?", new String[] { String.valueOf(id) }, null,
+        KEY_DATE, KEY_START_TIME, KEY_END_TIME, KEY_NOTIFICATIONS }, KEY_ID + "=?", new String[] { String.valueOf(id) }, null,
         null, null, null);
     if (cursor != null)
       cursor.moveToFirst();
 
     Event event = new Event(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
-        cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+        cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7));
     System.out.println(cursor.getString(5));
 
     return event;
@@ -124,9 +127,11 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
         event.setId(Integer.parseInt(cursor.getString(0)));
         event.setName(cursor.getString(1));
         event.setCourse(cursor.getString(2));
-        event.setDateFromString(cursor.getString(3));
-        event.setType(Integer.valueOf(cursor.getString(4)));
-        event.setNotificationsFromString(cursor.getString(5));
+        event.setType(Integer.valueOf(cursor.getString(3)));
+        event.setDateFromString(cursor.getString(4));
+        event.setStartTimeFromString(cursor.getString(5));
+        event.setEndTimeFromString(cursor.getString(6));
+        event.setNotificationsFromString(cursor.getString(7));
 
         eventList.add(event);
       } while (cursor.moveToNext());
@@ -166,8 +171,10 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, event.getName());
     values.put(KEY_COURSE, event.getCourse());
-    values.put(KEY_DATE, Long.toString(event.getDate()));
     values.put(KEY_TYPE, event.getType());
+    values.put(KEY_DATE, Long.toString(event.getDate()));
+    values.put(KEY_START_TIME, Long.toString(event.getStartTime()));
+    values.put(KEY_END_TIME, Long.toString(event.getEndTime()));
     values.put(KEY_NOTIFICATIONS, event.getNotifications().toString());
 
     // updating row

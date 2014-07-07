@@ -19,6 +19,8 @@ public class Event {
   private String course;
   private int type;
   private long date;
+  private long startTime;
+  private long endTime;
   private ArrayList<Integer> notifications;
 
   /****************************************************************
@@ -29,18 +31,22 @@ public class Event {
     course = "";
     type = 0;
     date = 0;
+    startTime = 0;
+    endTime = 0;
     notifications = new ArrayList<Integer>();
   }
 
   /****************************************************************
    * Constructor used in the 'EventDatabaseHandler' class.
    */
-  public Event(int id, String name, String course, String type, String date, String notifications) {
+  public Event(int id, String name, String course, String type, String date, String startTime, String endTime, String notifications) {
     this.id = id;
     this.name = name;
     this.course = course;
     this.type = Integer.valueOf(type);
     this.date = Long.valueOf(date);
+    this.startTime = Long.valueOf(startTime);
+    this.endTime = Long.valueOf(endTime);
     this.notifications = new ArrayList<Integer>();
     this.setNotificationsFromString(notifications);
 
@@ -95,12 +101,46 @@ public class Event {
   public void setDate(long date) {
     this.date = date;
   }
+  
+  public long getStartTime() {
+    return this.startTime;
+  }
+  
+  public void setStartTime(long startTime) {
+    this.startTime = startTime;
+  }
+  
+  public long getEndTime() {
+    return this.endTime;
+  }
+  
+  public void setEndTime(long endTime) {
+    this.endTime = endTime;
+  }
+  
+  
 
   public void setDateFromString(String date) {
     Scanner scanner = new Scanner(date);
 
     this.date = scanner.nextLong();
 
+    scanner.close();
+  }
+  
+  public void setStartTimeFromString(String startTime) {
+    Scanner scanner = new Scanner(startTime);
+    
+    this.startTime = scanner.nextLong();
+    
+    scanner.close();    
+  }
+  
+  public void setEndTimeFromString(String endTime){
+    Scanner scanner = new Scanner(endTime);
+    
+    this.endTime = scanner.nextLong();
+    
     scanner.close();
   }
 
@@ -143,7 +183,15 @@ public class Event {
    */
   public int compareTo(Event e) {
     if (this.date == e.getDate()) {
-      return 0;
+      if(this.startTime == e.startTime){
+        return 0;
+      }
+      else if(this.startTime > e.startTime) {
+        return -1;
+      }
+      else {
+        return 1;
+      }
     } else if (this.date > e.getDate()) {
       return -1;
     } else {
@@ -170,6 +218,8 @@ public class Event {
     s += this.name;
     s += " " + this.course;
     s += " " + this.date;
+    s += " " + this.startTime;
+    s += " " + this.endTime;
     s += " " + this.type;
     s += " " + this.notifications.toString();
     return s;

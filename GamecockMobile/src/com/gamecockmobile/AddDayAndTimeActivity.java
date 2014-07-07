@@ -57,7 +57,7 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
           public void onClick(View v) {
             // "Done"
             System.out.println("****" + mSelectDaysButton.getText().toString() + "****");
-            if (mSelectDaysButton.getText().toString().startsWith("-")) {
+            if ((mSelectDaysButton.getText().toString().startsWith("-")) || (mSelectDaysButton.getText().toString().trim() == "")) {
 
               System.out.println("No days selected");
 
@@ -282,20 +282,16 @@ public class AddDayAndTimeActivity extends Activity implements OnClickListener {
   protected void onChangeSelectedDays() {
     StringBuilder stringBuilder = new StringBuilder();
     int last = selectedDays.size() - 1;
-    int secondLast = selectedDays.size() - 2;
     int counter = 0;
 
-    for (CharSequence day : selectedDays) {
-      if ((counter == last) && (counter != 0)) {
-        stringBuilder.append(" & " + day);
-        // } else if ((counter == last) && (counter == 1)){
-        // stringBuilder.append(day);
-      } else if (counter == secondLast) {
-        stringBuilder.append(day);
-        counter++;
-      } else {
-        stringBuilder.append(day + ", ");
-        counter++;
+    if (last >= 0) {
+      for (CharSequence day : selectedDays) {
+        if (counter == last) {
+          stringBuilder.append(day);
+        } else {
+          stringBuilder.append(day + ", ");
+          counter++;
+        }
       }
     }
 

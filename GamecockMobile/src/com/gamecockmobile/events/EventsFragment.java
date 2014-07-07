@@ -110,5 +110,7 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
     // TODO Auto-generated method stub
     return false;
   }
+  
+  
 
 }

@@ -64,6 +64,40 @@
             android:layout_height="wrap_content"
             android:onClick="showDatePickerDialog"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/startTime"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
+
+        <Button
+            android:id="@+id/event_startTime_button"
+            style="?android:attr/spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="showTimePickerDialog"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/endTime"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/darker_gray" />
+
+        <Button
+            android:id="@+id/event_endTime_button"
+            style="?android:attr/spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="showTimePickerDialog"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -35,6 +35,7 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
   public static final String FILE_NAME = "courses";
   boolean mUpdateCourse;
 
+  @SuppressWarnings("deprecation")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -118,6 +119,10 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
       mCourse.setID(tempCourse.getID());
       mCourse.setCourseName(tempCourse.getCourseName());
       mCourse.setClassTimes(tempCourse.getClassTimes());
+      
+      // increment counter to make sure ids don't overlap
+      counter += tempCourse.getClassTimes().size();
+      
       System.out.println("Bundle: " + mCourse.getCourseName());
 
       mCourseNameEditText.setText(tempCourse.getCourseName());
@@ -129,8 +134,9 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
         // initialize the TextView that the class day and time will be displayed in, set the text,
         // and add it to the layout
         TextView textView = new TextView(this);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT));
+        textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.course_list_item_selector));
         textView.setTextSize(18);
 
         // set up the display string for days of the week
@@ -192,6 +198,7 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
   /**
    * This method does the work for adding a new class time to the 'AddCourse' activity
    */
+  @SuppressWarnings("deprecation")
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -209,8 +216,9 @@ public class AddCourseActivity extends Activity implements OnClickListener, OnLo
       // initialize the TextView that the class day and time will be displayed in, set the text, and
       // add it to the layout
       TextView textView = new TextView(this);
-      textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+      textView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
           LayoutParams.WRAP_CONTENT));
+      textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.course_list_item_selector));
       textView.setTextSize(18);
 
       // set up the display string for days of the week

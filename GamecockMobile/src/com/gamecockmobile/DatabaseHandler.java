@@ -178,6 +178,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, course.getCourseName());
     values.put(KEY_CLASS_TIMES, course.classTimesToString(context));
+    System.out.println("Updating...");
+    System.out.println(course.classTimesToString(context));
 
     // updating row
     return db.update(TABLE_COURSES, values, KEY_ID + " = ?",
