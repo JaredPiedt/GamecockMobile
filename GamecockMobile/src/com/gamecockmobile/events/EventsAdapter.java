@@ -1,6 +1,11 @@
 package com.gamecockmobile.events;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import com.gamecockmobile.R;
 import com.gamecockmobile.stickylistheaders.StickyListHeadersAdapter;
@@ -45,17 +50,34 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     ViewHolder holder;
+    String weekday;
+    String monthDay;
+    String time;
+    Event event = mEvents.get(position); 
 
     if (convertView == null) {
       holder = new ViewHolder();
-      convertView = inflater.inflate(R.layout.test_list_item_layout, parent, false);
-      holder.text = (TextView) convertView.findViewById(R.id.text);
+      convertView = inflater.inflate(R.layout.event_list_item, parent, false);
+      holder.weekday = (TextView) convertView.findViewById(R.id.event_weekday);
+      holder.monthDay = (TextView) convertView.findViewById(R.id.event_monthDay);
+      holder.time =(TextView) convertView.findViewById(R.id.event_time);
+      holder.title = (TextView) convertView.findViewById(R.id.event_title);
+      holder.courseName = (TextView) convertView.findViewById(R.id.event_course);
       convertView.setTag(holder);
     } else {
       holder = (ViewHolder) convertView.getTag();
     }
 
-    holder.text.setText(mEvents.get(position).getName());
+    Calendar cal = new GregorianCalendar();
+    cal.setTimeInMillis(event.getDate());
+    weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+    monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+    System.out.println(monthDay);
+    holder.weekday.setText(weekday);
+    holder.monthDay.setText(monthDay);
+    holder.time.setText("8:30 - 9:45");
+    holder.title.setText(event.getName());
+    holder.courseName.setText(event.getCourse());
 
     return convertView;
   }
@@ -94,6 +116,10 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   }
 
   class ViewHolder {
-    TextView text;
+    TextView weekday;
+    TextView monthDay;
+    TextView time;
+    TextView title;
+    TextView courseName;
   }
 }
