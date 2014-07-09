@@ -116,9 +116,7 @@ public class Event {
   
   public void setEndTime(long endTime) {
     this.endTime = endTime;
-  }
-  
-  
+  }  
 
   public void setDateFromString(String date) {
     Scanner scanner = new Scanner(date);

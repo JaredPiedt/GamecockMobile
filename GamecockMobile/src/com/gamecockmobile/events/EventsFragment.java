@@ -9,6 +9,7 @@ import com.gamecockmobile.AddCourseActivity;
 import com.gamecockmobile.Course;
 import com.gamecockmobile.DatabaseHandler;
 import com.gamecockmobile.R;
+import com.gamecockmobile.stickylistheaders.StickyListHeadersListView;
 
 import android.app.ActionBar.OnNavigationListener;
 import android.app.ActionBar;
@@ -77,8 +78,18 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
         System.out.println("Values = " + events.get(i).toString() + "\n");
       }
     }
+    
+    View view = inflater.inflate(R.layout.events_fragment, container, false);    
 
-    return super.onCreateView(inflater, container, savedInstanceState);
+    return view;
+  }
+  
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    
+    StickyListHeadersListView stickyList = (StickyListHeadersListView) getActivity().findViewById(R.id.list);
+    EventsAdapter adapter = new EventsAdapter(getActivity());
+    stickyList.setAdapter(adapter);
   }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
