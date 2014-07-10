@@ -4,4 +4,8 @@
     <color name="stacked_garnet">#5C000C</color>
     <color name="accent_garnet">#C7999F</color>
     <color name="white">#FFFFFF</color>
+    <color name="gullah_blue">#00747A</color>
+    <color name="upstate_sky">#3CB6CE</color>
+    <color name="yellow">#D3BF96</color>
+    <color name="statehouse_gray">#B2B4B3</color>
 </resources>

@@ -57,6 +57,13 @@
         <item>Homework</item>
         <item>Other</item>
     </string-array>
+    
+    <array name="event_backgrounds">
+        <item>@drawable/event_list_item_blue_selector</item>
+        <item>@drawable/event_list_item_sky_selector</item>
+        <item>@drawable/event_list_item_yellow_selector</item>
+        <item>@drawable/event_list_item_gray_selector</item>
+    </array>
 
     <string name="title_activity_buses_fragment">BusesFragment</string>
     <string name="title_activity_add_event">AddEventActivity</string>

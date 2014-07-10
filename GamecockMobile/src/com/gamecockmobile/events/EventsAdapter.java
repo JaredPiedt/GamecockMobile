@@ -5,16 +5,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import com.gamecockmobile.R;
 import com.gamecockmobile.stickylistheaders.StickyListHeadersAdapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapter {
@@ -22,11 +27,21 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   private ArrayList<Event> mEvents;
   private LayoutInflater inflater;
   private EventDatabaseHandler db;
+  private Context mContext;
+  private int counter = 1;
+  private HashMap<String, Integer> mColorIndex;
 
   public EventsAdapter(Context context) {
     inflater = LayoutInflater.from(context);
     db = new EventDatabaseHandler(context);
     mEvents = db.getAllEvents();
+    mContext = context;
+
+    mColorIndex = new HashMap<String, Integer>();
+    mColorIndex.put("Test", 0);
+    mColorIndex.put("Quiz", 1);
+    mColorIndex.put("Homework", 2);
+    mColorIndex.put("Other", 3);
   }
 
   @Override
@@ -47,22 +62,27 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     return position;
   }
 
+  @SuppressWarnings("deprecation")
+  @SuppressLint("NewApi")
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     ViewHolder holder;
     String weekday;
     String monthDay;
     String time;
-    Event event = mEvents.get(position); 
+    Event event = mEvents.get(position);
+    int counter = 0;
+    TypedArray colors = mContext.getResources().obtainTypedArray(R.array.event_backgrounds);
 
     if (convertView == null) {
       holder = new ViewHolder();
       convertView = inflater.inflate(R.layout.event_list_item, parent, false);
       holder.weekday = (TextView) convertView.findViewById(R.id.event_weekday);
       holder.monthDay = (TextView) convertView.findViewById(R.id.event_monthDay);
-      holder.time =(TextView) convertView.findViewById(R.id.event_time);
+      holder.time = (TextView) convertView.findViewById(R.id.event_time);
       holder.title = (TextView) convertView.findViewById(R.id.event_title);
       holder.courseName = (TextView) convertView.findViewById(R.id.event_course);
+      holder.container = (LinearLayout) convertView.findViewById(R.id.event_details_container);
       convertView.setTag(holder);
     } else {
       holder = (ViewHolder) convertView.getTag();
@@ -79,6 +99,14 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     holder.title.setText(event.getName());
     holder.courseName.setText(event.getCourse());
 
+    System.out.println("counter: " + counter % 4);
+
+    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+      holder.container.setBackgroundDrawable(colors.getDrawable(event.getType()));
+    } else {
+      holder.container.setBackground(colors.getDrawable(event.getType()));
+    }
+    counter++;
     return convertView;
   }
 
@@ -121,5 +149,6 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     TextView time;
     TextView title;
     TextView courseName;
+    LinearLayout container;
   }
 }
