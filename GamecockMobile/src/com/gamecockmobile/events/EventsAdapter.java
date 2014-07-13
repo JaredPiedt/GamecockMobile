@@ -123,7 +123,9 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
       holder = (HeaderViewHolder) convertView.getTag();
     }
     // set header text as first char in name
-    String headerText = "" + String.valueOf(mEvents.get(position).getDate());
+    Calendar cal = new GregorianCalendar();
+    cal.setTimeInMillis(mEvents.get(position).getDate());
+    String headerText = "" + cal.getDisplayName(cal.MONTH, cal.LONG, Locale.US);
     System.out.println(headerText);
     if (headerText != "") {
       holder.text.setText(headerText);
@@ -136,7 +138,9 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   @Override
   public long getHeaderId(int position) {
     // TODO Auto-generated method stub
-    return mEvents.get(position).getDate();
+    Calendar cal = new GregorianCalendar();
+    cal.setTimeInMillis(mEvents.get(position).getDate());
+    return Long.valueOf(Calendar.MONTH);
   }
 
   class HeaderViewHolder {

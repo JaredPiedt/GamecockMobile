@@ -32,6 +32,7 @@
         <item>Course List</item>
         <item>Events</item>
         <item>Buses</item>
+        <item>Social</item>
     </string-array>
     
     <string-array name="reminders_array">
