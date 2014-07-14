@@ -23,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 
 /**
@@ -32,12 +34,13 @@ import android.widget.ArrayAdapter;
  * @author Jared W. Piedt
  * 
  */
-public class EventsFragment extends Fragment implements OnNavigationListener {
+public class EventsFragment extends Fragment implements OnNavigationListener, OnItemClickListener{
 
   DatabaseHandler db;
   EventDatabaseHandler eDB;
   TreeMap<Long, ArrayList<Event>> mTreeMap;
   ArrayList<Event> mEventsList;
+  EventsAdapter mAdapter;
 
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -60,8 +63,8 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
       tempEvent = mEventsList.get(i);
       tempDate = mEventsList.get(i).getDate();
       v = mTreeMap.get(tempDate);
-      
-      if(v == null) {
+
+      if (v == null) {
         v = new ArrayList<Event>();
         mTreeMap.put(tempDate, v);
       }
@@ -70,26 +73,28 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
 
     // test method to iterate over the 'TreeMap'
     System.out.println("******Test TreeMap*******");
-    for(Map.Entry<Long, ArrayList<Event>> entry: mTreeMap.entrySet()) {
+    for (Map.Entry<Long, ArrayList<Event>> entry : mTreeMap.entrySet()) {
       Long key = entry.getKey();
       ArrayList<Event> events = entry.getValue();
       System.out.println("Key = " + key);
-      for(int i = 0; i < events.size(); i++){
+      for (int i = 0; i < events.size(); i++) {
         System.out.println("Values = " + events.get(i).toString() + "\n");
       }
     }
-    
-    View view = inflater.inflate(R.layout.events_fragment, container, false);    
+
+    View view = inflater.inflate(R.layout.events_fragment, container, false);
 
     return view;
   }
-  
+
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    
-    StickyListHeadersListView stickyList = (StickyListHeadersListView) getActivity().findViewById(R.id.list);
-    EventsAdapter adapter = new EventsAdapter(getActivity());
-    stickyList.setAdapter(adapter);
+
+    StickyListHeadersListView stickyList = (StickyListHeadersListView) getActivity().findViewById(
+        R.id.list);
+    mAdapter = new EventsAdapter(getActivity());
+    stickyList.setAdapter(mAdapter);
+    stickyList.setOnItemClickListener(this);
   }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -111,7 +116,9 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == 1) {
-
+      if (mAdapter != null) {
+        mAdapter.updateResults();
+      }
       System.out.println(eDB.getEvent(1).toString());
     }
   }
@@ -121,7 +128,11 @@ public class EventsFragment extends Fragment implements OnNavigationListener {
     // TODO Auto-generated method stub
     return false;
   }
-  
-  
 
+  @Override
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    // TODO Auto-generated method stub
+    Event e = (Event) mAdapter.getItem(position);
+    System.out.println("***Click: " + e.getName());
+  }
 }

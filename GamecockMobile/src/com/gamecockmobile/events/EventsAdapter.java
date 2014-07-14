@@ -30,6 +30,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   private Context mContext;
   private int counter = 1;
   private HashMap<String, Integer> mColorIndex;
+  private HashMap<Long, Integer> mHashMap;
 
   public EventsAdapter(Context context) {
     inflater = LayoutInflater.from(context);
@@ -42,6 +43,8 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     mColorIndex.put("Quiz", 1);
     mColorIndex.put("Homework", 2);
     mColorIndex.put("Other", 3);
+
+    mHashMap = createHashMap();
   }
 
   @Override
@@ -75,7 +78,9 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     TypedArray colors = mContext.getResources().obtainTypedArray(R.array.event_backgrounds);
 
     if (convertView == null) {
+
       holder = new ViewHolder();
+
       convertView = inflater.inflate(R.layout.event_list_item, parent, false);
       holder.weekday = (TextView) convertView.findViewById(R.id.event_weekday);
       holder.monthDay = (TextView) convertView.findViewById(R.id.event_monthDay);
@@ -90,14 +95,37 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
 
     Calendar cal = new GregorianCalendar();
     cal.setTimeInMillis(event.getDate());
-    weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
-    monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-    System.out.println(monthDay);
-    holder.weekday.setText(weekday);
-    holder.monthDay.setText(monthDay);
-    holder.time.setText("8:30 - 9:45");
-    holder.title.setText(event.getName());
-    holder.courseName.setText(event.getCourse());
+
+    if (mHashMap.get(event.getDate()) == position) {
+      weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+      monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+      time = event.getStartTimeAsString(mContext) + " - " + event.getEndTimeAsString(mContext);
+      System.out.println(monthDay);
+      holder.weekday.setText(weekday);
+      holder.monthDay.setText(monthDay);
+      holder.time.setText(time);
+      holder.title.setText(event.getName());
+      holder.courseName.setText(event.getCourse());
+    } else {
+      weekday = "";
+      monthDay = "";
+      time = event.getStartTimeAsString(mContext) + " - " + event.getEndTimeAsString(mContext);
+      System.out.println(monthDay);
+      System.out.println(monthDay);
+      holder.weekday.setText(weekday);
+      holder.monthDay.setText(monthDay);
+      holder.time.setText(time);
+      holder.title.setText(event.getName());
+      holder.courseName.setText(event.getCourse());
+    }
+//    weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+//    monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
+//    System.out.println(monthDay);
+//    holder.weekday.setText(weekday);
+//    holder.monthDay.setText(monthDay);
+//    holder.time.setText("8:30 - 9:45");
+//    holder.title.setText(event.getName());
+//    holder.courseName.setText(event.getCourse());
 
     System.out.println("counter: " + counter % 4);
 
@@ -105,8 +133,10 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
       holder.container.setBackgroundDrawable(colors.getDrawable(event.getType()));
     } else {
       holder.container.setBackground(colors.getDrawable(event.getType()));
+      System.out.println("Type index: " + event.getType());
     }
     counter++;
+    convertView.setId(event.getId());
     return convertView;
   }
 
@@ -141,6 +171,33 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     Calendar cal = new GregorianCalendar();
     cal.setTimeInMillis(mEvents.get(position).getDate());
     return Long.valueOf(Calendar.MONTH);
+  }
+
+  private HashMap<Long, Integer> createHashMap() {
+    HashMap<Long, Integer> map = new HashMap<Long, Integer>();
+
+    for (int i = 0; i < mEvents.size(); i++) {
+      Event e = mEvents.get(i);
+      long date = e.getDate();
+
+      if (!map.containsKey(date)) {
+        map.put(date, i);
+      } else {
+        int position = map.get(date);
+
+        if (e.compareTo(mEvents.get(position)) == 1) {
+          map.remove(date);
+          map.put(date, i);
+        }
+      }
+    }
+
+    return map;
+  }
+  
+  public void updateResults(){
+    mEvents = db.getAllEvents();
+    notifyDataSetChanged();
   }
 
   class HeaderViewHolder {

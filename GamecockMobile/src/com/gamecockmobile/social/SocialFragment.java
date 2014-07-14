@@ -4,16 +4,21 @@ import com.gamecockmobile.R;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewFragment;
+import android.widget.ProgressBar;
 
 public class SocialFragment extends Fragment {
 
   private WebView mWebView;
+  private ProgressBar mSpinner;
   public static final String baseURL = "https://twitter.com";
 
   private static final String widgetInfo = "<a class=\"twitter-timeline\" href=\"https://twitter.com/UofSC\" data-widget-id=\"488422368528699392\">Tweets by @UofSC</a>"
@@ -26,11 +31,11 @@ public class SocialFragment extends Fragment {
 
     View view = inflater.inflate(R.layout.social_fragment, container, false);
 
-    //WebView webView = (WebView) getActivity().findViewById(R.id.social_webview);
-    //webView.getSettings().setDomStorageEnabled(true);
-    //webView.getSettings().setJavaScriptEnabled(true);
+    // WebView webView = (WebView) getActivity().findViewById(R.id.social_webview);
+    // webView.getSettings().setDomStorageEnabled(true);
+    // webView.getSettings().setJavaScriptEnabled(true);
 
-    //webView.loadDataWithBaseURL(baseURL, widgetInfo, "text/html", "UTF-8", null);
+    // webView.loadDataWithBaseURL(baseURL, widgetInfo, "text/html", "UTF-8", null);
 
     return view;
   }
@@ -46,6 +51,5 @@ public class SocialFragment extends Fragment {
 
       mWebView.loadDataWithBaseURL(baseURL, widgetInfo, "text/html", "UTF-8", null);
     }
-
   }
 }

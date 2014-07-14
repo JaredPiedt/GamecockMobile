@@ -85,9 +85,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
             // "Done"
             Intent intent = new Intent();
             int name = mSelectCourseSpinner.getSelectedItemPosition();
-            mEvent.setCourse(mEventNameEditText.getText().toString());
-            mEvent.setName(mCourseNames.get(name));
-            mEvent.setType(mSelectCourseSpinner.getSelectedItemPosition());
+            mEvent.setName(mEventNameEditText.getText().toString());
+            mEvent.setCourse(mCourseNames.get(name));
+            mEvent.setType(mSelectTypeSpinner.getSelectedItemPosition());
             mEvent.addNotification(mRemindersSpinner.getSelectedItemPosition());
             eDB.addEvent(mEvent);
             System.out.println("event add successfully");

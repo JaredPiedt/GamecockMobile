@@ -116,7 +116,7 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
    */
   public ArrayList<Event> getAllEvents() {
     ArrayList<Event> eventList = new ArrayList<Event>();
-    String selectQuery = "SELECT  * FROM " + TABLE_EVENTS + " ORDER BY " + KEY_DATE;
+    String selectQuery = "SELECT  * FROM " + TABLE_EVENTS + " ORDER BY " + KEY_DATE + ", " + KEY_START_TIME;
 
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(selectQuery, null);

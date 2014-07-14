@@ -3,6 +3,9 @@ package com.gamecockmobile.events;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import android.content.Context;
+import android.text.format.DateUtils;
+
 /**
  * Class used to set up an Event.
  * 
@@ -124,6 +127,22 @@ public class Event {
     this.date = scanner.nextLong();
 
     scanner.close();
+  }
+  
+  public String getStartTimeAsString(Context context) {
+    String timeString;
+    int flags = DateUtils.FORMAT_SHOW_TIME;
+    flags |= DateUtils.FORMAT_CAP_NOON_MIDNIGHT;
+    timeString = DateUtils.formatDateTime(context, startTime, flags);
+    return timeString;
+  }
+  
+  public String getEndTimeAsString(Context context) {
+    String timeString;
+    int flags = DateUtils.FORMAT_SHOW_TIME;
+    flags |= DateUtils.FORMAT_CAP_NOON_MIDNIGHT;
+    timeString = DateUtils.formatDateTime(context, endTime, flags);
+    return timeString;
   }
   
   public void setStartTimeFromString(String startTime) {
