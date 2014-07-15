@@ -94,7 +94,7 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
         R.id.list);
     mAdapter = new EventsAdapter(getActivity());
     stickyList.setAdapter(mAdapter);
-    stickyList.setOnItemClickListener(this);
+    //stickyList.setOnItemClickListener(this);
   }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -160,6 +160,7 @@ class AdapterWrapper extends BaseAdapter implements StickyListHeadersAdapter {
 
 	@Override
 	public WrapperView getView(int position, View convertView, ViewGroup parent) {
+	  System.out.println("Enter AdapterWrapper getView()");
 		WrapperView wv = (convertView == null) ? new WrapperView(mContext) : (WrapperView) convertView;
 		View item = mDelegate.getView(position, wv.mItem, parent);
 		View header = null;
@@ -175,6 +176,7 @@ class AdapterWrapper extends BaseAdapter implements StickyListHeadersAdapter {
 			wv = new WrapperView(mContext);
 		}
 		wv.update(item, header, mDivider, mDividerHeight);
+		System.out.println("Exit AdapterWrapper getView()");
 		return wv;
 	}
 

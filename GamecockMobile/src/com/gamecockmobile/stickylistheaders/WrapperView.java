@@ -71,7 +71,8 @@ public class WrapperView extends ViewGroup {
 
 		if (this.mDivider != divider) {
 			this.mDivider = divider;
-			this.mDividerHeight = dividerHeight;
+			//this.mDividerHeight = dividerHeight;
+			this.mDividerHeight = 0;
 			invalidate();
 		}
 	}
