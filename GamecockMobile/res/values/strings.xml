@@ -33,6 +33,7 @@
         <item>Events</item>
         <item>Buses</item>
         <item>Social</item>
+        <item>News</item>
     </string-array>
     
     <string-array name="reminders_array">

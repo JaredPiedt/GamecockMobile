@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.gamecockmobile.buses.BusesFragment;
 import com.gamecockmobile.events.EventsFragment;
+import com.gamecockmobile.news.NewsFragment;
 import com.gamecockmobile.social.SocialFragment;
 
 import android.os.Build;
@@ -84,6 +85,8 @@ public class MainActivity extends Activity {
     navDrawerItems.add(new NavDrawerItem(navMenuTitles[2]));
     // Social
     navDrawerItems.add(new NavDrawerItem(navMenuTitles[3]));
+    // News
+    navDrawerItems.add(new NavDrawerItem(navMenuTitles[4]));
 
     mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
@@ -183,6 +186,8 @@ public class MainActivity extends Activity {
     case 3:
       fragment = new SocialFragment();
       break;
+    case 4:
+      fragment = new NewsFragment();
     default:
       break;
     }
