@@ -37,6 +37,7 @@ public class NewsAdapter extends BaseAdapter {
   private Context mContext;
   private LayoutInflater mInflater;
   static final String mURL = "http://www.dailygamecock.com/dart/feed/top-stories.xml";
+  private Bitmap mBitmap;
 
   public NewsAdapter(Context context) {
     mContext = context;
@@ -75,6 +76,7 @@ public class NewsAdapter extends BaseAdapter {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     ViewHolder holder;
+    Bitmap bitmap = null;
     String imageUrl;
     String title;
     String author;
@@ -92,9 +94,23 @@ public class NewsAdapter extends BaseAdapter {
       holder = (ViewHolder) convertView.getTag();
     }
 
-    // String url = parseURL(message.description);
-    // if (url != null) {
-    // Bitmap bitmap = downloadImage(url);
+    String url = parseURL(message.description);
+    if (url != null) {
+      try {
+        bitmap = new RetrieveImageTask().execute(url).get();
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (ExecutionException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
+      if (bitmap != null) {
+        holder.image.setImageBitmap(bitmap);
+      }
+      //bitmap.recycle();
+    }
     // holder.image.setImageBitmap(bitmap);
     // bitmap.recycle();
     // }
@@ -241,12 +257,54 @@ public class NewsAdapter extends BaseAdapter {
       System.out.println("Exit doInBackground");
       return messages;
     }
-    
-    protected void onPostExecute(List<FeedMessage> feed){
+
+    protected void onPostExecute(List<FeedMessage> feed) {
       System.out.println("Enter onPostExecute");
       mFeed = feed;
       System.out.println("Exit onPostExecute");
     }
+
+  }
+
+  class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
+    URL url = null;
+    Bitmap bitmap = null;
+    InputStream in = null;
+    int response = -1;
+
+    @Override
+    protected Bitmap doInBackground(String... urls) {
+      // TODO Auto-generated method stub
+      try {
+        url = new URL(urls[0]);
+        URLConnection conn = url.openConnection();
+
+        if (!(conn instanceof HttpURLConnection)) {
+          throw new IOException("Not an HTTP connection");
+        }
+
+        HttpURLConnection httpConn = (HttpURLConnection) conn;
+        httpConn.setAllowUserInteraction(false);
+        httpConn.setInstanceFollowRedirects(true);
+        httpConn.setRequestMethod("GET");
+        httpConn.connect();
+        response = httpConn.getResponseCode();
+
+        if (response == HttpURLConnection.HTTP_OK) {
+          in = httpConn.getInputStream();
+        }
+        bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(in), 60, 60, true);
+        in.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      return bitmap;
+    }
+
+    // protected void onPostExecute(Bitmap bitmap){
+    // mBitmap = bitmap;
+    // }
 
   }
 }
