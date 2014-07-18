@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,10 +23,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.gamecockmobile.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +43,26 @@ public class NewsAdapter extends BaseAdapter {
   private LayoutInflater mInflater;
   static final String mURL = "http://www.dailygamecock.com/dart/feed/top-stories.xml";
   private Bitmap mBitmap;
+  private DrawableManager mDrawableManager;
+  private LruCache<String, Bitmap> mMemoryCache;
 
   public NewsAdapter(Context context) {
     mContext = context;
     mInflater = LayoutInflater.from(context);
+    mDrawableManager = new DrawableManager();
 
-    // mFeed = getFeed();
+    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+    final int cacheSize = maxMemory / 8;
+    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+      @SuppressLint("NewApi")
+      @Override
+      protected int sizeOf(String key, Bitmap bitmap) {
+        return bitmap.getByteCount() / 1024;
+      }
+    };
+
     System.out.println("Starting async task");
+
     try {
       mFeed = new RetrieveFeedTask().execute(mURL).get();
     } catch (InterruptedException e) {
@@ -54,6 +72,7 @@ public class NewsAdapter extends BaseAdapter {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
     System.out.println(mFeed.size());
   }
 
@@ -96,21 +115,24 @@ public class NewsAdapter extends BaseAdapter {
 
     String url = parseURL(message.description);
     if (url != null) {
-      try {
-        bitmap = new RetrieveImageTask().execute(url).get();
-      } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (ExecutionException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-
-      if (bitmap != null) {
-        holder.image.setImageBitmap(bitmap);
-      }
-      //bitmap.recycle();
+      // mDrawableManager.fetchDrawableOnThread(url, holder.image);
+      loadBitmap(url, holder.image);
     }
+    // try {
+    // bitmap = new RetrieveImageTask().execute(url).get();
+    // } catch (InterruptedException e) {
+    // // TODO Auto-generated catch block
+    // e.printStackTrace();
+    // } catch (ExecutionException e) {
+    // // TODO Auto-generated catch block
+    // e.printStackTrace();
+    // }
+    //
+    // if (bitmap != null) {
+    // holder.image.setImageBitmap(bitmap);
+    // }
+    // //bitmap.recycle();
+    // }
     // holder.image.setImageBitmap(bitmap);
     // bitmap.recycle();
     // }
@@ -118,43 +140,6 @@ public class NewsAdapter extends BaseAdapter {
     holder.author.setText(message.author.trim());
 
     return convertView;
-  }
-
-  private ArrayList<FeedMessage> getFeed() {
-    List<FeedMessage> messages = null;
-    URL url = null;
-    BufferedReader br;
-    InputSource is;
-    RSSFeedParser parser;
-    SAXParserFactory factory;
-    SAXParser sp;
-    XMLReader reader;
-
-    try {
-      url = new URL(mURL);
-      br = new BufferedReader(new InputStreamReader(url.openStream()));
-      is = new InputSource(br);
-      parser = new RSSFeedParser();
-      factory = SAXParserFactory.newInstance();
-      sp = factory.newSAXParser();
-      reader = sp.getXMLReader();
-
-      reader.setContentHandler(parser);
-      reader.parse(is);
-
-      messages = parser.list;
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (ParserConfigurationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (SAXException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-    return (ArrayList<FeedMessage>) messages;
   }
 
   private String parseURL(String description) {
@@ -211,7 +196,63 @@ public class NewsAdapter extends BaseAdapter {
     return bitmap;
   }
 
-  class ViewHolder {
+  public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+    if (getBitmapFromMemCache(key) == null) {
+      mMemoryCache.put(key, bitmap);
+    }
+  }
+
+  public Bitmap getBitmapFromMemCache(String key) {
+    return mMemoryCache.get(key);
+  }
+
+  public void loadBitmap(String url, ImageView imageView) {
+    final String imageURL = String.valueOf(url);
+
+    final Bitmap bitmap = getBitmapFromMemCache(imageURL);
+
+    if (bitmap != null) {
+      imageView.setImageBitmap(bitmap);
+    } else {
+      if (url != null) {
+        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+        task.execute(url);
+      }
+    }
+  }
+
+  public Bitmap decodeSampledBitmap(InputStream in, int width, int height) {
+    Bitmap bm = null;
+
+    final BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inJustDecodeBounds = true;
+    BitmapFactory.decodeStream(in, null, options);
+
+    options.inSampleSize = calculateInSampleSize(options, width, height);
+
+    options.inJustDecodeBounds = false;
+    bm = BitmapFactory.decodeStream(in, null, options);
+
+    return bm;
+  }
+
+  public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+    
+    if(height > reqHeight || width > reqWidth){
+      if(width > height){
+        inSampleSize = Math.round((float) height / (float) reqHeight);
+      } else{
+        inSampleSize = Math.round((float)width / (float)reqWidth);
+      }
+    }
+    
+    return inSampleSize;
+  }
+
+  static class ViewHolder {
     ImageView image;
     TextView title;
     TextView author;
@@ -266,16 +307,23 @@ public class NewsAdapter extends BaseAdapter {
 
   }
 
-  class RetrieveImageTask extends AsyncTask<String, Void, Bitmap> {
+  class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
     URL url = null;
-    Bitmap bitmap = null;
+    ImageView imageView = null;
     InputStream in = null;
     int response = -1;
+    private final WeakReference<ImageView> imageViewReference;
+    Bitmap bitmap;
+    
+    public BitmapWorkerTask(ImageView imageView) {
+      imageViewReference = new WeakReference<ImageView>(imageView);
+    }
 
     @Override
     protected Bitmap doInBackground(String... urls) {
       // TODO Auto-generated method stub
       try {
+        System.out.println("Start doInBackground");
         url = new URL(urls[0]);
         URLConnection conn = url.openConnection();
 
@@ -293,18 +341,30 @@ public class NewsAdapter extends BaseAdapter {
         if (response == HttpURLConnection.HTTP_OK) {
           in = httpConn.getInputStream();
         }
-        bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(in), 60, 60, true);
+        bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(in), 150, 100, true);
         in.close();
       } catch (IOException e) {
         e.printStackTrace();
       }
-
+      if (bitmap != null) {
+        addBitmapToMemoryCache(urls[0], bitmap);
+      }
+//      final Bitmap bitmap = decodeSampledBitmap(urls[0], 100, 100);
+//      if (bitmap != null) {
+//        addBitmapToMemoryCache(urls[0], bitmap);
+//      }
       return bitmap;
     }
 
-    // protected void onPostExecute(Bitmap bitmap){
-    // mBitmap = bitmap;
-    // }
+    protected void onPostExecute(Bitmap bitmap) {
+      if (imageViewReference != null && bitmap != null) {
+        final ImageView imageView = (ImageView) imageViewReference.get();
 
+        if (imageView != null) {
+          imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+          imageView.setImageBitmap(bitmap);
+        }
+      }
+    }
   }
 }
