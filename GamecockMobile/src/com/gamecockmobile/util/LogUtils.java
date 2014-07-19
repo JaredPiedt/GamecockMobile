@@ -60,7 +60,7 @@ public class LogUtils {
     Log.i(tag, message, cause);
   }
 
-  public static void LOGfE(final String tag, String message) {
+  public static void LOGE(final String tag, String message) {
     Log.e(tag, message);
   }
 

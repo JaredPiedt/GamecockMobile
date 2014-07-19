@@ -226,4 +226,8 @@ public class UIUtils {
   public static boolean hasHoneycombMR1() {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
   }
+  
+  public static boolean hasHoneycomb() {
+    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+  }
 }
