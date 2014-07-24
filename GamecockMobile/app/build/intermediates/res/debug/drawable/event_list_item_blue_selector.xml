@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/event_list_item_blue_normal" android:state_pressed="true" />
+    <item android:drawable="@drawable/event_list_item_blue_normal"/>
+
+</selector>
+<!-- From: file:/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/event_list_item_blue_selector.xml -->
