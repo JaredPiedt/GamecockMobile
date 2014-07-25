@@ -1,7 +1,5 @@
 package com.gamecockmobile;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import com.gamecockmobile.buses.BusesFragment;
@@ -16,34 +14,24 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 /**
- * This is the main class for the app thats runs the dashboard for all of the resources.
+ * This is the main class for the app that runs the dashboard for all of the resources.
  */
 public class MainActivity extends Activity {
+
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
-  private final Handler mDrawerHandler = new Handler();
 
   // nav drawer title
   private CharSequence mDrawerTitle;
@@ -53,11 +41,6 @@ public class MainActivity extends Activity {
 
   // slide menu items
   private String[] navMenuTitles;
-
-  private ArrayList<NavDrawerItem> navDrawerItems;
-  private NavDrawerListAdapter adapter;
-
-  static final String[] ICON_DATA = new String[] { "Schedule" };
 
   @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   @Override
@@ -74,7 +57,7 @@ public class MainActivity extends Activity {
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-    navDrawerItems = new ArrayList<NavDrawerItem>();
+    ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 
     // adding nav drawer items to array
     // Schedule
@@ -91,7 +74,7 @@ public class MainActivity extends Activity {
     mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
     // setting the nav drawer list adapter
-    adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
+    NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
     mDrawerList.setAdapter(adapter);
 
     // enabling action bar app icon and behaving it as toggle button

@@ -1,9 +1,7 @@
 package com.gamecockmobile.events;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapter {
@@ -69,35 +66,18 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   @SuppressLint("NewApi")
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-
-    System.out.println("Enter: getView");
     ViewHolder holder;
     String weekday;
     String monthDay;
     String time;
     Event event = mEvents.get(position);
-    int counter = 0;
     TypedArray colors = mContext.getResources().obtainTypedArray(R.array.event_backgrounds);
-    
-    System.out.println("HERE 1");
-    System.out.println(mEvents.size());
-    System.out.println(position);
-    
-    if(event.getName() == null)
-    {
-      System.out.println("event name is null");
-    }
-    else
-    {
-      System.out.println(event.getName());
-    }
-    
-    System.out.println("date: " + event.getDate());
 
     if (convertView == null) {
 
       holder = new ViewHolder();
 
+      // inflate the view and initialize all of the view holder variables
       convertView = inflater.inflate(R.layout.event_list_item, parent, false);
       holder.weekday = (TextView) convertView.findViewById(R.id.event_weekday);
       holder.monthDay = (TextView) convertView.findViewById(R.id.event_monthDay);
@@ -110,22 +90,13 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
       holder = (ViewHolder) convertView.getTag();
     }
     
-    System.out.println("HERE 2");
-
     Calendar cal = new GregorianCalendar();
     cal.setTimeInMillis(event.getDate());
 
-    System.out.println("HERE 3");
-    //if (mHashMap.get(event.getDate()) == null) {
-      //System.out.println("NNNUUUULLLLLLLLL");
-    //}
-    System.out.println("HashMap.get(): " + mHashMap.get(event.getDate()));
-    System.out.println("HERE 4");
     if (mHashMap.get(event.getDate()) == position) {
       weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
       monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
       time = event.getStartTimeAsString(mContext) + " - " + event.getEndTimeAsString(mContext);
-      System.out.println(monthDay);
       holder.weekday.setText(weekday);
       holder.monthDay.setText(monthDay);
       holder.title.setText(event.getName());
@@ -135,44 +106,28 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
       weekday = "";
       monthDay = "";
       time = event.getStartTimeAsString(mContext) + " - " + event.getEndTimeAsString(mContext);
-      System.out.println(monthDay);
-      System.out.println(monthDay);
       holder.weekday.setText(weekday);
       holder.monthDay.setText(monthDay);
       holder.title.setText(event.getName());
       holder.time.setText(time);
       holder.courseName.setText(event.getCourse());
     }
-    // weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
-    // monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-    // System.out.println(monthDay);
-    // holder.weekday.setText(weekday);
-    // holder.monthDay.setText(monthDay);
-    // holder.time.setText("8:30 - 9:45");
-    // holder.title.setText(event.getName());
-    // holder.courseName.setText(event.getCourse());
-
-    System.out.println("counter: " + counter % 4);
 
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
       holder.container.setBackgroundDrawable(colors.getDrawable(event.getType()));
     } else {
       holder.container.setBackground(colors.getDrawable(event.getType()));
-      System.out.println("Type index: " + event.getType());
     }
     counter++;
     colors.recycle();
 
-    System.out.println("Exit: getView");
     return convertView;
   }
 
   @Override
   public View getHeaderView(int position, View convertView, ViewGroup parent) {
-
-    System.out.println("Enter: getHeaderView");
-
     HeaderViewHolder holder;
+
     if (convertView == null) {
       holder = new HeaderViewHolder();
       convertView = inflater.inflate(R.layout.header, parent, false);
@@ -181,18 +136,18 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     } else {
       holder = (HeaderViewHolder) convertView.getTag();
     }
+
     // set header text as first char in name
     Calendar cal = new GregorianCalendar();
     cal.setTimeInMillis(mEvents.get(position).getDate());
     String headerText = "" + cal.getDisplayName(cal.MONTH, cal.LONG, Locale.US);
-    System.out.println(headerText);
+
     if (headerText != "") {
       holder.text.setText(headerText);
     } else {
       holder.text.setText("1");
     }
 
-    System.out.println("Exit: getHeaderView");
     return convertView;
   }
 
@@ -202,8 +157,8 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     //return mEvents.get(position).getDate();
     Calendar cal = new GregorianCalendar();
     cal.setTimeInMillis(mEvents.get(position).getDate());
-    Calendar returnCal = new GregorianCalendar();
-    returnCal.set(cal.YEAR, cal.MONTH, 1);
+   // Calendar returnCal = new GregorianCalendar();
+   // returnCal.set(cal.YEAR, cal.MONTH, 1);
     return Long.valueOf(cal.get(Calendar.MONTH) + cal.get(Calendar.YEAR));
   }
 
