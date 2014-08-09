@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.gamecockmobile.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/HomeActionBarTheme" >
             <intent-filter>
@@ -26,29 +26,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gamecockmobile.CourseListActivity"
+            android:name=".CourseListActivity"
             android:label="@string/title_activity_course_list"
-            android:parentActivityName="com.gamecockmobile.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/CourseListActionBarTheme" >
         </activity>
         <activity
-            android:name="com.gamecockmobile.AddCourseActivity"
+            android:name=".AddCourseActivity"
             android:label="@string/title_activity_add_course"
             android:theme="@style/AddCourseActionBarTheme" >
         </activity>
         <activity
-            android:name="com.gamecockmobile.AddDayAndTimeActivity"
+            android:name=".AddDayAndTimeActivity"
             android:label="@string/title_activity_add_day_and_time"
             android:theme="@style/AddCourseActionBarTheme" >
         </activity>
         <activity
-            android:name="com.gamecockmobile.buses.BusesFragment"
+            android:name=".buses.BusesFragment"
             android:label="@string/title_activity_buses_fragment" >
         </activity>
         <activity
-            android:name="com.gamecockmobile.events.AddEventActivity"
+            android:name=".events.AddEventActivity"
             android:label="@string/title_activity_add_event"
             android:theme="@style/AddEventActionBarTheme" >
+        </activity>
+        <activity
+            android:name=".events.EventDetailsActivity"
+            android:label="@string/title_activity_event_details"
+            android:theme="@style/EventDetailsActionBarTheme">
         </activity>
     </application>
 

@@ -8,14 +8,16 @@
     <string name="app_name">Gamecock Mobile</string>
     <string name="cancel">Cancel</string>
     <string name="course">COURSE</string>
-    <string name="course_name">Course name</string>    
+    <string name="course_name">Course name</string>
     <string name="date">DATE</string>
-    <string name="dialog_empty_name">Please enter a course name.</string>    
+    <string name="dialog_empty_name">Please enter a course name.</string>
     <string name="done">Done</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="event_name">Event name</string>
+
     <color name="gray_background">#E8E8E8</color>
+
     <string name="hello_world">Hello world!</string>
     <string name="none_selected">- None Selected -</string>
     <string name="ok_text">OK</string>
@@ -26,7 +28,7 @@
     <string name="title_activity_add_course">New Course</string>
     <string name="title_activity_add_day_and_time">AddDayAndTime</string>
     <string name="title_activity_course_list">Course List</string>
-    <string name="type">TYPE</string>   
+    <string name="type">TYPE</string>
 
     <string-array name="schedule_action_list">
         <item>Course List</item>
@@ -35,7 +37,6 @@
         <item>Social</item>
         <item>News</item>
     </string-array>
-    
     <string-array name="reminders_array">
         <item>5 minutes</item>
         <item>10 minutes</item>
@@ -52,14 +53,13 @@
         <item>2 days</item>
         <item>1 week</item>
     </string-array>
-    
     <string-array name="types_array">
         <item>Test</item>
         <item>Quiz</item>
         <item>Homework</item>
         <item>Other</item>
     </string-array>
-    
+
     <array name="event_backgrounds">
         <item>@drawable/event_list_item_blue_selector</item>
         <item>@drawable/event_list_item_sky_selector</item>
@@ -67,7 +67,15 @@
         <item>@drawable/event_list_item_gray_selector</item>
     </array>
 
+    <array name="event_details_drawables">
+        <item>@drawable/blue_background</item>
+        <item>@drawable/sky_background</item>
+        <item>@drawable/yellow_background</item>
+        <item>@drawable/gray_background</item>
+    </array>
+
     <string name="title_activity_buses_fragment">BusesFragment</string>
     <string name="title_activity_add_event">AddEventActivity</string>
+    <string name="title_activity_event_details">EventDetailsActivity</string>
 
 </resources>

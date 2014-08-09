@@ -42,6 +42,12 @@ public class MainActivity extends Activity {
   // slide menu items
   private String[] navMenuTitles;
 
+    protected static final int NAVDRAWER_ITEM_COURSE_LIST = 0;
+    protected static final int NAVDRAWER_ITEM_EVENTS = 1;
+    protected static final int NAVDRAWER_ITEM_BUSES = 2;
+    protected static final int NAVDRAWER_ITEM_SOCIAL = 3;
+    protected static final int NAVDRAWER_ITEM_NEWS = 4;
+
   @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   @Override
   protected void onCreate(Bundle savedInstanceState) {

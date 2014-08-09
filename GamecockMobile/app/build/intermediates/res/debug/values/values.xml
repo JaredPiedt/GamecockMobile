@@ -10,6 +10,12 @@
         <item>@drawable/event_list_item_yellow_selector</item>
         <item>@drawable/event_list_item_gray_selector</item>
     </array>
+    <array name="event_details_drawables">
+        <item>@drawable/blue_background</item>
+        <item>@drawable/sky_background</item>
+        <item>@drawable/yellow_background</item>
+        <item>@drawable/gray_background</item>
+    </array>
 
     <string-array name="reminders_array">
         <item>5 minutes</item>
@@ -98,6 +104,7 @@
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
     <!-- From: file:/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/values/strings.xml -->
     <eat-comment />
 
@@ -127,6 +134,7 @@
     <string name="title_activity_add_event">AddEventActivity</string>
     <string name="title_activity_buses_fragment">BusesFragment</string>
     <string name="title_activity_course_list">Course List</string>
+    <string name="title_activity_event_details">EventDetailsActivity</string>
     <string name="type">TYPE</string>
     <!-- From: file:/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/values/styles.xml -->
     <eat-comment />

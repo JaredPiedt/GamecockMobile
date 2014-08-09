@@ -15,9 +15,10 @@ public final class R {
     }
     public static final class array {
         public static final int event_backgrounds=0x7f050000;
-        public static final int reminders_array=0x7f050001;
-        public static final int schedule_action_list=0x7f050002;
-        public static final int types_array=0x7f050003;
+        public static final int event_details_drawables=0x7f050001;
+        public static final int reminders_array=0x7f050002;
+        public static final int schedule_action_list=0x7f050003;
+        public static final int types_array=0x7f050004;
     }
     public static final class attr {
         /**  StickyListHeaders attributes 
@@ -55,76 +56,87 @@ containing a value of this type.
         public static final int text_size_large=0x7f070002;
         public static final int text_size_medium=0x7f070003;
         public static final int text_size_small=0x7f070004;
+        public static final int text_size_xlarge=0x7f070005;
     }
     public static final class drawable {
-        public static final int course_list_item_bg_normal=0x7f020000;
-        public static final int course_list_item_bg_pressed=0x7f020001;
-        public static final int course_list_item_selector=0x7f020002;
-        public static final int drawer_shadow=0x7f020003;
-        public static final int event_list_item_blue_normal=0x7f020004;
-        public static final int event_list_item_blue_selector=0x7f020005;
-        public static final int event_list_item_gray_normal=0x7f020006;
-        public static final int event_list_item_gray_selector=0x7f020007;
-        public static final int event_list_item_sky_normal=0x7f020008;
-        public static final int event_list_item_sky_selector=0x7f020009;
-        public static final int event_list_item_yellow_normal=0x7f02000a;
-        public static final int event_list_item_yellow_selector=0x7f02000b;
-        public static final int garnet_button=0x7f02000c;
-        public static final int garnet_button_default=0x7f02000d;
-        public static final int garnet_button_pressed=0x7f02000e;
-        public static final int ic_action_accept=0x7f02000f;
-        public static final int ic_action_cancel=0x7f020010;
-        public static final int ic_action_new=0x7f020011;
-        public static final int ic_drawer=0x7f020012;
-        public static final int ic_launcher=0x7f020013;
-        public static final int ic_schedule=0x7f020014;
-        public static final int list_item_bg_normal=0x7f020015;
-        public static final int list_item_bg_pressed=0x7f020016;
-        public static final int list_selector=0x7f020017;
+        public static final int blue_background=0x7f020000;
+        public static final int course_list_item_bg_normal=0x7f020001;
+        public static final int course_list_item_bg_pressed=0x7f020002;
+        public static final int course_list_item_selector=0x7f020003;
+        public static final int drawer_shadow=0x7f020004;
+        public static final int event_list_item_blue_normal=0x7f020005;
+        public static final int event_list_item_blue_selector=0x7f020006;
+        public static final int event_list_item_gray_normal=0x7f020007;
+        public static final int event_list_item_gray_selector=0x7f020008;
+        public static final int event_list_item_sky_normal=0x7f020009;
+        public static final int event_list_item_sky_selector=0x7f02000a;
+        public static final int event_list_item_yellow_normal=0x7f02000b;
+        public static final int event_list_item_yellow_selector=0x7f02000c;
+        public static final int garnet_button=0x7f02000d;
+        public static final int garnet_button_default=0x7f02000e;
+        public static final int garnet_button_pressed=0x7f02000f;
+        public static final int gray_background=0x7f020010;
+        public static final int ic_action_accept=0x7f020011;
+        public static final int ic_action_cancel=0x7f020012;
+        public static final int ic_action_discard=0x7f020013;
+        public static final int ic_action_edit=0x7f020014;
+        public static final int ic_action_new=0x7f020015;
+        public static final int ic_drawer=0x7f020016;
+        public static final int ic_launcher=0x7f020017;
+        public static final int list_item_bg_normal=0x7f020018;
+        public static final int list_item_bg_pressed=0x7f020019;
+        public static final int list_selector=0x7f02001a;
+        public static final int sky_background=0x7f02001b;
+        public static final int yellow_background=0x7f02001c;
     }
     public static final class id {
-        public static final int action_new=0x7f0b002c;
-        public static final int action_settings=0x7f0b002b;
-        public static final int actionbar_cancel=0x7f0b0021;
-        public static final int actionbar_done=0x7f0b0022;
+        public static final int action_discard_event_details=0x7f0b0031;
+        public static final int action_edit_event_details=0x7f0b0030;
+        public static final int action_new=0x7f0b002f;
+        public static final int action_settings=0x7f0b002e;
+        public static final int actionbar_cancel=0x7f0b0024;
+        public static final int actionbar_done=0x7f0b0025;
         public static final int addCourse_layout=0x7f0b0001;
         public static final int addNewTime_button=0x7f0b0004;
         public static final int classTimes_textView=0x7f0b0002;
         public static final int courseList_Layout=0x7f0b0012;
         public static final int courseName_editText=0x7f0b0000;
-        public static final int course_list_item_times=0x7f0b0017;
-        public static final int course_list_item_title=0x7f0b0016;
+        public static final int course_list_item_times=0x7f0b001a;
+        public static final int course_list_item_title=0x7f0b0019;
         public static final int date_button=0x7f0b000e;
-        public static final int drawer_layout=0x7f0b0013;
-        public static final int drawer_title=0x7f0b0018;
+        public static final int drawer_layout=0x7f0b0016;
+        public static final int drawer_title=0x7f0b001b;
         public static final int endTime_button=0x7f0b000a;
         public static final int eventName_editText=0x7f0b000b;
-        public static final int event_course=0x7f0b001e;
-        public static final int event_details_container=0x7f0b001b;
+        public static final int event_course=0x7f0b0021;
+        public static final int event_course_textView=0x7f0b0014;
+        public static final int event_details_container=0x7f0b001e;
         public static final int event_endTime_button=0x7f0b0010;
-        public static final int event_monthDay=0x7f0b001a;
+        public static final int event_monthDay=0x7f0b001d;
+        public static final int event_name_textView=0x7f0b0013;
         public static final int event_startTime_button=0x7f0b000f;
-        public static final int event_time=0x7f0b001d;
-        public static final int event_title=0x7f0b001c;
-        public static final int event_weekday=0x7f0b0019;
-        public static final int frame_container=0x7f0b0014;
-        public static final int home_imageview=0x7f0b0023;
-        public static final int home_textview=0x7f0b0024;
-        public static final int left_drawer=0x7f0b0015;
-        public static final int list=0x7f0b001f;
+        public static final int event_time=0x7f0b0020;
+        public static final int event_time_textView=0x7f0b0015;
+        public static final int event_title=0x7f0b001f;
+        public static final int event_weekday=0x7f0b001c;
+        public static final int frame_container=0x7f0b0017;
+        public static final int home_imageview=0x7f0b0026;
+        public static final int home_textview=0x7f0b0027;
+        public static final int left_drawer=0x7f0b0018;
+        public static final int list=0x7f0b0022;
         public static final int newTimeSeparatorTop=0x7f0b0003;
-        public static final int news_author_textView=0x7f0b0028;
-        public static final int news_description_listView=0x7f0b0026;
-        public static final int news_imageView=0x7f0b0025;
-        public static final int news_title_textView=0x7f0b0027;
+        public static final int news_author_textView=0x7f0b002b;
+        public static final int news_description_listView=0x7f0b0029;
+        public static final int news_imageView=0x7f0b0028;
+        public static final int news_title_textView=0x7f0b002a;
         public static final int reminders_spinner=0x7f0b0011;
         public static final int selectCourse_spinner=0x7f0b000c;
         public static final int selectDays_button=0x7f0b0006;
         public static final int selectType_spinner=0x7f0b000d;
-        public static final int social_webview=0x7f0b0029;
+        public static final int social_webview=0x7f0b002c;
         public static final int startTime_button=0x7f0b0008;
-        public static final int text=0x7f0b002a;
-        public static final int text1=0x7f0b0020;
+        public static final int text=0x7f0b002d;
+        public static final int text1=0x7f0b0023;
         public static final int textView2=0x7f0b0007;
         public static final int textView3=0x7f0b0009;
         public static final int textView4=0x7f0b0005;
@@ -136,18 +148,19 @@ containing a value of this type.
         public static final int activity_add_event=0x7f030003;
         public static final int activity_buses_fragment=0x7f030004;
         public static final int activity_course_list=0x7f030005;
-        public static final int activity_main=0x7f030006;
-        public static final int course_list_item=0x7f030007;
-        public static final int drawer_list_item=0x7f030008;
-        public static final int event_list_item=0x7f030009;
-        public static final int events_fragment=0x7f03000a;
-        public static final int header=0x7f03000b;
-        public static final int include_cancel_button=0x7f03000c;
-        public static final int include_done_button=0x7f03000d;
-        public static final int main_icon=0x7f03000e;
-        public static final int news_list_item=0x7f03000f;
-        public static final int social_fragment=0x7f030010;
-        public static final int test_list_item_layout=0x7f030011;
+        public static final int activity_event_details=0x7f030006;
+        public static final int activity_main=0x7f030007;
+        public static final int course_list_item=0x7f030008;
+        public static final int drawer_list_item=0x7f030009;
+        public static final int event_list_item=0x7f03000a;
+        public static final int events_fragment=0x7f03000b;
+        public static final int header=0x7f03000c;
+        public static final int include_cancel_button=0x7f03000d;
+        public static final int include_done_button=0x7f03000e;
+        public static final int main_icon=0x7f03000f;
+        public static final int news_list_item=0x7f030010;
+        public static final int social_fragment=0x7f030011;
+        public static final int test_list_item_layout=0x7f030012;
     }
     public static final class menu {
         public static final int add_course=0x7f0a0000;
@@ -155,7 +168,8 @@ containing a value of this type.
         public static final int add_event=0x7f0a0002;
         public static final int buses=0x7f0a0003;
         public static final int course_list=0x7f0a0004;
-        public static final int main=0x7f0a0005;
+        public static final int event_details=0x7f0a0005;
+        public static final int main=0x7f0a0006;
     }
     public static final class string {
         public static final int action_discard=0x7f080000;
@@ -184,7 +198,8 @@ containing a value of this type.
         public static final int title_activity_add_event=0x7f080017;
         public static final int title_activity_buses_fragment=0x7f080018;
         public static final int title_activity_course_list=0x7f080019;
-        public static final int type=0x7f08001a;
+        public static final int title_activity_event_details=0x7f08001a;
+        public static final int type=0x7f08001b;
     }
     public static final class style {
         public static final int ActionBarTitleText=0x7f090002;
@@ -208,6 +223,7 @@ containing a value of this type.
         public static final int AppTheme=0x7f090001;
         public static final int CourseListActionBar=0x7f090009;
         public static final int CourseListActionBarTheme=0x7f09000a;
+        public static final int EventDetailsActionBarTheme=0x7f09000d;
         public static final int HomeActionBar=0x7f09000b;
         public static final int HomeActionBarTheme=0x7f09000c;
     }

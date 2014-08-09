@@ -8,6 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+import com.gamecockmobile.util.LogUtils;
 
 /**
  * This class handles all of the methods for creating and upgrading the database containing all of
@@ -28,10 +31,14 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_TYPE = "type";
     private static final String KEY_NOTIFICATIONS = "notifications";
 
+    private static final String TAG = LogUtils.makeLogTag(EventDatabaseHandler.class);
+
+    private Context mContext;
+
     public EventDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         // TODO Auto-generated constructor stub
-
+        mContext = context;
     }
 
     /**
@@ -67,6 +74,7 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
      * @param event the 'Event' to add
      */
     public void addEvent(Event event) {
+        LogUtils.LOGD(TAG, "Adding event");
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -79,6 +87,12 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NOTIFICATIONS, "3");
         db.insert(TABLE_EVENTS, null, values);
         db.close();
+
+        CharSequence text = "Event created";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
     }
 
     /**
@@ -125,6 +139,8 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
      * @return an 'ArrayList' of all the 'Events'
      */
     public ArrayList<Event> getAllEvents() {
+        LogUtils.LOGD(TAG, "Getting all events");
+
         ArrayList<Event> eventList = new ArrayList<Event>();
         String selectQuery = "SELECT  * FROM " + TABLE_EVENTS + " ORDER BY " + KEY_DATE + ", " + KEY_START_TIME;
 
@@ -146,6 +162,8 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
                 eventList.add(event);
             } while (cursor.moveToNext());
         }
+
+        LogUtils.LOGD(TAG, "Returning " + eventList.size() + " events");
 
         return eventList;
     }
@@ -173,7 +191,9 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
      * @param context the context of the application
      * @return the id of the updated 'Event'
      */
-    public int updateCourse(Event event, Context context) {
+    public int updateEvent(Event event, Context context) {
+        LogUtils.LOGD(TAG, "Updating event " + event.getId());
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -183,7 +203,7 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_DATE, Long.toString(event.getDate()));
         values.put(KEY_START_TIME, Long.toString(event.getStartTime()));
         values.put(KEY_END_TIME, Long.toString(event.getEndTime()));
-        values.put(KEY_NOTIFICATIONS, event.getNotifications().toString());
+        values.put(KEY_NOTIFICATIONS, "3");
 
         // updating row
         return db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
@@ -200,6 +220,12 @@ public class EventDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EVENTS, KEY_ID + " = ?", new String[]{String.valueOf(event.getId())});
         db.close();
+
+        CharSequence text = "Event deleted";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
     }
 
 }

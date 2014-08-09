@@ -94,7 +94,7 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
         R.id.list);
     mAdapter = new EventsAdapter(getActivity());
     stickyList.setAdapter(mAdapter);
-    //stickyList.setOnItemClickListener(this);
+    stickyList.setOnItemClickListener(this);
   }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -134,5 +134,11 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
     // TODO Auto-generated method stub
     Event e = (Event) mAdapter.getItem(position);
     System.out.println("***Click: " + e.getName());
+
+      if(e != null){
+          Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
+          intent.putExtra("Event ID", e.getId());
+          startActivityForResult(intent, 1);
+      }
   }
 }

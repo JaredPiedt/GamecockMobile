@@ -10,7 +10,6 @@ import com.gamecockmobile.Course;
 import com.gamecockmobile.DatabaseHandler;
 import com.gamecockmobile.R;
 import com.gamecockmobile.util.LogUtils;
-import com.gamecockmobile.util.LogUtils;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -46,6 +45,7 @@ import android.widget.TimePicker;
  *
  * @author Jared W. Piedt
  */
+@SuppressWarnings("deprecation")
 public class AddEventActivity extends Activity implements OnClickListener {
 
     EditText mEventNameEditText;
@@ -60,6 +60,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
     private boolean mIsStartTime;
     private Time mStartTime;
     private Time mEndTime;
+    private boolean mUpdateEvent;
 
     DatabaseHandler db;
     EventDatabaseHandler eDB;
@@ -68,6 +69,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
     private ArrayList<String> mCourseNames = new ArrayList<String>();
 
     private static final String TAG = LogUtils.makeLogTag(AddEventActivity.class);
+    private static final String EVENT_ID = "Event ID";
 
 
     @Override
@@ -85,12 +87,19 @@ public class AddEventActivity extends Activity implements OnClickListener {
                         // "Done"
                         Intent intent = new Intent();
                         int name = mSelectCourseSpinner.getSelectedItemPosition();
+
                         mEvent.setName(mEventNameEditText.getText().toString());
                         mEvent.setCourse(mCourseNames.get(name));
                         mEvent.setType(mSelectTypeSpinner.getSelectedItemPosition());
                         mEvent.addNotification(mRemindersSpinner.getSelectedItemPosition());
-                        eDB.addEvent(mEvent);
-                        System.out.println("event add successfully");
+
+                        if(mUpdateEvent){
+                            eDB.updateEvent(mEvent, getApplicationContext());
+                            LogUtils.LOGD(TAG, "Updating event " + mEvent.getId());
+                        } else {
+                            eDB.addEvent(mEvent);
+                            LogUtils.LOGD(TAG, "Adding event.");
+                        }
 
                         setResult(1, intent);
                         finish();
@@ -128,9 +137,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
         // add course name to the 'ArrayList' of 'Courses' in order to create the 'Spinner' of 'Course'
         // names
-        for (int i = 0; i < mCourses.size(); i++) {
-            mCourseNames.add(mCourses.get(i).getCourseName());
-            System.out.println(mCourses.get(i).getCourseName());
+        for (Course mCourse : mCourses) {
+            mCourseNames.add(mCourse.getCourseName());
+            System.out.println(mCourse.getCourseName());
         }
 
         // initialize all of the 'Buttons' and 'Spinners'
@@ -163,6 +172,25 @@ public class AddEventActivity extends Activity implements OnClickListener {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mRemindersSpinner.setAdapter(adapter);
 
+        Bundle mBundle = getIntent().getExtras();
+        if(mBundle != null){
+            int id = mBundle.getInt(EVENT_ID);
+            mEvent = eDB.getEvent(id);
+            if(mEvent == null){
+                mUpdateEvent = false;
+            } else {
+                mUpdateEvent = true;
+                LogUtils.LOGD(TAG, "Editing an event.");
+                setUpLayout();
+            }
+        } else {
+            mUpdateEvent = false;
+
+            LogUtils.LOGD(TAG, "Creating a new event.");
+
+
+        }
+
     }
 
     @Override
@@ -174,7 +202,6 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         switch (v.getId()) {
             default:
                 break;
@@ -209,22 +236,6 @@ public class AddEventActivity extends Activity implements OnClickListener {
             date.month = month;
             date.monthDay = day;
 
-            Course c = db
-                    .getCourseByName(mCourseNames.get(mSelectCourseSpinner.getSelectedItemPosition()));
-            ArrayList<ClassTime> cTimes = c.getClassTimes();
-            int f = DateUtils.FORMAT_SHOW_WEEKDAY;
-            String s = DateUtils.formatDateTime(getApplicationContext(), date.normalize(true), f);
-
-            System.out.println("****Set Date****" + s);
-
-            for (ClassTime cT : cTimes) {
-                ArrayList<CharSequence> days = cT.getDays();
-
-
-                for (int i = 0; i < days.size(); i++) {
-                }
-            }
-
             millis = date.normalize(true);
             mEvent.setDate(millis);
 
@@ -258,12 +269,10 @@ public class AddEventActivity extends Activity implements OnClickListener {
             TimePickerDialog.OnTimeSetListener {
 
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar c = Calendar.getInstance();
-
-            if ((mIsStartTime == true) && (mStartTimeButton.getText() != "")) {
+            if ((mIsStartTime) && (mStartTimeButton.getText() != "")) {
                 return new TimePickerDialog(getActivity(), this, mStartTime.hour, mStartTime.minute,
                         DateFormat.is24HourFormat(getActivity()));
-            } else if ((mIsStartTime == false) && (mEndTimeButton.getText() != "")) {
+            } else if ((!mIsStartTime) && (mEndTimeButton.getText() != "")) {
                 // set the end time button picker an hour and a half after the start time
 
                 return new TimePickerDialog(getActivity(), this, mEndTime.hour, mEndTime.minute,
@@ -272,12 +281,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
                 System.out.println(mStartTimeButton.getText().toString().trim().length());
                 if (mStartTimeButton.getText().toString().trim().length() > 0) {
                     int hr = mStartTime.hour;
-
-                    System.out.println(hr);
-
                     int min = mStartTime.minute;
-
-                    System.out.println(min);
 
                     if (min >= 45) {
                         hr += 2;
@@ -285,11 +289,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
                         hr += 1;
                     }
 
-                    System.out.println(hr);
-
                     min = ((min + 75) % 60);
-
-                    System.out.println(min);
 
                     return new TimePickerDialog(getActivity(), this, hr, min,
                             DateFormat.is24HourFormat(getActivity()));
@@ -306,20 +306,19 @@ public class AddEventActivity extends Activity implements OnClickListener {
          */
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // TODO Auto-generated method stub
             Time startTime = mStartTime;
             Time endTime = mEndTime;
 
             long startMillis;
             long endMillis;
 
-            if (mIsStartTime == true) {
+            if (mIsStartTime) {
                 startTime.hour = hourOfDay;
                 startTime.minute = minute;
                 startMillis = startTime.normalize(true);
                 mEvent.setStartTime(startMillis);
                 setTime(mStartTimeButton, startMillis);
-            } else if (mIsStartTime == false) {
+            } else if (!mIsStartTime) {
                 endTime.hour = hourOfDay;
                 endTime.minute = minute;
                 endMillis = endTime.normalize(true);
@@ -337,12 +336,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
      */
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
-        if (v.getId() == R.id.event_startTime_button) {
-            mIsStartTime = true;
-        } else // if (v.getId() == R.id.endTime_button)
-        {
-            mIsStartTime = false;
-        }
+
+        mIsStartTime = v.getId() == R.id.event_startTime_button;
 
         newFragment.show(getFragmentManager(), "timePicker");
     }
@@ -359,39 +354,61 @@ public class AddEventActivity extends Activity implements OnClickListener {
         button.setText(timeString);
     }
 
-    public void autoDisplayTimes(long date) {
-        LogUtils.LOGD(TAG, "Enter autoDisplayTimes");
-
-        int startTime = -1;
-        int endTime = -1;
+    /**
+     * Method used to auto display start and end time.
+     * <p/>
+     * This method is used to speed up the process of adding a new event. It takes the day of the
+     * week for the selected date and then, using the selected course, checks to see if that
+     * course has a class time on that day. If it does, it gets the start and end time for that day
+     * and then sets the start and end time button accordingly.
+     *
+     * @param date the selected date in milliseconds
+     */
+    private void autoDisplayTimes(long date) {
         int which = mSelectCourseSpinner.getSelectedItemPosition();
         String name = mCourseNames.get(which);
-        boolean timeSet = false;
-
         Course course = db.getCourseByName(name);
         ArrayList<ClassTime> classTimes = course.getClassTimes();
 
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(date);
-        String dayOfWeek = cal.getDisplayName(cal.DAY_OF_WEEK, cal.LONG, Locale.ENGLISH);
-
-        LogUtils.LOGD(TAG, "Day of week -- " + dayOfWeek);
+        String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
 
         for (ClassTime ct : classTimes) {
             ArrayList<CharSequence> days = ct.getDays();
 
             for (CharSequence cs : days) {
-                LogUtils.LOGD(TAG, "ClassTime day -- " + cs);
                 if (dayOfWeek.equals(cs.toString())) {
-                    LogUtils.LOGD(TAG, "Day match was found");
                     setTime(mStartTimeButton, ct.getStartTime());
                     setTime(mEndTimeButton, ct.getEndTime());
-                    timeSet = true;
                 }
             }
         }
+    }
 
-        LogUtils.LOGD(TAG, "Exit autoDisplayTimes");
+    private void setUpLayout(){
+        mEventNameEditText.setText(mEvent.getName());
+        mSelectCourseSpinner.setSelection(mCourseNames.indexOf(mEvent.getCourse()));
+        mSelectTypeSpinner.setSelection(mEvent.getType());
+
+        // set up the flags and initialize the formatted date string
+        int flags = DateUtils.FORMAT_SHOW_DATE;
+        flags |= DateUtils.FORMAT_SHOW_YEAR;
+        String timeString = DateUtils.formatDateTime(getApplicationContext(), mEvent.getDate(), flags);
+
+        mDateButton.setText(timeString);
+
+        Time startTime = new Time();
+        startTime.set(mEvent.getStartTime());
+        mStartTime = startTime;
+        mStartTimeButton.setText(mEvent.getStartTimeAsString(this));
+
+        Time endTime = new Time();
+        endTime.set(mEvent.getEndTime());
+        mEndTime = endTime;
+        mEndTimeButton.setText(mEvent.getEndTimeAsString(this));
+
+        mRemindersSpinner.setSelection(mEvent.getNotifications().get(0));
 
     }
 }

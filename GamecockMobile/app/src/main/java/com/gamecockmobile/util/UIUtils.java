@@ -235,4 +235,8 @@ public class UIUtils {
   public static boolean hasHoneycomb() {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
   }
+
+  public static boolean hasJellybean(){
+    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+  }
 }
