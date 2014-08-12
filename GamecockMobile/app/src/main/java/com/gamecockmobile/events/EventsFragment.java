@@ -13,8 +13,10 @@ import com.gamecockmobile.stickylistheaders.StickyListHeadersListView;
 
 import android.app.ActionBar.OnNavigationListener;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,13 +36,15 @@ import android.widget.ArrayAdapter;
  * @author Jared W. Piedt
  * 
  */
-public class EventsFragment extends Fragment implements OnNavigationListener, OnItemClickListener{
+public class EventsFragment extends Fragment implements OnNavigationListener, OnItemClickListener, AdapterView.OnItemLongClickListener {
 
   DatabaseHandler db;
   EventDatabaseHandler eDB;
   TreeMap<Long, ArrayList<Event>> mTreeMap;
   ArrayList<Event> mEventsList;
   EventsAdapter mAdapter;
+
+  private static final String EVENT_ID = "Event ID";
 
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -95,6 +99,7 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
     mAdapter = new EventsAdapter(getActivity());
     stickyList.setAdapter(mAdapter);
     stickyList.setOnItemClickListener(this);
+    stickyList.setOnItemLongClickListener(this);
   }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -137,8 +142,39 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
 
       if(e != null){
           Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
-          intent.putExtra("Event ID", e.getId());
+          intent.putExtra(EVENT_ID, e.getId());
           startActivityForResult(intent, 1);
       }
   }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
+        final CharSequence[] mDialogList = {"Delete", "Edit"};
+        final Event event = (Event) mAdapter.getItem(position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(event.getName());
+        builder.setItems(mDialogList, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if(which == 0) {
+                    eDB.deleteEvent(event);
+                    // reset the list of events
+                    if(mAdapter != null) {
+                        mAdapter.updateResults();
+                    }
+                } else if(which == 1){
+                    // the "Edit" option was chosen
+                    Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
+                    intent.putExtra(EVENT_ID, event.getId());
+                    startActivityForResult(intent, 1);
+                }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return true;
+    }
 }

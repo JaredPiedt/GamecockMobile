@@ -380,7 +380,10 @@ public class AddEventActivity extends Activity implements OnClickListener {
             for (CharSequence cs : days) {
                 if (dayOfWeek.equals(cs.toString())) {
                     setTime(mStartTimeButton, ct.getStartTime());
+                    mEvent.setStartTime(ct.getStartTime());
+
                     setTime(mEndTimeButton, ct.getEndTime());
+                    mEvent.setEndTime(ct.getEndTime());
                 }
             }
         }
@@ -398,15 +401,15 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
         mDateButton.setText(timeString);
 
-        Time startTime = new Time();
-        startTime.set(mEvent.getStartTime());
-        mStartTime = startTime;
-        mStartTimeButton.setText(mEvent.getStartTimeAsString(this));
+        //Time startTime = new Time();
+        //startTime.set(mEvent.getStartTime());
+        mStartTime.set(mEvent.getStartTime());
+        setTime(mStartTimeButton, mEvent.getStartTime());
 
-        Time endTime = new Time();
-        endTime.set(mEvent.getEndTime());
-        mEndTime = endTime;
-        mEndTimeButton.setText(mEvent.getEndTimeAsString(this));
+        //Time endTime = new Time();
+        //endTime.set(mEvent.getEndTime());
+        mEndTime.set(mEvent.getEndTime());
+        setTime(mEndTimeButton, mEvent.getEndTime());
 
         mRemindersSpinner.setSelection(mEvent.getNotifications().get(0));
 

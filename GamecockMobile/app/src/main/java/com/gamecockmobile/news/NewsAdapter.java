@@ -22,11 +22,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.bumptech.glide.Glide;
 import com.gamecockmobile.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
@@ -104,10 +106,10 @@ public class NewsAdapter extends BaseAdapter {
     if (convertView == null) {
       holder = new ViewHolder();
 
-      convertView = mInflater.inflate(R.layout.news_list_item, parent, false);
-      holder.image = (ImageView) convertView.findViewById(R.id.news_imageView);
-      holder.title = (TextView) convertView.findViewById(R.id.news_title_textView);
-      holder.author = (TextView) convertView.findViewById(R.id.news_author_textView);
+      convertView = mInflater.inflate(R.layout.list_item_news, parent, false);
+      holder.image = (ImageView) convertView.findViewById(R.id.news_photo);
+      holder.title = (TextView) convertView.findViewById(R.id.news_title);
+      holder.author = (TextView) convertView.findViewById(R.id.news_author);
       convertView.setTag(holder);
     } else {
       holder = (ViewHolder) convertView.getTag();
@@ -115,27 +117,16 @@ public class NewsAdapter extends BaseAdapter {
 
     String url = parseURL(message.description);
     if (url != null) {
-      // mDrawableManager.fetchDrawableOnThread(url, holder.image);
-      loadBitmap(url, holder.image);
+        holder.image.setColorFilter(setColorAlpha(Color.BLACK, 0.4f));
+      Glide.load(url)
+              .centerCrop()
+              .placeholder(R.drawable.gray_background)
+              .animate(R.animator.image_fade_in)
+              .into(holder.image);
+    } else {
+        holder.image.setColorFilter(setColorAlpha(Color.BLACK, 0.0f));
+        holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.garnet_background));
     }
-    // try {
-    // bitmap = new RetrieveImageTask().execute(url).get();
-    // } catch (InterruptedException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // } catch (ExecutionException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
-    //
-    // if (bitmap != null) {
-    // holder.image.setImageBitmap(bitmap);
-    // }
-    // //bitmap.recycle();
-    // }
-    // holder.image.setImageBitmap(bitmap);
-    // bitmap.recycle();
-    // }
     holder.title.setText(message.title.trim());
     holder.author.setText(message.author.trim());
 
@@ -153,104 +144,109 @@ public class NewsAdapter extends BaseAdapter {
     }
   }
 
-  private InputStream openHttpConnection(String urlString) throws IOException {
-    InputStream in = null;
-    int response = -1;
-
-    URL url = new URL(urlString);
-    URLConnection conn = url.openConnection();
-
-    if (!(conn instanceof HttpURLConnection)) {
-      throw new IOException("Not an HTTP connection");
+    public static int setColorAlpha(int color, float alpha) {
+        int alpha_int = Math.min(Math.max((int)(alpha * 255.0f), 0), 255);
+        return Color.argb(alpha_int, Color.red(color), Color.green(color), Color.blue(color));
     }
 
-    try {
-      HttpURLConnection httpConn = (HttpURLConnection) conn;
-      httpConn.setAllowUserInteraction(false);
-      httpConn.setInstanceFollowRedirects(true);
-      httpConn.setRequestMethod("GET");
-      httpConn.connect();
-      response = httpConn.getResponseCode();
-      if (response == HttpURLConnection.HTTP_OK) {
-        in = httpConn.getInputStream();
-      }
-    } catch (Exception ex) {
-      throw new IOException("Error connecting");
-    }
+//  private InputStream openHttpConnection(String urlString) throws IOException {
+//    InputStream in = null;
+//    int response = -1;
+//
+//    URL url = new URL(urlString);
+//    URLConnection conn = url.openConnection();
+//
+//    if (!(conn instanceof HttpURLConnection)) {
+//      throw new IOException("Not an HTTP connection");
+//    }
+//
+//    try {
+//      HttpURLConnection httpConn = (HttpURLConnection) conn;
+//      httpConn.setAllowUserInteraction(false);
+//      httpConn.setInstanceFollowRedirects(true);
+//      httpConn.setRequestMethod("GET");
+//      httpConn.connect();
+//      response = httpConn.getResponseCode();
+//      if (response == HttpURLConnection.HTTP_OK) {
+//        in = httpConn.getInputStream();
+//      }
+//    } catch (Exception ex) {
+//      throw new IOException("Error connecting");
+//    }
+//
+//    return in;
+//  }
 
-    return in;
-  }
+//  private Bitmap downloadImage(String URL) {
+//    Bitmap bitmap = null;
+//    InputStream in = null;
+//
+//    try {
+//      in = openHttpConnection(URL);
+//      bitmap = BitmapFactory.decodeStream(in);
+//      in.close();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//
+//    return bitmap;
+//  }
 
-  private Bitmap downloadImage(String URL) {
-    Bitmap bitmap = null;
-    InputStream in = null;
+//  public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+//    if (getBitmapFromMemCache(key) == null) {
+//      mMemoryCache.put(key, bitmap);
+//    }
+//  }
 
-    try {
-      in = openHttpConnection(URL);
-      bitmap = BitmapFactory.decodeStream(in);
-      in.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+//  public Bitmap getBitmapFromMemCache(String key) {
+//    return mMemoryCache.get(key);
+//  }
+//
+//  public void loadBitmap(String url, ImageView imageView) {
+//    final String imageURL = String.valueOf(url);
+//
+//    final Bitmap bitmap = getBitmapFromMemCache(imageURL);
+//
+//    if (bitmap != null) {
+//      imageView.setImageBitmap(bitmap);
+//    } else {
+//      if (url != null) {
+//        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+//        task.execute(url);
+//      }
+//    }
+//  }
 
-    return bitmap;
-  }
+//  public Bitmap decodeSampledBitmap(InputStream in, int width, int height) {
+//    Bitmap bm = null;
+//
+//    final BitmapFactory.Options options = new BitmapFactory.Options();
+//    options.inJustDecodeBounds = true;
+//    BitmapFactory.decodeStream(in, null, options);
+//
+//    options.inSampleSize = calculateInSampleSize(options, width, height);
+//
+//    options.inJustDecodeBounds = false;
+//    bm = BitmapFactory.decodeStream(in, null, options);
+//
+//    return bm;
+//  }
 
-  public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-    if (getBitmapFromMemCache(key) == null) {
-      mMemoryCache.put(key, bitmap);
-    }
-  }
-
-  public Bitmap getBitmapFromMemCache(String key) {
-    return mMemoryCache.get(key);
-  }
-
-  public void loadBitmap(String url, ImageView imageView) {
-    final String imageURL = String.valueOf(url);
-
-    final Bitmap bitmap = getBitmapFromMemCache(imageURL);
-
-    if (bitmap != null) {
-      imageView.setImageBitmap(bitmap);
-    } else {
-      if (url != null) {
-        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-        task.execute(url);
-      }
-    }
-  }
-
-  public Bitmap decodeSampledBitmap(InputStream in, int width, int height) {
-    Bitmap bm = null;
-
-    final BitmapFactory.Options options = new BitmapFactory.Options();
-    options.inJustDecodeBounds = true;
-    BitmapFactory.decodeStream(in, null, options);
-
-    options.inSampleSize = calculateInSampleSize(options, width, height);
-
-    options.inJustDecodeBounds = false;
-    bm = BitmapFactory.decodeStream(in, null, options);
-
-    return bm;
-  }
-
-  public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-    final int height = options.outHeight;
-    final int width = options.outWidth;
-    int inSampleSize = 1;
-    
-    if(height > reqHeight || width > reqWidth){
-      if(width > height){
-        inSampleSize = Math.round((float) height / (float) reqHeight);
-      } else{
-        inSampleSize = Math.round((float)width / (float)reqWidth);
-      }
-    }
-    
-    return inSampleSize;
-  }
+//  public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//    final int height = options.outHeight;
+//    final int width = options.outWidth;
+//    int inSampleSize = 1;
+//
+//    if(height > reqHeight || width > reqWidth){
+//      if(width > height){
+//        inSampleSize = Math.round((float) height / (float) reqHeight);
+//      } else{
+//        inSampleSize = Math.round((float)width / (float)reqWidth);
+//      }
+//    }
+//
+//    return inSampleSize;
+//  }
 
   static class ViewHolder {
     ImageView image;
@@ -307,64 +303,64 @@ public class NewsAdapter extends BaseAdapter {
 
   }
 
-  class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
-    URL url = null;
-    ImageView imageView = null;
-    InputStream in = null;
-    int response = -1;
-    private final WeakReference<ImageView> imageViewReference;
-    Bitmap bitmap;
-    
-    public BitmapWorkerTask(ImageView imageView) {
-      imageViewReference = new WeakReference<ImageView>(imageView);
-    }
-
-    @Override
-    protected Bitmap doInBackground(String... urls) {
-      // TODO Auto-generated method stub
-      try {
-        System.out.println("Start doInBackground");
-        url = new URL(urls[0]);
-        URLConnection conn = url.openConnection();
-
-        if (!(conn instanceof HttpURLConnection)) {
-          throw new IOException("Not an HTTP connection");
-        }
-
-        HttpURLConnection httpConn = (HttpURLConnection) conn;
-        httpConn.setAllowUserInteraction(false);
-        httpConn.setInstanceFollowRedirects(true);
-        httpConn.setRequestMethod("GET");
-        httpConn.connect();
-        response = httpConn.getResponseCode();
-
-        if (response == HttpURLConnection.HTTP_OK) {
-          in = httpConn.getInputStream();
-        }
-        bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(in), 150, 100, true);
-        in.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      if (bitmap != null) {
-        addBitmapToMemoryCache(urls[0], bitmap);
-      }
-//      final Bitmap bitmap = decodeSampledBitmap(urls[0], 100, 100);
+//  class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+//    URL url = null;
+//    ImageView imageView = null;
+//    InputStream in = null;
+//    int response = -1;
+//    private final WeakReference<ImageView> imageViewReference;
+//    Bitmap bitmap;
+//
+//    public BitmapWorkerTask(ImageView imageView) {
+//      imageViewReference = new WeakReference<ImageView>(imageView);
+//    }
+//
+//    @Override
+//    protected Bitmap doInBackground(String... urls) {
+//      // TODO Auto-generated method stub
+//      try {
+//        System.out.println("Start doInBackground");
+//        url = new URL(urls[0]);
+//        URLConnection conn = url.openConnection();
+//
+//        if (!(conn instanceof HttpURLConnection)) {
+//          throw new IOException("Not an HTTP connection");
+//        }
+//
+//        HttpURLConnection httpConn = (HttpURLConnection) conn;
+//        httpConn.setAllowUserInteraction(false);
+//        httpConn.setInstanceFollowRedirects(true);
+//        httpConn.setRequestMethod("GET");
+//        httpConn.connect();
+//        response = httpConn.getResponseCode();
+//
+//        if (response == HttpURLConnection.HTTP_OK) {
+//          in = httpConn.getInputStream();
+//        }
+//        bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(in), 150, 100, true);
+//        in.close();
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      }
 //      if (bitmap != null) {
 //        addBitmapToMemoryCache(urls[0], bitmap);
 //      }
-      return bitmap;
-    }
-
-    protected void onPostExecute(Bitmap bitmap) {
-      if (imageViewReference != null && bitmap != null) {
-        final ImageView imageView = (ImageView) imageViewReference.get();
-
-        if (imageView != null) {
-          imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-          imageView.setImageBitmap(bitmap);
-        }
-      }
-    }
-  }
+////      final Bitmap bitmap = decodeSampledBitmap(urls[0], 100, 100);
+////      if (bitmap != null) {
+////        addBitmapToMemoryCache(urls[0], bitmap);
+////      }
+//      return bitmap;
+//    }
+//
+//    protected void onPostExecute(Bitmap bitmap) {
+//      if (imageViewReference != null && bitmap != null) {
+//        final ImageView imageView = (ImageView) imageViewReference.get();
+//
+//        if (imageView != null) {
+//          imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//          imageView.setImageBitmap(bitmap);
+//        }
+//      }
+//    }
+//  }
 }

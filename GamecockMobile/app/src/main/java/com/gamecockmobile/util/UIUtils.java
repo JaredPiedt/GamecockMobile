@@ -73,45 +73,46 @@ public class UIUtils {
 
     // Find a suitable disk cache directory for the track icons and create if it doesn't
     // already exist.
-    File outputDir = ImageLoader.getDiskCacheDir(ctx, NEWS_IMAGE_VIEW_TAG);
-    if (!outputDir.exists()) {
-      outputDir.mkdirs();
-    }
+//    File outputDir = ImageLoader.getDiskCacheDir(ctx, NEWS_IMAGE_VIEW_TAG);
+//    if (!outputDir.exists()) {
+//      outputDir.mkdirs();
+//    }
+//
+//    // Generate a unique filename to store this track icon in using a hash function.
+//    File imageFile = new File(outputDir + File.separator + hashKeyForDisk(trackName));
+//
+//    Bitmap bitmap = null;
+//
+//    // If file already exists and is readable, try and decode the bitmap from the disk.
+//    if (imageFile.exists() && imageFile.canRead()) {
+//      bitmap = BitmapFactory.decodeFile(imageFile.toString());
+//    }
+//
+//    // If bitmap is still null here the track icon was not found in the disk cache.
+//    if (bitmap == null) {
+//
+//      // Create the icon using the provided track name and color.
+//      //bitmap = UIUtils.createImageView(ctx, trackName, trackColor);
+//
+//      // Now write it out to disk for future use.
+//      BufferedOutputStream outputStream = null;
+//      try {
+//        outputStream = new BufferedOutputStream(new FileOutputStream(imageFile));
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+//      } catch (FileNotFoundException e) {
+//        // LOGE(TAG, "TrackIconAsyncTask - unable to open file - " + e);
+//      } finally {
+//        if (outputStream != null) {
+//          try {
+//            outputStream.close();
+//          } catch (IOException ignored) {
+//          }
+//        }
+//      }
+    //}
 
-    // Generate a unique filename to store this track icon in using a hash function.
-    File imageFile = new File(outputDir + File.separator + hashKeyForDisk(trackName));
-
-    Bitmap bitmap = null;
-
-    // If file already exists and is readable, try and decode the bitmap from the disk.
-    if (imageFile.exists() && imageFile.canRead()) {
-      bitmap = BitmapFactory.decodeFile(imageFile.toString());
-    }
-
-    // If bitmap is still null here the track icon was not found in the disk cache.
-    if (bitmap == null) {
-
-      // Create the icon using the provided track name and color.
-      //bitmap = UIUtils.createImageView(ctx, trackName, trackColor);
-
-      // Now write it out to disk for future use.
-      BufferedOutputStream outputStream = null;
-      try {
-        outputStream = new BufferedOutputStream(new FileOutputStream(imageFile));
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-      } catch (FileNotFoundException e) {
-        // LOGE(TAG, "TrackIconAsyncTask - unable to open file - " + e);
-      } finally {
-        if (outputStream != null) {
-          try {
-            outputStream.close();
-          } catch (IOException ignored) {
-          }
-        }
-      }
-    }
-
-    return bitmap;
+    //return bitmap;
+    return null;
   }
 
   /**

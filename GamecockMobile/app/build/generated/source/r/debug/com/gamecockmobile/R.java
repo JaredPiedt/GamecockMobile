@@ -10,8 +10,9 @@ package com.gamecockmobile;
 public final class R {
     public static final class animator {
         public static final int hold=0x7f040000;
-        public static final int slide_left_in=0x7f040001;
-        public static final int slide_right_out=0x7f040002;
+        public static final int image_fade_in=0x7f040001;
+        public static final int slide_left_in=0x7f040002;
+        public static final int slide_right_out=0x7f040003;
     }
     public static final class array {
         public static final int event_backgrounds=0x7f050000;
@@ -72,28 +73,29 @@ containing a value of this type.
         public static final int event_list_item_sky_selector=0x7f02000a;
         public static final int event_list_item_yellow_normal=0x7f02000b;
         public static final int event_list_item_yellow_selector=0x7f02000c;
-        public static final int garnet_button=0x7f02000d;
-        public static final int garnet_button_default=0x7f02000e;
-        public static final int garnet_button_pressed=0x7f02000f;
-        public static final int gray_background=0x7f020010;
-        public static final int ic_action_accept=0x7f020011;
-        public static final int ic_action_cancel=0x7f020012;
-        public static final int ic_action_discard=0x7f020013;
-        public static final int ic_action_edit=0x7f020014;
-        public static final int ic_action_new=0x7f020015;
-        public static final int ic_drawer=0x7f020016;
-        public static final int ic_launcher=0x7f020017;
-        public static final int list_item_bg_normal=0x7f020018;
-        public static final int list_item_bg_pressed=0x7f020019;
-        public static final int list_selector=0x7f02001a;
-        public static final int sky_background=0x7f02001b;
-        public static final int yellow_background=0x7f02001c;
+        public static final int garnet_background=0x7f02000d;
+        public static final int garnet_button=0x7f02000e;
+        public static final int garnet_button_default=0x7f02000f;
+        public static final int garnet_button_pressed=0x7f020010;
+        public static final int gray_background=0x7f020011;
+        public static final int ic_action_accept=0x7f020012;
+        public static final int ic_action_cancel=0x7f020013;
+        public static final int ic_action_discard=0x7f020014;
+        public static final int ic_action_edit=0x7f020015;
+        public static final int ic_action_new=0x7f020016;
+        public static final int ic_drawer=0x7f020017;
+        public static final int ic_launcher=0x7f020018;
+        public static final int list_item_bg_normal=0x7f020019;
+        public static final int list_item_bg_pressed=0x7f02001a;
+        public static final int list_selector=0x7f02001b;
+        public static final int sky_background=0x7f02001c;
+        public static final int yellow_background=0x7f02001d;
     }
     public static final class id {
-        public static final int action_discard_event_details=0x7f0b0031;
-        public static final int action_edit_event_details=0x7f0b0030;
-        public static final int action_new=0x7f0b002f;
-        public static final int action_settings=0x7f0b002e;
+        public static final int action_discard_event_details=0x7f0b0037;
+        public static final int action_edit_event_details=0x7f0b0036;
+        public static final int action_new=0x7f0b0035;
+        public static final int action_settings=0x7f0b0034;
         public static final int actionbar_cancel=0x7f0b0024;
         public static final int actionbar_done=0x7f0b0025;
         public static final int addCourse_layout=0x7f0b0001;
@@ -120,22 +122,28 @@ containing a value of this type.
         public static final int event_title=0x7f0b001f;
         public static final int event_weekday=0x7f0b001c;
         public static final int frame_container=0x7f0b0017;
-        public static final int home_imageview=0x7f0b0026;
-        public static final int home_textview=0x7f0b0027;
+        public static final int home_imageview=0x7f0b002b;
+        public static final int home_textview=0x7f0b002c;
+        public static final int info_box=0x7f0b0028;
         public static final int left_drawer=0x7f0b0018;
         public static final int list=0x7f0b0022;
         public static final int newTimeSeparatorTop=0x7f0b0003;
-        public static final int news_author_textView=0x7f0b002b;
-        public static final int news_description_listView=0x7f0b0029;
-        public static final int news_imageView=0x7f0b0028;
-        public static final int news_title_textView=0x7f0b002a;
+        public static final int news_author=0x7f0b002a;
+        public static final int news_author_textView=0x7f0b0031;
+        public static final int news_description_listView=0x7f0b002f;
+        public static final int news_gridView=0x7f0b002d;
+        public static final int news_imageView=0x7f0b002e;
+        public static final int news_photo=0x7f0b0027;
+        public static final int news_target=0x7f0b0026;
+        public static final int news_title=0x7f0b0029;
+        public static final int news_title_textView=0x7f0b0030;
         public static final int reminders_spinner=0x7f0b0011;
         public static final int selectCourse_spinner=0x7f0b000c;
         public static final int selectDays_button=0x7f0b0006;
         public static final int selectType_spinner=0x7f0b000d;
-        public static final int social_webview=0x7f0b002c;
+        public static final int social_webview=0x7f0b0032;
         public static final int startTime_button=0x7f0b0008;
-        public static final int text=0x7f0b002d;
+        public static final int text=0x7f0b0033;
         public static final int text1=0x7f0b0023;
         public static final int textView2=0x7f0b0007;
         public static final int textView3=0x7f0b0009;
@@ -157,10 +165,12 @@ containing a value of this type.
         public static final int header=0x7f03000c;
         public static final int include_cancel_button=0x7f03000d;
         public static final int include_done_button=0x7f03000e;
-        public static final int main_icon=0x7f03000f;
-        public static final int news_list_item=0x7f030010;
-        public static final int social_fragment=0x7f030011;
-        public static final int test_list_item_layout=0x7f030012;
+        public static final int list_item_news=0x7f03000f;
+        public static final int main_icon=0x7f030010;
+        public static final int news_fragment=0x7f030011;
+        public static final int news_list_item=0x7f030012;
+        public static final int social_fragment=0x7f030013;
+        public static final int test_list_item_layout=0x7f030014;
     }
     public static final class menu {
         public static final int add_course=0x7f0a0000;
