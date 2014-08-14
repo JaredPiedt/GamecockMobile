@@ -14,9 +14,11 @@ import com.gamecockmobile.R;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -31,6 +33,8 @@ public class UIUtils {
   public static final String TAG = LogUtils.makeLogTag(UIUtils.class);
 
   public static final int ANIMATION_FADE_IN_TIME = 250;
+
+    public static final float BG_COLOR_SCALE_FACTOR = 0.65f;
 
   public static final String NEWS_IMAGE_VIEW_TAG = "news_image";
 
@@ -239,5 +243,43 @@ public class UIUtils {
 
   public static boolean hasJellybean(){
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+  }
+    public static int scaleColor(int color, float factor, boolean scaleAlpha) {
+        return Color.argb(scaleAlpha ? (Math.round(Color.alpha(color) * factor)) : Color.alpha(color),
+                Math.round(Color.red(color) * factor), Math.round(Color.green(color) * factor),
+                Math.round(Color.blue(color) * factor));
+    }
+
+    public static int scaleSessionColorToDefaultBG(int color) {
+        return scaleColor(color, BG_COLOR_SCALE_FACTOR, false);
+    }
+
+    private static final int[] RES_IDS_ACTION_BAR_SIZE = { android.R.attr.actionBarSize };
+
+    public static int calculateActionBarSize(Context context) {
+        if(context == null) {
+            return 0;
+        }
+
+        Resources.Theme curTheme = context.getTheme();
+        if(curTheme == null) {
+            return 0;
+        }
+
+        TypedArray att = curTheme.obtainStyledAttributes(RES_IDS_ACTION_BAR_SIZE);
+        if(att == null) {
+            return 0;
+        }
+
+        float size = att.getDimension(0, 0);
+        att.recycle();
+        return (int) size;
+    }
+  public static float getProgress(int value, int min, int max) {
+      if(min == max) {
+          throw new IllegalArgumentException("Max (" + max + ") cannot equal min (" + min + ")");
+      }
+
+      return (value - min) / (float) (max - min);
   }
 }

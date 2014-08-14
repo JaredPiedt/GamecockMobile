@@ -632,14 +632,6 @@ Other
                 qualifiers="v11" >
 
                 <style
-                    name="AddDayAndTimeActionBarTheme"
-                    parent="android:Theme.Holo.Light.DarkActionBar" >
-                    <item name="android:actionBarStyle">
-@style/AddDayAndTimeActionBar
-                    </item>
-                </style>
-
-                <style
                     name="HomeActionBarTheme"
                     parent="android:Theme.Holo.Light" >
                     <item name="android:actionBarStyle">
@@ -659,13 +651,16 @@ Other
                 </style>
 
                 <style
-                    name="HomeActionBar"
-                    parent="android:style/Widget.Holo.ActionBar" >
-                    <item name="android:background">
-#73000F
+                    name="ArticleDetailsActionBar"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+                    <item name="android:actionBarStyle">
+@style/TransparentActionBar
                     </item>
-                    <item name="android:titleTextStyle">
-@style/ActionBarTitleText
+                    <item name="android:windowActionBarOverlay">
+true
+                    </item>
+                    <item name="android:windowContentOverlay">
+@null
                     </item>
                 </style>
 
@@ -681,10 +676,49 @@ Other
                 </style>
 
                 <style
-                    name="AddEventActionBar"
+                    name="CourseListActionBarTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+                    <item name="android:actionBarStyle">
+@style/CourseListActionBar
+                    </item>
+                </style>
+
+                <style
+                    name="ActionBarTitleText"
+                    parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title" >
+                    <item name="android:textColor">
+#FFFFFF
+                    </item>
+                </style>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light" >
+
+                    <!-- API 11 theme customizations can go here. -->
+                </style>
+
+                <style
+                    name="TransparentActionBar"
+                    parent="android:Widget.Holo.ActionBar" >
+                    <item name="android:background">
+@null
+                    </item>
+                </style>
+
+                <style
+                    name="AddDayAndTimeActionBarTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+                    <item name="android:actionBarStyle">
+@style/AddDayAndTimeActionBar
+                    </item>
+                </style>
+
+                <style
+                    name="HomeActionBar"
                     parent="android:style/Widget.Holo.ActionBar" >
                     <item name="android:background">
-@color/garnet
+#73000F
                     </item>
                     <item name="android:titleTextStyle">
 @style/ActionBarTitleText
@@ -692,10 +726,13 @@ Other
                 </style>
 
                 <style
-                    name="CourseListActionBarTheme"
-                    parent="android:Theme.Holo.Light.DarkActionBar" >
-                    <item name="android:actionBarStyle">
-@style/CourseListActionBar
+                    name="AddEventActionBar"
+                    parent="android:style/Widget.Holo.ActionBar" >
+                    <item name="android:background">
+@color/garnet
+                    </item>
+                    <item name="android:titleTextStyle">
+@style/ActionBarTitleText
                     </item>
                 </style>
 
@@ -716,14 +753,6 @@ Other
                 </style>
 
                 <style
-                    name="ActionBarTitleText"
-                    parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title" >
-                    <item name="android:textColor">
-#FFFFFF
-                    </item>
-                </style>
-
-                <style
                     name="AddCourseActionBar"
                     parent="android:style/Widget.Holo.ActionBar" >
                     <item name="android:background">
@@ -732,13 +761,6 @@ Other
                     <item name="android:titleTextStyle">
 @style/ActionBarTitleText
                     </item>
-                </style>
-
-                <style
-                    name="AppBaseTheme"
-                    parent="android:Theme.Holo.Light" >
-
-                    <!-- API 11 theme customizations can go here. -->
                 </style>
             </file>
             <file
@@ -959,6 +981,21 @@ Other
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/garnet_background.xml"
                 qualifiers=""
                 type="drawable" />
+            <file
+                name="bottom_shadow"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/bottom_shadow.9.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="photo_banner_scrim"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/photo_banner_scrim.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="activity_article_details"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_article_details.xml"
+                qualifiers=""
+                type="layout" />
         </source>
         <source path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/generated/res/rs/debug" />
         <source path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/generated/res/generated/debug" />

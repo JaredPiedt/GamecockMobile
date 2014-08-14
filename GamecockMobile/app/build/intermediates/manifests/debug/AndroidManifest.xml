@@ -55,6 +55,11 @@
             android:label="@string/title_activity_event_details"
             android:theme="@style/EventDetailsActionBarTheme" >
         </activity>
+        <activity
+            android:name="com.gamecockmobile.news.ArticleDetailsActivity"
+            android:label="ArticleDetailsActivity"
+            android:theme="@style/ArticleDetailsActionBar" >
+        </activity>
     </application>
 
 </manifest>

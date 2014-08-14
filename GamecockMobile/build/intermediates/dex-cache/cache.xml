@@ -14,6 +14,12 @@
         revision="20.0.0"
         sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
     <item
+        dex="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/intermediates/pre-dexed/debug/jsoup-1.7.3-65133910e8697ee2c06b62baf139c702488f93d4.jar"
+        jar="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/libs/jsoup-1.7.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="ab1f22cadc2f8b514e55ba368f5128056fe304da"/>
+    <item
         dex="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-8d8dfae1e3b168ef8140c3a0336ba2c239e827a6.jar"
         jar="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
         jumboMode="false"

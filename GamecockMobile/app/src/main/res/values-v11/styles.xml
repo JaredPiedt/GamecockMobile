@@ -2,7 +2,18 @@
 
     <!--
         Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+
+
+
+
+
+
+
+
+
+
+
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
@@ -55,6 +66,17 @@
     <style name="AddEventActionBar" parent="android:style/Widget.Holo.ActionBar">
         <item name="android:background">@color/garnet</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
+
+    <style name="ArticleDetailsActionBar" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/TransparentActionBar</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Transparent Action Bar -->
+    <style name="TransparentActionBar" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@null</item>
     </style>
 
 </resources>

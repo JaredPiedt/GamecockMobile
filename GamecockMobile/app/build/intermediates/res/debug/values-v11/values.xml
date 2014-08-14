@@ -39,6 +39,12 @@
         <!-- API 11 theme customizations can go here. -->
     </style>
 
+    <style name="ArticleDetailsActionBar" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/TransparentActionBar</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <style name="CourseListActionBar" parent="android:style/Widget.Holo.ActionBar">
         <item name="android:background">@color/garnet</item>
         <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
@@ -55,6 +61,10 @@
 
     <style name="HomeActionBarTheme" parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/HomeActionBar</item>
+    </style>
+
+    <style name="TransparentActionBar" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@null</item>
     </style>
 
 </resources>
