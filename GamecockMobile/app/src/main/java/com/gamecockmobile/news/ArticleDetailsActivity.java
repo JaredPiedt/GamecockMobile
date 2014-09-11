@@ -107,9 +107,6 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
             String author = mBundle.getString(AUTHOR);
             String articleURL = mBundle.getString(ARTICLE_URL);
             setUpArticleDetails(photoURL, title, author, articleURL);
-
-
-
         }
 
 
@@ -151,6 +148,8 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
 
         final int actionBarSize = UIUtils.calculateActionBarSize(this);
         mHeaderTopClearance = actionBarSize - mHeaderContentBox.getPaddingTop();
+
+        LOGD(TAG, "***** mHeaderTopClearance = " + mHeaderTopClearance);
         mHeaderHeightPixels = mHeaderContentBox.getHeight();
 
         mPhotoHeightPixels = mHeaderTopClearance;
@@ -169,10 +168,11 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
         lp = mHeaderBackgroundBox.getLayoutParams();
         if(lp.height != mHeaderHeightPixels) {
             lp.height = mHeaderHeightPixels;
-
             LOGD(TAG, "***** Background height is: " + mHeaderHeightPixels);
             mHeaderBackgroundBox.setLayoutParams(lp);
         }
+
+        LOGD(TAG, "****Background height is: " + mHeaderBackgroundBox.getHeight());
 
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams)
                 mDetailsContainer.getLayoutParams();
@@ -204,14 +204,19 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
                 : 1f;
         if(!mHasPhoto){
             mHeaderBackgroundBox.setScaleY(desiredHeaderScaleY);
+            LOGD(TAG, "Header being shown with no photo. Height = " + desiredHeaderScaleY);
         } else if (mGapFillShown != showGapFill) {
-            LOGD(TAG, "Header being shown. Height = " + desiredHeaderScaleY);
-            mHeaderBackgroundBox.animate()
-                    .scaleY(desiredHeaderScaleY)
-                    .setInterpolator(new DecelerateInterpolator(2f))
-                    .setDuration(250)
-                    .start();
+            mHeaderBackgroundBox.setScaleY(desiredHeaderScaleY);
+
+            // TO-DO figure out issue with animate
+//            mHeaderBackgroundBox.animate()
+//                    .scaleY(desiredHeaderScaleY)
+//                    .setInterpolator(new DecelerateInterpolator(2f))
+//                    .setDuration(250)
+//                    .start();
+
         }
+        LOGD(TAG, "Show gap fill = " + showGapFill);
         mGapFillShown = showGapFill;
 
         mHeaderShadow.setVisibility(View.VISIBLE);
@@ -225,17 +230,27 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
             mHeaderShadow.setAlpha(gapFillProgress);
         }
 
+        int[] locations = new int[2];
+        mHeaderBackgroundBox.getLocationOnScreen(locations);
+        LOGD(TAG, "Header height = " + mHeaderBackgroundBox.getHeight());
+        LOGD(TAG, "Header position y = " + locations[1]);
+        mTitle.getLocationOnScreen(locations);
+        LOGD(TAG, "Header title position y =" + locations[1]);
+
         // Move background photo (parallax effect)
         mPhotoViewContainer.setTranslationY(scrollY * 0.5f);
 
         LOGD(TAG, "Exit onScrollChanged");
     }
 
-    private void setUpArticleDetails(String photoURL, String title, String author, String articleURL) {
+    private void setUpArticleDetails(final String photoURL, String title, String author, String articleURL) {
 
         LOGD(TAG, "Enter setupArticleDetails");
 
         mHeaderBackgroundBox.setBackgroundColor(getResources().getColor(R.color.garnet));
+
+        LOGD(TAG, "*****mHeaderBackgroundBox color = " + mHeaderBackgroundBox.getSolidColor());
+
         mPhotoViewContainer.setBackgroundColor(UIUtils.scaleSessionColorToDefaultBG(getResources().getColor(R.color.garnet)));
 
         if(photoURL != null) {
@@ -257,6 +272,21 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
 //                        public int[] getSize() {return new int[] { mPhotoView.getWidth(), mPhotoView.getHeight()};}
 //                    });
             Glide.load(photoURL)
+                    .listener(new Glide.RequestListener<String>() {
+                        @Override
+                        public void onException(Exception e, String s, Target target) {
+                            LOGD(TAG, "Error loading photo with url: " + photoURL);
+                            mHasPhoto = false;
+                            recomputePhotoAndScrollingMetrics();
+                        }
+
+                        @Override
+                        public void onImageReady(String s, Target target) {
+                            LOGD(TAG, "Image was found");
+                            //Trigger image transition
+                            recomputePhotoAndScrollingMetrics();
+                        }
+                    })
                     .centerCrop()
                     .placeholder(R.drawable.garnet_background)
                     .animate(R.animator.image_fade_in)

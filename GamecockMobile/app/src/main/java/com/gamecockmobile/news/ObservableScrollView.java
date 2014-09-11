@@ -19,7 +19,7 @@ public class ObservableScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        for(Callbacks c: mCallbacks) {
+        for (Callbacks c : mCallbacks) {
             c.onScrollChanged(l - oldl, t - oldt);
         }
     }
@@ -30,10 +30,11 @@ public class ObservableScrollView extends ScrollView {
     }
 
     public void addCallbacks(Callbacks listener) {
-        if(!mCallbacks.contains(listener)) {
+        if (!mCallbacks.contains(listener)) {
             mCallbacks.add(listener);
         }
     }
+
     public static interface Callbacks {
         public void onScrollChanged(int deltaX, int deltaY);
     }

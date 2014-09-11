@@ -44,68 +44,67 @@
                 android:layout_marginLeft="16dp"
                 android:textSize="@dimen/text_size_medium"
                 android:textColor="#de000000"
-                android:lineSpacingMultiplier="1.1"
-                android:textAlignment="textStart"/>
+                android:lineSpacingMultiplier="1.1"/>
+        </LinearLayout>
 
+        <!-- Title/subtitle bar (floating; position determined at run time as the content view scrolls) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:id="@+id/header_article">
 
-            </LinearLayout>
-
-            <!-- Title/subtitle bar (floating; position determined at run time as the content view scrolls) -->
-            <FrameLayout
+            <!-- height assigned dynamically -->
+            <View android:id="@+id/header_background"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:id="@+id/header_article">
+                android:layout_height="0dp"
+                android:background="@color/garnet"/>
 
-                <!-- height assigned dynamically -->
-                <View android:id="@+id/header_background"
+            <LinearLayout
+                android:id="@+id/header_article_contents"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="72dp"
+                android:paddingBottom="16dp"
+                android:layout_height="wrap_content">
+
+                <!-- Article title -->
+                <TextView android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp" />
+                    android:layout_marginBottom="0dp"
+                    android:id="@+id/article_title"
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/text_size_large"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textColor="#deffffff"
+                    android:textAlignment="viewStart"
+                    android:layout_gravity="start"/>
 
-                <LinearLayout
-                    android:id="@+id/header_article_contents"
+                <!-- Article author -->
+                <TextView android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingRight="72dp"
-                    android:paddingBottom="16dp">
+                    android:id="@+id/article_author"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:textColor="#8affffff"
+                    android:textAlignment="viewStart"
+                    android:layout_gravity="start"/>
+                </LinearLayout>
 
-                    <!-- Article title -->
-                    <TextView android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="0dp"
-                        android:id="@+id/article_title"
-                        android:maxLines="4"
-                        android:ellipsize="end"
-                        android:textSize="@dimen/text_size_large"
-                        android:lineSpacingMultiplier="1.1"
-                        android:textColor="#deffffff"
-                        android:textAlignment="viewStart"/>
-
-                    <!-- Article author -->
-                    <TextView android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:id="@+id/article_author"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:textSize="16sp"
-                        android:textColor="#8affffff"
-                        android:textAlignment="viewStart" />
-                    </LinearLayout>
-
-                    <View android:id="@+id/header_shadow"
-                        android:layout_width="match_parent"
-                        android:layout_height="6dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="-6dp"
-                        android:background="@drawable/bottom_shadow"/>
-
-            </FrameLayout>
-
+                <View android:id="@+id/header_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="-6dp"
+                    android:background="@drawable/bottom_shadow"/>
 
         </FrameLayout>
+
+    </FrameLayout>
 
     </com.gamecockmobile.news.ObservableScrollView>
