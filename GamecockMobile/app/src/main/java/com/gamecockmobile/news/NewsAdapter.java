@@ -24,6 +24,7 @@ import org.xml.sax.XMLReader;
 
 import com.bumptech.glide.Glide;
 import com.gamecockmobile.R;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -40,112 +41,112 @@ import android.widget.TextView;
 
 public class NewsAdapter extends BaseAdapter {
 
-  private List<FeedMessage> mFeed;
-  private Context mContext;
-  private LayoutInflater mInflater;
-  static final String mURL = "http://www.dailygamecock.com/dart/feed/top-stories.xml";
-  private Bitmap mBitmap;
-  private DrawableManager mDrawableManager;
-  private LruCache<String, Bitmap> mMemoryCache;
+    private List<FeedMessage> mFeed;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    static final String mURL = "http://www.dailygamecock.com/dart/feed/top-stories.xml";
+    private Bitmap mBitmap;
+    private DrawableManager mDrawableManager;
+    private LruCache<String, Bitmap> mMemoryCache;
 
-  public NewsAdapter(Context context) {
-    mContext = context;
-    mInflater = LayoutInflater.from(context);
-    mDrawableManager = new DrawableManager();
+    public NewsAdapter(Context context) {
+        mContext = context;
+        mInflater = LayoutInflater.from(context);
+        mDrawableManager = new DrawableManager();
 
-    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-    final int cacheSize = maxMemory / 8;
-    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-      @SuppressLint("NewApi")
-      @Override
-      protected int sizeOf(String key, Bitmap bitmap) {
-        return bitmap.getByteCount() / 1024;
-      }
-    };
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @SuppressLint("NewApi")
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
 
-    System.out.println("Starting async task");
+        System.out.println("Starting async task");
 
-    try {
-      mFeed = new RetrieveFeedTask().execute(mURL).get();
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+        try {
+            mFeed = new RetrieveFeedTask().execute(mURL).get();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        System.out.println(mFeed.size());
     }
 
-    System.out.println(mFeed.size());
-  }
-
-  @Override
-  public int getCount() {
-    return mFeed.size();
-  }
-
-  @Override
-  public Object getItem(int position) {
-    return mFeed.get(position);
-  }
-
-  @Override
-  public long getItemId(int position) {
-    // TODO Auto-generated method stub
-    return position;
-  }
-
-  @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
-    ViewHolder holder;
-    Bitmap bitmap = null;
-    String imageUrl;
-    String title;
-    String author;
-    FeedMessage message = mFeed.get(position);
-
-    if (convertView == null) {
-      holder = new ViewHolder();
-
-      convertView = mInflater.inflate(R.layout.list_item_news, parent, false);
-      holder.image = (ImageView) convertView.findViewById(R.id.news_photo);
-      holder.title = (TextView) convertView.findViewById(R.id.news_title);
-      holder.author = (TextView) convertView.findViewById(R.id.news_author);
-      convertView.setTag(holder);
-    } else {
-      holder = (ViewHolder) convertView.getTag();
+    @Override
+    public int getCount() {
+        return mFeed.size();
     }
 
-    String url = parseURL(message.description);
-    if (url != null) {
-        holder.image.setColorFilter(setColorAlpha(Color.BLACK, 0.4f));
-      Glide.load(url)
-              .centerCrop()
-              .placeholder(R.drawable.gray_background)
-              .animate(R.animator.image_fade_in)
-              .into(holder.image);
-    } else {
-        holder.image.setColorFilter(setColorAlpha(Color.BLACK, 0.0f));
-        holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.garnet_background));
+    @Override
+    public Object getItem(int position) {
+        return mFeed.get(position);
     }
-    holder.title.setText(message.title.trim());
-    holder.author.setText(message.author.trim());
 
-    return convertView;
-  }
-
-  private String parseURL(String description) {
-    int start = description.indexOf('"');
-    int end = description.indexOf('"', start + 1);
-
-    if (start == -1 || end == -1) {
-      return null;
-    } else {
-      return description.substring(start + 1, end);
+    @Override
+    public long getItemId(int position) {
+        // TODO Auto-generated method stub
+        return position;
     }
-  }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        Bitmap bitmap = null;
+        String imageUrl;
+        String title;
+        String author;
+        FeedMessage message = mFeed.get(position);
+
+        if (convertView == null) {
+            holder = new ViewHolder();
+
+            convertView = mInflater.inflate(R.layout.list_item_news, parent, false);
+            holder.image = (ImageView) convertView.findViewById(R.id.news_photo);
+            holder.title = (TextView) convertView.findViewById(R.id.news_title);
+            holder.author = (TextView) convertView.findViewById(R.id.news_author);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        String url = parseURL(message.description);
+        if (url != null) {
+            holder.image.setColorFilter(setColorAlpha(Color.BLACK, 0.4f));
+            Glide.load(url)
+                    .centerCrop()
+                    .placeholder(R.drawable.gray_background)
+                    .animate(R.animator.image_fade_in)
+                    .into(holder.image);
+        } else {
+            holder.image.setColorFilter(setColorAlpha(Color.BLACK, 0.0f));
+            holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.garnet_background));
+        }
+        holder.title.setText(message.title.trim());
+        holder.author.setText(message.author.trim());
+
+        return convertView;
+    }
+
+    private String parseURL(String description) {
+        int start = description.indexOf('"');
+        int end = description.indexOf('"', start + 1);
+
+        if (start == -1 || end == -1) {
+            return null;
+        } else {
+            return description.substring(start + 1, end);
+        }
+    }
 
     public static int setColorAlpha(int color, float alpha) {
-        int alpha_int = Math.min(Math.max((int)(alpha * 255.0f), 0), 255);
+        int alpha_int = Math.min(Math.max((int) (alpha * 255.0f), 0), 255);
         return Color.argb(alpha_int, Color.red(color), Color.green(color), Color.blue(color));
     }
 
@@ -248,60 +249,66 @@ public class NewsAdapter extends BaseAdapter {
 //    return inSampleSize;
 //  }
 
-  static class ViewHolder {
-    ImageView image;
-    TextView title;
-    TextView author;
-  }
-
-  class RetrieveFeedTask extends AsyncTask<String, Void, List<FeedMessage>> {
-    private Exception exception;
-    List<FeedMessage> messages = new ArrayList<FeedMessage>();
-    URL url = null;
-    BufferedReader br;
-    InputSource is;
-    RSSFeedParser parser;
-    SAXParserFactory factory;
-    SAXParser sp;
-    XMLReader reader;
-
-    @Override
-    protected List<FeedMessage> doInBackground(String... urls) {
-      System.out.println("Enter doInBackground");
-      try {
-        url = new URL(urls[0]);
-        br = new BufferedReader(new InputStreamReader(url.openStream()));
-        is = new InputSource(br);
-        parser = new RSSFeedParser();
-        factory = SAXParserFactory.newInstance();
-        sp = factory.newSAXParser();
-        reader = sp.getXMLReader();
-
-        reader.setContentHandler(parser);
-        reader.parse(is);
-
-        messages = parser.list;
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (ParserConfigurationException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (SAXException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      System.out.println("Exit doInBackground");
-      return messages;
+    static class ViewHolder {
+        ImageView image;
+        TextView title;
+        TextView author;
     }
 
-    protected void onPostExecute(List<FeedMessage> feed) {
-      System.out.println("Enter onPostExecute");
-      mFeed = feed;
-      System.out.println("Exit onPostExecute");
-    }
+    /**
+     * *************************************************************
+     * RetrieveFeedTask class.
+     * <p/>
+     * This class access the DailyGamecock RSS Feed and runs all the main
+     * functions for parsing the feed. In order to parse the RSS Feed, the
+     * work must be done in an AsyncTask because the Android OS will not allow
+     * network operations to be performed on the main thread.
+     */
+    class RetrieveFeedTask extends AsyncTask<String, Void, List<FeedMessage>> {
+        private Exception exception;
+        List<FeedMessage> messages = new ArrayList<FeedMessage>();
+        URL url = null;
+        BufferedReader br;
+        InputSource is;
+        RSSFeedParser parser;
+        SAXParserFactory factory;
+        SAXParser sp;
+        XMLReader reader;
 
-  }
+        @Override
+        protected List<FeedMessage> doInBackground(String... urls) {
+
+            try {
+                url = new URL(urls[0]);
+                br = new BufferedReader(new InputStreamReader(url.openStream()));
+                is = new InputSource(br);
+                parser = new RSSFeedParser();
+                factory = SAXParserFactory.newInstance();
+                sp = factory.newSAXParser();
+                reader = sp.getXMLReader();
+
+                reader.setContentHandler(parser);
+                reader.parse(is);
+
+                messages = parser.list;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (SAXException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            return messages;
+        }
+
+        protected void onPostExecute(List<FeedMessage> feed) {
+            mFeed = feed;
+        }
+    }
 
 //  class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 //    URL url = null;

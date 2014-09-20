@@ -12,6 +12,11 @@
                 qualifiers=""
                 type="animator" />
             <file
+                name="image_fade_in"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/animator/image_fade_in.xml"
+                qualifiers=""
+                type="animator" />
+            <file
                 name="slide_left_in"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/animator/slide_left_in.xml"
                 qualifiers=""
@@ -21,6 +26,11 @@
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/animator/slide_right_out.xml"
                 qualifiers=""
                 type="animator" />
+            <file
+                name="blue_background"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/blue_background.xml"
+                qualifiers=""
+                type="drawable" />
             <file
                 name="course_list_item_bg_normal"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/course_list_item_bg_normal.xml"
@@ -77,6 +87,11 @@
                 qualifiers=""
                 type="drawable" />
             <file
+                name="garnet_background"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/garnet_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
                 name="garnet_button"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/garnet_button.xml"
                 qualifiers=""
@@ -89,6 +104,11 @@
             <file
                 name="garnet_button_pressed"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/garnet_button_pressed.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="gray_background"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/gray_background.xml"
                 qualifiers=""
                 type="drawable" />
             <file
@@ -107,6 +127,21 @@
                 qualifiers=""
                 type="drawable" />
             <file
+                name="photo_banner_scrim"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/photo_banner_scrim.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="sky_background"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/sky_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="yellow_background"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/yellow_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
                 name="drawer_shadow"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-hdpi/drawer_shadow.9.png"
                 qualifiers="hdpi-v4"
@@ -119,6 +154,16 @@
             <file
                 name="ic_action_cancel"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-hdpi/ic_action_cancel.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_discard"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-hdpi/ic_action_discard.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_edit"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-hdpi/ic_action_edit.png"
                 qualifiers="hdpi-v4"
                 type="drawable" />
             <file
@@ -152,6 +197,16 @@
                 qualifiers="mdpi-v4"
                 type="drawable" />
             <file
+                name="ic_action_discard"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-mdpi/ic_action_discard.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_edit"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-mdpi/ic_action_edit.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
                 name="ic_action_new"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-mdpi/ic_action_new.png"
                 qualifiers="mdpi-v4"
@@ -179,6 +234,16 @@
             <file
                 name="ic_action_cancel"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xhdpi/ic_action_cancel.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_discard"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xhdpi/ic_action_discard.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_edit"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xhdpi/ic_action_edit.png"
                 qualifiers="xhdpi-v4"
                 type="drawable" />
             <file
@@ -212,6 +277,11 @@
                 qualifiers="xhdpi-v4"
                 type="drawable" />
             <file
+                name="bottom_shadow"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/bottom_shadow.9.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
                 name="ic_action_accept"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/ic_action_accept.png"
                 qualifiers="xxhdpi-v4"
@@ -219,6 +289,16 @@
             <file
                 name="ic_action_cancel"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/ic_action_cancel.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_discard"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/ic_action_discard.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_edit"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/ic_action_edit.png"
                 qualifiers="xxhdpi-v4"
                 type="drawable" />
             <file
@@ -252,6 +332,11 @@
                 qualifiers=""
                 type="layout" />
             <file
+                name="activity_article_details"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_article_details.xml"
+                qualifiers=""
+                type="layout" />
+            <file
                 name="activity_buses_fragment"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_buses_fragment.xml"
                 qualifiers=""
@@ -259,6 +344,11 @@
             <file
                 name="activity_course_list"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_course_list.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_event_details"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_event_details.xml"
                 qualifiers=""
                 type="layout" />
             <file
@@ -302,8 +392,18 @@
                 qualifiers=""
                 type="layout" />
             <file
+                name="list_item_news"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/list_item_news.xml"
+                qualifiers=""
+                type="layout" />
+            <file
                 name="main_icon"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/main_icon.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="news_fragment"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/news_fragment.xml"
                 qualifiers=""
                 type="layout" />
             <file
@@ -344,6 +444,11 @@
             <file
                 name="course_list"
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/menu/course_list.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="event_details"
+                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/menu/event_details.xml"
                 qualifiers=""
                 type="menu" />
             <file
@@ -886,116 +991,11 @@ true
                 </style>
             </file>
             <file
-                name="ic_action_edit"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xhdpi/ic_action_edit.png"
-                qualifiers="xhdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_action_discard"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xhdpi/ic_action_discard.png"
-                qualifiers="xhdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_action_discard"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/ic_action_discard.png"
-                qualifiers="xxhdpi-v4"
-                type="drawable" />
-            <file
-                name="activity_event_details"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_event_details.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="event_details"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/menu/event_details.xml"
-                qualifiers=""
-                type="menu" />
-            <file
-                name="ic_action_edit"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-mdpi/ic_action_edit.png"
-                qualifiers="mdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_action_discard"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-mdpi/ic_action_discard.png"
-                qualifiers="mdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_action_edit"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-hdpi/ic_action_edit.png"
-                qualifiers="hdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_action_discard"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-hdpi/ic_action_discard.png"
-                qualifiers="hdpi-v4"
-                type="drawable" />
-            <file
-                name="ic_action_edit"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/ic_action_edit.png"
-                qualifiers="xxhdpi-v4"
-                type="drawable" />
-            <file
                 path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/values-w820dp/dimens.xml"
                 qualifiers="w820dp-v13" >
                 <dimen name="activity_horizontal_margin" >64dp
                 </dimen>
             </file>
-            <file
-                name="gray_background"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/gray_background.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="blue_background"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/blue_background.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="sky_background"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/sky_background.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="yellow_background"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/yellow_background.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="image_fade_in"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/animator/image_fade_in.xml"
-                qualifiers=""
-                type="animator" />
-            <file
-                name="news_fragment"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/news_fragment.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="list_item_news"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/list_item_news.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="garnet_background"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/garnet_background.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="bottom_shadow"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable-xxhdpi/bottom_shadow.9.png"
-                qualifiers="xxhdpi-v4"
-                type="drawable" />
-            <file
-                name="photo_banner_scrim"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/drawable/photo_banner_scrim.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="activity_article_details"
-                path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/activity_article_details.xml"
-                qualifiers=""
-                type="layout" />
         </source>
         <source path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/generated/res/rs/debug" />
         <source path="/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/build/generated/res/generated/debug" />

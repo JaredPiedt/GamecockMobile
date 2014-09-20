@@ -5,10 +5,10 @@
     android:orientation="vertical"
     android:background="#000000" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@android:color/darker_gray"/>-->
 
     <TextView
         android:id="@+id/text1"
@@ -17,14 +17,21 @@
         android:fontFamily="sans-serif-light"
         android:textSize="24sp"
         android:layout_gravity="center"
-        android:gravity="start"
+        android:gravity="center"
         android:padding="5dp"
-        android:background="@android:color/white"
-        android:textColor="@color/garnet"/>
+        android:background="@color/garnet"
+        android:textColor="@color/white"/>
 
-    <TextView
+    <View android:id="@+id/header_shadow"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:layout_height="6dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="-6dp"
+        android:background="@drawable/bottom_shadow"/>
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@android:color/darker_gray"/>-->
     
 </LinearLayout>
