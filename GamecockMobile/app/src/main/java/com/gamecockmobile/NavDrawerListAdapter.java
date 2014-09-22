@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NavDrawerListAdapter extends BaseAdapter {
@@ -40,17 +41,17 @@ public class NavDrawerListAdapter extends BaseAdapter {
       if (convertView == null) {
               LayoutInflater mInflater = (LayoutInflater)
                       context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-              System.out.println("reached here");
               convertView = mInflater.inflate(R.layout.drawer_list_item, null);
-              System.out.println("reached here 2");
       }
         
       
       TextView txtTitle = (TextView) convertView.findViewById(R.id.drawer_title);
+      ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
 //      TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
 //        
 //      imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
       txtTitle.setText(navDrawerItems.get(position).getTitle());
+      icon.setImageDrawable(context.getResources().getDrawable(navDrawerItems.get(position).getResId()));
        
       // displaying count
       // check whether it set visible or not

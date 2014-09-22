@@ -6,6 +6,7 @@ import com.gamecockmobile.buses.BusesFragment;
 import com.gamecockmobile.events.EventsFragment;
 import com.gamecockmobile.news.NewsFragment;
 import com.gamecockmobile.social.SocialFragment;
+import com.gamecockmobile.util.LPreviewUtils;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.widget.ListView;
  */
 public class MainActivity extends Activity {
 
+    //private LPreviewUtils.ActionBarDrawerToggleWrapper mDrawerToggle;
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
@@ -67,15 +69,15 @@ public class MainActivity extends Activity {
 
     // adding nav drawer items to array
     // Schedule
-    navDrawerItems.add(new NavDrawerItem(navMenuTitles[0]));
+    navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], R.drawable.ic_drawer_social));
     // Events
-    navDrawerItems.add(new NavDrawerItem(navMenuTitles[1]));
+    navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], R.drawable.ic_drawer_social));
     // Buses
-    navDrawerItems.add(new NavDrawerItem(navMenuTitles[2]));
+    navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], R.drawable.ic_drawer_social));
     // Social
-    navDrawerItems.add(new NavDrawerItem(navMenuTitles[3]));
+    navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], R.drawable.ic_drawer_social));
     // News
-    navDrawerItems.add(new NavDrawerItem(navMenuTitles[4]));
+    navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], R.drawable.ic_drawer_social));
 
     mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
@@ -220,5 +222,4 @@ public class MainActivity extends Activity {
     // Pass any configuration change to the drawer toggls
     mDrawerToggle.onConfigurationChanged(newConfig);
   }
-
 }
