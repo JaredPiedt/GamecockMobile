@@ -335,7 +335,7 @@ public class ArticleDetailsActivity extends Activity implements ObservableScroll
 
             for(Element e : paragraphs)
             {
-                s += "/t" + Jsoup.parse(e.toString()).text() + "\n";
+                s += "\t" + Jsoup.parse(e.toString()).text() + "\n";
 
             }
 

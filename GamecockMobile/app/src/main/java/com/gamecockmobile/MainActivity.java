@@ -7,6 +7,7 @@ import com.gamecockmobile.events.EventsFragment;
 import com.gamecockmobile.news.NewsFragment;
 import com.gamecockmobile.social.SocialFragment;
 import com.gamecockmobile.util.LPreviewUtils;
+import com.gamecockmobile.util.UIUtils;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -19,11 +20,15 @@ import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * This is the main class for the app that runs the dashboard for all of the resources.
@@ -62,6 +67,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // deleteDatabase("CoursesManager.db");
         super.onCreate(savedInstanceState);
+
+        System.out.println("Starting...");
         setContentView(R.layout.activity_main);
 
         mTitle = mDrawerTitle = getTitle();
@@ -76,15 +83,15 @@ public class MainActivity extends Activity {
 
         // adding nav drawer items to array
         // Schedule
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_COURSE_LIST], R.drawable.ic_drawer_social));
         // Events
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_EVENTS], R.drawable.ic_drawer_social));
         // Buses
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem("selector", R.drawable.ic_drawer_social));
         // Social
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_SOCIAL], R.drawable.ic_drawer_social));
         // News
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_NEWS], R.drawable.ic_drawer_social));
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
@@ -168,20 +175,21 @@ public class MainActivity extends Activity {
     private void goToNavDrawerItem(int item) {
         // update the main content by replacing fragments
         Fragment fragment = null;
+
         switch (item) {
-            case 0:
+            case NAVDRAWER_ITEM_COURSE_LIST:
                 fragment = new CourseListFragment();
                 break;
-            case 1:
+            case NAVDRAWER_ITEM_EVENTS:
                 fragment = new EventsFragment();
                 break;
-            case 2:
+            case NAVDRAWER_ITEM_BUSES:
                 fragment = new BusesFragment();
                 break;
-            case 3:
+            case NAVDRAWER_ITEM_SOCIAL:
                 fragment = new SocialFragment();
                 break;
-            case 4:
+            case NAVDRAWER_ITEM_NEWS:
                 fragment = new NewsFragment();
             default:
                 break;
@@ -199,6 +207,7 @@ public class MainActivity extends Activity {
     private void setSelectedNavDrawerItem(int itemId) {
         mDrawerList.setItemChecked(itemId, true);
         mDrawerList.setSelection(itemId);
+
         setTitle(navMenuTitles[itemId]);
     }
 

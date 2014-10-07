@@ -96,6 +96,9 @@
         <attr name="hasStickyHeaders" format="boolean" />
         <attr name="isDrawingListUnderStickyHeader" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="TintableImageView">
+        <attr name="tint" format="reference|color" />
+    </declare-styleable>
     <!-- From: file:/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/values/dimens.xml -->
     <eat-comment />
 
@@ -124,6 +127,11 @@
     <string name="endTime">END TIME</string>
     <string name="event_name">Event name</string>
     <string name="hello_world">Hello world!</string>
+    <string name="navdrawer_item_buses">Buses</string>
+    <string name="navdrawer_item_course_list">Course List</string>
+    <string name="navdrawer_item_events">Events</string>
+    <string name="navdrawer_item_news">News</string>
+    <string name="navdrawer_item_social">Social</string>
     <string name="none_selected">- None Selected -</string>
     <string name="ok_text">OK</string>
     <string name="reminders">REMINDERS</string>

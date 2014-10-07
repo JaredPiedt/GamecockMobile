@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:background="?android:selectableItemBackground"
     android:gravity="start|center"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:layout_height="48dp">
 
 
-    <ImageView
+    <com.gamecockmobile.util.TintableImageView
         android:id="@+id/icon"
         android:layout_height="24dp"
         android:layout_width="24dp"
-        android:layout_marginRight="32dp"/>
+        android:layout_marginRight="32dp"
+        app:tint="@color/nav_drawer_icon_selector"/>
 
     <TextView
         android:id="@+id/drawer_title"
@@ -21,7 +22,7 @@
         android:layout_height="48dp"
         android:gravity="start|center_vertical"
         android:layout_gravity="start|center_vertical"
-        android:textColor="@android:color/black"
+        android:textColor="@color/nav_drawer_icon_selector"
         android:textSize="@dimen/text_size_large"/>
 
 </LinearLayout><!-- From: file:/Users/piedt/Documents/GamecockMobile/GamecockMobile/app/src/main/res/layout/drawer_list_item.xml -->

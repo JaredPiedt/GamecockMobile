@@ -19,6 +19,11 @@
     <color name="gray_background">#E8E8E8</color>
 
     <string name="hello_world">Hello world!</string>
+    <string name="navdrawer_item_course_list">Course List</string>
+    <string name="navdrawer_item_events">Events</string>
+    <string name="navdrawer_item_buses">Buses</string>
+    <string name="navdrawer_item_social">Social</string>
+    <string name="navdrawer_item_news">News</string>
     <string name="none_selected">- None Selected -</string>
     <string name="ok_text">OK</string>
     <string name="reminders">REMINDERS</string>

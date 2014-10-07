@@ -39,12 +39,19 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int isDrawingListUnderStickyHeader=0x7f010001;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int tint=0x7f010002;
     }
     public static final class color {
         public static final int accent_garnet=0x7f060000;
         public static final int garnet=0x7f060001;
         public static final int gray_background=0x7f060002;
         public static final int gullah_blue=0x7f060003;
+        public static final int nav_drawer_icon_selector=0x7f060009;
         public static final int stacked_garnet=0x7f060004;
         public static final int statehouse_gray=0x7f060005;
         public static final int upstate_sky=0x7f060006;
@@ -90,9 +97,10 @@ containing a value of this type.
         public static final int list_item_bg_normal=0x7f02001b;
         public static final int list_item_bg_pressed=0x7f02001c;
         public static final int list_selector=0x7f02001d;
-        public static final int photo_banner_scrim=0x7f02001e;
-        public static final int sky_background=0x7f02001f;
-        public static final int yellow_background=0x7f020020;
+        public static final int nav_drawer_title_selector=0x7f02001e;
+        public static final int photo_banner_scrim=0x7f02001f;
+        public static final int sky_background=0x7f020020;
+        public static final int yellow_background=0x7f020021;
     }
     public static final class id {
         public static final int action_discard_event_details=0x7f0b0044;
@@ -184,10 +192,11 @@ containing a value of this type.
         public static final int include_done_button=0x7f03000f;
         public static final int list_item_news=0x7f030010;
         public static final int main_icon=0x7f030011;
-        public static final int news_fragment=0x7f030012;
-        public static final int news_list_item=0x7f030013;
-        public static final int social_fragment=0x7f030014;
-        public static final int test_list_item_layout=0x7f030015;
+        public static final int navdrawer_separator=0x7f030012;
+        public static final int news_fragment=0x7f030013;
+        public static final int news_list_item=0x7f030014;
+        public static final int social_fragment=0x7f030015;
+        public static final int test_list_item_layout=0x7f030016;
     }
     public static final class menu {
         public static final int add_course=0x7f0a0000;
@@ -215,18 +224,23 @@ containing a value of this type.
         public static final int endTime=0x7f08000d;
         public static final int event_name=0x7f08000e;
         public static final int hello_world=0x7f08000f;
-        public static final int none_selected=0x7f080010;
-        public static final int ok_text=0x7f080011;
-        public static final int reminders=0x7f080012;
-        public static final int set=0x7f080013;
-        public static final int startTime=0x7f080014;
-        public static final int title_activity_add_course=0x7f080015;
-        public static final int title_activity_add_day_and_time=0x7f080016;
-        public static final int title_activity_add_event=0x7f080017;
-        public static final int title_activity_buses_fragment=0x7f080018;
-        public static final int title_activity_course_list=0x7f080019;
-        public static final int title_activity_event_details=0x7f08001a;
-        public static final int type=0x7f08001b;
+        public static final int navdrawer_item_buses=0x7f080010;
+        public static final int navdrawer_item_course_list=0x7f080011;
+        public static final int navdrawer_item_events=0x7f080012;
+        public static final int navdrawer_item_news=0x7f080013;
+        public static final int navdrawer_item_social=0x7f080014;
+        public static final int none_selected=0x7f080015;
+        public static final int ok_text=0x7f080016;
+        public static final int reminders=0x7f080017;
+        public static final int set=0x7f080018;
+        public static final int startTime=0x7f080019;
+        public static final int title_activity_add_course=0x7f08001a;
+        public static final int title_activity_add_day_and_time=0x7f08001b;
+        public static final int title_activity_add_event=0x7f08001c;
+        public static final int title_activity_buses_fragment=0x7f08001d;
+        public static final int title_activity_course_list=0x7f08001e;
+        public static final int title_activity_event_details=0x7f08001f;
+        public static final int type=0x7f080020;
     }
     public static final class style {
         public static final int ActionBarTitleText=0x7f090002;
@@ -481,5 +495,30 @@ containing a value of this type.
           @attr name com.gamecockmobile:isDrawingListUnderStickyHeader
         */
         public static final int StickyListHeadersListView_isDrawingListUnderStickyHeader = 22;
+        /** Attributes that can be used with a TintableImageView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #TintableImageView_tint com.gamecockmobile:tint}</code></td><td></td></tr>
+           </table>
+           @see #TintableImageView_tint
+         */
+        public static final int[] TintableImageView = {
+            0x7f010002
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.gamecockmobile.R.attr#tint}
+          attribute's value can be found in the {@link #TintableImageView} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name com.gamecockmobile:tint
+        */
+        public static final int TintableImageView_tint = 0;
     };
 }

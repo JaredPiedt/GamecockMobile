@@ -38,9 +38,16 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
+      LayoutInflater mInflater = (LayoutInflater)
+              context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+      if(navDrawerItems.get(position).getTitle() == "selector"){
+          System.out.println("Return separator");
+          convertView = mInflater.inflate(R.layout.navdrawer_separator, null);
+          return convertView;
+      }
+
       if (convertView == null) {
-              LayoutInflater mInflater = (LayoutInflater)
-                      context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
               convertView = mInflater.inflate(R.layout.drawer_list_item, null);
       }
         
@@ -51,7 +58,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 //        
 //      imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
       txtTitle.setText(navDrawerItems.get(position).getTitle());
-      icon.setImageDrawable(context.getResources().getDrawable(navDrawerItems.get(position).getResId()));
+      icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_drawer_social));
        
       // displaying count
       // check whether it set visible or not
