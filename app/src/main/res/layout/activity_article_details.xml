@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.gamecockmobile.news.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    android:fillViewport="true"
+    android:background="#fff">
+
+        <FrameLayout
+            android:id="@+id/scroll_view_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false">
+
+            <!-- Background photo -->
+            <FrameLayout
+                android:id="@+id/article_photo_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/article_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/details_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:paddingTop="16dp"
+                android:paddingRight="@dimen/keyline_1"
+                android:paddingBottom="48dp"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:id="@+id/article_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="#de000000"
+                    android:lineSpacingMultiplier="1.1" />
+            </LinearLayout>
+
+            <!--&lt;!&ndash; Title/subtitle bar (floating; position determined at run time as the content view scrolls) &ndash;&gt;-->
+            <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:clipChildren="false"-->
+                <!--android:clipToPadding="false"-->
+                <!--android:id="@+id/header_article">-->
+
+                <!--&lt;!&ndash; height assigned dynamically &ndash;&gt;-->
+                <!--<View-->
+                    <!--android:id="@+id/header_background"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:background="@color/garnet" />-->
+
+            <LinearLayout
+                android:id="@+id/header_article"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                >
+
+                <include layout="@layout/toolbar_actionbar"/>
+
+                <!-- Article title -->
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="@dimen/keyline_2_article_detail"
+                    android:layout_marginRight="@dimen/keyline_1"
+                    android:id="@+id/article_title"
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/text_size_large"
+                    android:lineSpacingMultiplier="1.1"
+                    android:textColor="#deffffff"
+                    android:textAlignment="viewStart"
+                    android:layout_gravity="start" />
+
+                <!-- Article author -->
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="@dimen/keyline_2_article_detail"
+                    android:layout_marginRight="@dimen/keyline_1"
+                    android:id="@+id/article_author"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:textColor="#8affffff"
+                    android:textAlignment="viewStart"
+                    android:layout_gravity="start" />
+            </LinearLayout>
+
+            <!--<View-->
+                <!--android:id="@+id/header_shadow"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="6dp"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_marginBottom="-6dp"-->
+                <!--android:background="@drawable/bottom_shadow" />-->
+
+        </FrameLayout>
+
+        <!--</FrameLayout>-->
+
+</com.gamecockmobile.news.ObservableScrollView>

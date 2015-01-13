@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- UI elements -->
+    <dimen name="article_details_floating_width">500dp</dimen>
+    <dimen name="article_details_floating_height">500dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
+
+    <dimen name="keyline_1">16dp</dimen>
+    <dimen name="keyline_2">72dp</dimen>
+    <dimen name="keyline_2_minus_16dp">56dp</dimen>
+    <dimen name="keyline_2_article_detail">@dimen/keyline_2</dimen>
+
+    <dimen name="headerbar_elevation">4dp</dimen>
+    <dimen name="article_details_max_header_elevation">@dimen/headerbar_elevation</dimen>
+</resources>
