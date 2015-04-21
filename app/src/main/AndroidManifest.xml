@@ -10,15 +10,24 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-            <!--android:theme="@style/HomeActionBarTheme" >-->
+            android:name="com.gamecockmobile.MainActivity"
+            android:label="@string/app_name" >
+
+            <!-- android:theme="@style/HomeActionBarTheme" > -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,41 +35,46 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CourseListActivity"
-            android:label="@string/title_activity_course_list"
-            android:parentActivityName=".MainActivity">
-            <!--android:theme="@style/CourseListActionBarTheme" >-->
+            android:name="com.gamecockmobile.AddCourseActivity"
+            android:label="@string/title_activity_add_course"
+            android:theme="@style/ActivityAddCourseTheme">
+
+            <!-- android:theme="@style/AddCourseActionBarTheme" > -->
         </activity>
         <activity
-            android:name=".AddCourseActivity"
-            android:label="@string/title_activity_add_course">
-            <!--android:theme="@style/AddCourseActionBarTheme" >-->
+            android:name="com.gamecockmobile.AddDayAndTimeActivity"
+            android:label="@string/title_activity_add_day_and_time" >
+
+            <!-- android:theme="@style/AddCourseActionBarTheme" > -->
         </activity>
         <activity
-            android:name=".AddDayAndTimeActivity"
-            android:label="@string/title_activity_add_day_and_time">
-            <!--android:theme="@style/AddCourseActionBarTheme" >-->
-        </activity>
-        <activity
-            android:name=".buses.BusesFragment"
+            android:name="com.gamecockmobile.buses.BusesFragment"
             android:label="@string/title_activity_buses_fragment" >
         </activity>
         <activity
-            android:name=".events.AddEventActivity"
-            android:label="@string/title_activity_add_event">
-            <!--android:theme="@style/AddEventActionBarTheme" >-->
+            android:name="com.gamecockmobile.events.AddEventActivity"
+            android:label="@string/title_activity_add_event" >
+
+            <!-- android:theme="@style/AddEventActionBarTheme" > -->
         </activity>
         <activity
-            android:name=".events.EventDetailsActivity"
-            android:label="@string/title_activity_event_details">
-            <!--android:theme="@style/EventDetailsActionBarTheme">-->
-        </activity>
-        <activity android:name=".news.ArticleDetailsActivity"
-            android:label="ArticleDetailsActivity"
-            android:theme="@style/AppTheme.Article">
-            <!--android:theme="@style/ArticleDetailsActionBar">-->
+            android:name="com.gamecockmobile.events.EventDetailsActivity"
+            android:label="@string/title_activity_event_details" >
 
-            </activity>
+            <!-- android:theme="@style/EventDetailsActionBarTheme"> -->
+        </activity>
+        <activity
+            android:name="com.gamecockmobile.news.ArticleDetailsActivity"
+            android:label="ArticleDetailsActivity"
+            android:theme="@style/AppTheme.Article" >
+
+            <!-- android:theme="@style/ArticleDetailsActionBar"> -->
+
+        </activity>
+
+        <service
+            android:name=".service.CourseDatabaseService"
+            android:exported="false"/>
     </application>
 
 </manifest>

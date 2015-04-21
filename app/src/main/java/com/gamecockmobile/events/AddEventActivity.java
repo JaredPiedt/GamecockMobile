@@ -7,8 +7,8 @@ import java.util.Locale;
 
 import com.gamecockmobile.ClassTime;
 import com.gamecockmobile.Course;
-import com.gamecockmobile.DatabaseHandler;
 import com.gamecockmobile.R;
+import com.gamecockmobile.provider.ScheduleDatabase;
 import com.gamecockmobile.util.LogUtils;
 
 import android.os.Bundle;
@@ -22,14 +22,19 @@ import android.app.TimePickerDialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -46,7 +51,7 @@ import android.widget.TimePicker;
  * @author Jared W. Piedt
  */
 @SuppressWarnings("deprecation")
-public class AddEventActivity extends Activity implements OnClickListener {
+public class AddEventActivity extends ActionBarActivity implements OnClickListener {
 
     EditText mEventNameEditText;
     Spinner mSelectCourseSpinner;
@@ -56,13 +61,17 @@ public class AddEventActivity extends Activity implements OnClickListener {
     Button mEndTimeButton;
     Spinner mRemindersSpinner;
 
+    Toolbar mToolbar;
+
     private String mTimeZone;
     private boolean mIsStartTime;
     private Time mStartTime;
     private Time mEndTime;
     private boolean mUpdateEvent;
 
-    DatabaseHandler db;
+    private int mCourseID;
+
+    ScheduleDatabase mDB;
     EventDatabaseHandler eDB;
 
     private Event mEvent;
@@ -77,60 +86,24 @@ public class AddEventActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-        final LayoutInflater inflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(R.layout.action_bar_add_course, null);
-        customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
-                new View.OnClickListener() {
-                    //
-                    public void onClick(View v) {
-                        // "Done"
-                        Intent intent = new Intent();
-                        int name = mSelectCourseSpinner.getSelectedItemPosition();
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_add_event);
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_ab_close));
 
-                        mEvent.setName(mEventNameEditText.getText().toString());
-                        mEvent.setCourse(mCourseNames.get(name));
-                        mEvent.setType(mSelectTypeSpinner.getSelectedItemPosition());
-                        mEvent.addNotification(mRemindersSpinner.getSelectedItemPosition());
+        if(mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
 
-                        if(mUpdateEvent){
-                            eDB.updateEvent(mEvent, getApplicationContext());
-                            LogUtils.LOGD(TAG, "Updating event " + mEvent.getId());
-                        } else {
-                            eDB.addEvent(mEvent);
-                            LogUtils.LOGD(TAG, "Adding event.");
-                        }
-
-                        setResult(1, intent);
-                        finish();
-                    }
-                }
-        );
-        customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // "Cancel"
-                        setResult(2);
-                        finish();
-                    }
-                }
-        );
-
-        // create a custom layout for the action bar so that it has a save and a cancel button
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("New event");
 
         // initialize the databases
-        db = new DatabaseHandler(this);
-        eDB = new EventDatabaseHandler(this);
+        //db = new DatabaseHandler(this);
+        mDB = new ScheduleDatabase(this);
 
         mEvent = new Event();
 
-        ArrayList<Course> mCourses = db.getAllCourses();
+        //ArrayList<Course> mCourses = db.getAllCourses();
+        ArrayList<Course> mCourses = mDB.getMyCourses();
         mTimeZone = Time.getCurrentTimezone();
         mStartTime = new Time(mTimeZone);
         mEndTime = new Time(mTimeZone);
@@ -138,8 +111,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
         // add course name to the 'ArrayList' of 'Courses' in order to create the 'Spinner' of 'Course'
         // names
         for (Course mCourse : mCourses) {
-            mCourseNames.add(mCourse.getCourseName());
-            System.out.println(mCourse.getCourseName());
+            mCourseNames.add(mCourse.getDept() + mCourse.getNumber());
         }
 
         // initialize all of the 'Buttons' and 'Spinners'
@@ -153,23 +125,39 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
         // Create an ArrayAdapter for the 'Spinner' used to select the 'Course' using the string array
         // and a default spinner layout
-        ArrayAdapter<String> selectCourseAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mCourseNames);
-        selectCourseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        ArrayAdapter<String> selectCourseAdapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_spinner_item, mCourseNames);
+//        selectCourseAdapter.setDropDownViewResource(R.layout.spinner_item_large);
+        SimpleCursorAdapter selectCourseAdapter = mDB.getMyCoursesAdapter();
         mSelectCourseSpinner.setAdapter(selectCourseAdapter);
+
+        mCourseID = -1;
+
+        mSelectCourseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCourseID = (int)id;
+                System.out.println("Course id set to -> " + mCourseID);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // Create an ArrayAdapter for the 'Spinner' used to select the type using the string array and a
         // default spinner layout
         ArrayAdapter<CharSequence> selectTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.types_array, android.R.layout.simple_spinner_item);
-        selectTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectTypeAdapter.setDropDownViewResource(R.layout.spinner_item_large);
         mSelectTypeSpinner.setAdapter(selectTypeAdapter);
 
         // Create an ArrayAdapter for the 'Spinner' used to select reminder times using the string array
         // and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.reminders_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.reminders_array, R.layout.spinner_item_large);
+        adapter.setDropDownViewResource(R.layout.spinner_item_large);
         mRemindersSpinner.setAdapter(adapter);
 
         Bundle mBundle = getIntent().getExtras();
@@ -191,6 +179,32 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
         }
 
+
+        Calendar c = Calendar.getInstance();
+        long millis = c.getTimeInMillis();
+        mEvent.setDate(millis);
+
+        int flags = DateUtils.FORMAT_SHOW_DATE;
+        flags |= DateUtils.FORMAT_SHOW_YEAR;
+        String timeString = DateUtils.formatDateTime(getApplicationContext(), millis, flags);
+        mDateButton.setText(timeString);
+
+        Time defaultStart = new Time();
+        defaultStart.hour = 8;
+        defaultStart.minute = 30;
+        setTime(mStartTimeButton, defaultStart.normalize(true));
+        mStartTime.hour = defaultStart.hour;
+        mStartTime.minute = defaultStart.minute;
+        mEvent.setStartTime(mStartTime.normalize(true));
+
+        Time defaultEnd = new Time();
+        defaultEnd.hour = 9;
+        defaultEnd.minute = 45;
+        setTime(mEndTimeButton, defaultEnd.normalize(true));
+        mEndTime.hour = defaultEnd.hour;
+        mEndTime.minute = defaultEnd.minute;
+        mEvent.setEndTime(mEndTime.normalize(true));
+
     }
 
     @Override
@@ -198,6 +212,41 @@ public class AddEventActivity extends Activity implements OnClickListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.add_event, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar actions click
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                System.out.println("Here");
+                Intent i = new Intent();
+                setResult(-1, i);
+                finish();
+                return true;
+            case R.id.action_save:
+                Intent intent = new Intent();
+                int name = mSelectCourseSpinner.getSelectedItemPosition();
+
+                mEvent.setName(mEventNameEditText.getText().toString());
+                mEvent.setCourse(mCourseNames.get(name));
+                mEvent.setType(mSelectTypeSpinner.getSelectedItemPosition());
+                mEvent.addNotification(mRemindersSpinner.getSelectedItemPosition());
+
+                if(mUpdateEvent){
+                    eDB.updateEvent(mEvent, getApplicationContext());
+                    LogUtils.LOGD(TAG, "Updating event " + mEvent.getId());
+                } else {
+                    mDB.insertEvent(mEvent, mCourseID);
+                    LogUtils.LOGD(TAG, "Adding event.");
+                }
+
+                setResult(1, intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -367,26 +416,26 @@ public class AddEventActivity extends Activity implements OnClickListener {
     private void autoDisplayTimes(long date) {
         int which = mSelectCourseSpinner.getSelectedItemPosition();
         String name = mCourseNames.get(which);
-        Course course = db.getCourseByName(name);
-        ArrayList<ClassTime> classTimes = course.getClassTimes();
+        //Course course = db.getCourseByName(name);
+        //ArrayList<ClassTime> classTimes = course.getClassTimes();
 
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(date);
         String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
 
-        for (ClassTime ct : classTimes) {
-            ArrayList<CharSequence> days = ct.getDays();
-
-            for (CharSequence cs : days) {
-                if (dayOfWeek.equals(cs.toString())) {
-                    setTime(mStartTimeButton, ct.getStartTime());
-                    mEvent.setStartTime(ct.getStartTime());
-
-                    setTime(mEndTimeButton, ct.getEndTime());
-                    mEvent.setEndTime(ct.getEndTime());
-                }
-            }
-        }
+//        for (ClassTime ct : classTimes) {
+//            ArrayList<CharSequence> days = ct.getDays();
+//
+//            for (CharSequence cs : days) {
+//                if (dayOfWeek.equals(cs.toString())) {
+//                    setTime(mStartTimeButton, ct.getStartTime());
+//                    mEvent.setStartTime(ct.getStartTime());
+//
+//                    setTime(mEndTimeButton, ct.getEndTime());
+//                    mEvent.setEndTime(ct.getEndTime());
+//                }
+//            }
+//        }
     }
 
     private void setUpLayout(){

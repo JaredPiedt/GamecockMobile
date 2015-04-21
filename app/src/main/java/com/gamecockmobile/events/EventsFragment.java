@@ -1,21 +1,18 @@
 package com.gamecockmobile.events;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.gamecockmobile.AddCourseActivity;
-import com.gamecockmobile.Course;
-import com.gamecockmobile.DatabaseHandler;
 import com.gamecockmobile.R;
+import com.gamecockmobile.provider.ScheduleDatabase;
 import com.gamecockmobile.stickylistheaders.StickyListHeadersListView;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import android.app.ActionBar.OnNavigationListener;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 
 /**
  * The 'EventsFragment' class is used for setting up the fragment when the 'Events' navigation
@@ -37,8 +33,10 @@ import android.widget.ArrayAdapter;
  */
 public class EventsFragment extends Fragment implements OnNavigationListener, OnItemClickListener, AdapterView.OnItemLongClickListener {
 
-    DatabaseHandler db;
     EventDatabaseHandler eDB;
+    ScheduleDatabase mDB;
+
+    FloatingActionButton mButtonAddEvent;
     TreeMap<Long, ArrayList<Event>> mTreeMap;
     ArrayList<Event> mEventsList;
     EventsAdapter mAdapter;
@@ -48,18 +46,20 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setTitle("Events");
+        //actionBar.setTitle("Events");
 
         // must call this method in order for the fragment to add items to the action bar
         setHasOptionsMenu(true);
 
         // initialize the databases
-        eDB = new EventDatabaseHandler(getActivity());
+        //eDB = new EventDatabaseHandler(getActivity());
+        mDB = new ScheduleDatabase(getActivity());
         mTreeMap = new TreeMap<Long, ArrayList<Event>>();
 
         ActionBar ab = getActivity().getActionBar();
 
-        mEventsList = eDB.getAllEvents();
+        //mEventsList = eDB.getAllEvents();
+        mEventsList = mDB.getAllEvents();
         Event tempEvent;
         long tempDate;
         ArrayList<Event> v;
@@ -101,6 +101,15 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
         stickyList.setAdapter(mAdapter);
         stickyList.setOnItemClickListener(this);
         stickyList.setOnItemLongClickListener(this);
+
+        mButtonAddEvent = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_event);
+        mButtonAddEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -125,7 +134,7 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
             if (mAdapter != null) {
                 mAdapter.updateResults();
             }
-            System.out.println(eDB.getEvent(1).toString());
+            //System.out.println(eDB.getEvent(1).toString());
         }
     }
 

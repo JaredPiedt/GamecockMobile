@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import com.gamecockmobile.buses.BusesFragment;
 import com.gamecockmobile.events.EventsFragment;
 import com.gamecockmobile.news.NewsFragment;
+import com.gamecockmobile.service.CourseDatabaseService;
 import com.gamecockmobile.social.SocialFragment;
 import com.gamecockmobile.util.LPreviewUtils;
 import com.gamecockmobile.util.UIUtils;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,6 +51,8 @@ public class MainActivity extends ActionBarActivity {
     // used to store app title
     private CharSequence mTitle;
 
+    private Intent mServiceIntent;
+
     // slide menu items
     private String[] navMenuTitles;
 
@@ -76,6 +80,8 @@ public class MainActivity extends ActionBarActivity {
         System.out.println("Starting...");
         setContentView(R.layout.activity_main);
 
+//        mServiceIntent = new Intent(this, CourseDatabaseService.class);
+//        this.startService(mServiceIntent);
         mTitle = mDrawerTitle = getTitle();
 
         // load slide menu items
@@ -139,6 +145,7 @@ public class MainActivity extends ActionBarActivity {
             // on first time display view for first nav item
             displayView(0);
         }
+        getSupportActionBar().setTitle(navMenuTitles[0]);
     }
 
     /**

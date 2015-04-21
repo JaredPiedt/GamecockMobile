@@ -10,6 +10,7 @@
     <string name="course">COURSE</string>
     <string name="course_name">Course name</string>
     <string name="date">DATE</string>
+    <string name="department">Department</string>
     <string name="dialog_empty_name">Please enter a course name.</string>
     <string name="done">Done</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -43,20 +44,20 @@
         <item>News</item>
     </string-array>
     <string-array name="reminders_array">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-        <item>45 minutes</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>3 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
-        <item>2 days</item>
-        <item>1 week</item>
+        <item>5 minutes before</item>
+        <item>10 minutes before</item>
+        <item>15 minutes before</item>
+        <item>20 minutes before</item>
+        <item>25 minutes before</item>
+        <item>30 minutes before</item>
+        <item>45 minutes before</item>
+        <item>1 hour before</item>
+        <item>2 hours before</item>
+        <item>3 hours before</item>
+        <item>12 hours before</item>
+        <item>24 hours before</item>
+        <item>2 days before</item>
+        <item>1 week v</item>
     </string-array>
     <string-array name="types_array">
         <item>Test</item>

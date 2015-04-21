@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import com.gamecockmobile.R;
+import com.gamecockmobile.provider.ScheduleDatabase;
 import com.gamecockmobile.stickylistheaders.StickyListHeadersAdapter;
 
 import android.annotation.SuppressLint;
@@ -24,6 +25,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   private ArrayList<Event> mEvents;
   private LayoutInflater inflater;
   private EventDatabaseHandler db;
+  private ScheduleDatabase mDB;
   private Context mContext;
   private int counter = 1;
   private HashMap<String, Integer> mColorIndex;
@@ -32,7 +34,8 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   public EventsAdapter(Context context) {
     inflater = LayoutInflater.from(context);
     db = new EventDatabaseHandler(context);
-    mEvents = db.getAllEvents();
+    mDB = new ScheduleDatabase(context);
+    mEvents = mDB.getAllEvents();
     mContext = context;
 
     mColorIndex = new HashMap<String, Integer>();
