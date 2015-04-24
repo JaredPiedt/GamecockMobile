@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.gamecockmobile.news.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -38,12 +39,19 @@
                 android:paddingBottom="48dp"
                 android:clipToPadding="false">
 
+                <ProgressBar
+                    android:id="@+id/progress_articleDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+
                 <TextView
                     android:id="@+id/article_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="16sp"
                     android:textColor="#de000000"
                     android:lineSpacingMultiplier="1.1" />
             </LinearLayout>
@@ -80,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="@dimen/keyline_2_article_detail"
+                    android:layout_marginLeft="@dimen/keyline_1"
                     android:layout_marginRight="@dimen/keyline_1"
                     android:id="@+id/article_title"
                     android:maxLines="4"
@@ -95,7 +103,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="@dimen/keyline_2_article_detail"
+                    android:layout_marginLeft="@dimen/keyline_1"
                     android:layout_marginRight="@dimen/keyline_1"
                     android:id="@+id/article_author"
                     android:maxLines="2"

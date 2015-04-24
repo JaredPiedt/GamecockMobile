@@ -54,7 +54,7 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
 //    db = new DatabaseHandler(getActivity());
 
       ArrayList<Course> courses = mDB.getMyCourses();
-      mAdapter = new CourseRecyclerAdapter(courses, R.layout.course_list_item);
+      mAdapter = new CourseRecyclerAdapter(getActivity(), courses, R.layout.course_list_item);
 
 //
 //    ArrayList<Course> courses = db.getAllCourses();
@@ -101,6 +101,13 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
 //    getListView().setBackgroundColor(getResources().getColor(R.color.gray_background));
   }
 
+    @Override
+    public void onResume() {
+        int position = getActivity().getIntent().getIntExtra("position", 0);
+        System.out.println("onResume " + position);
+        super.onResume();
+    }
+
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.course_list, menu);
     super.onCreateOptionsMenu(menu, inflater);
@@ -134,14 +141,19 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
+      System.out.println("Enter on activity result. requestCode = " + requestCode +  "  resultCode = " + resultCode);
     // check if the request code is same as what is passed here it is 2 and check that the Intent is
     // not equal to null so app doesn't crash when back button is pressed
     if (requestCode == 1 && data != null) {
 
         System.out.println("Course was saved");
       if (mAdapter != null) {
-        updateAdapter();
+
       }
+    } else if(resultCode == 2 && data != null) {
+        int position = data.getIntExtra("position", 0);
+        System.out.println(position);
+        mAdapter.removeAt(position);
     }
   }
 
@@ -183,7 +195,7 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
    */
   public void updateAdapter() {
       ArrayList<Course> courses = new ArrayList<>();
-      mAdapter = new CourseRecyclerAdapter(courses, R.layout.course_list_item);
+      mAdapter = new CourseRecyclerAdapter(getActivity(), courses, R.layout.course_list_item);
       mRecyclerView.setAdapter(mAdapter);
 //    int count = db.getCoursesCount();
 //

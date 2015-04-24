@@ -9,7 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -54,6 +56,8 @@ public class ArticleDetailsActivity extends ActionBarActivity implements Observa
     private View mHeaderBox;
     private View mDetailsContainer;
 
+    private ProgressBar mProgressBar;
+
     private int mHeaderTopClearance;
     private int mPhotoHeightPixels;
     private int mHeaderHeightPixels;
@@ -74,8 +78,11 @@ public class ArticleDetailsActivity extends ActionBarActivity implements Observa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_article_details);
+        setProgressBarIndeterminateVisibility(true);
 
         final Toolbar toolbar = getActionBarToolbar();
         toolbar.setNavigationIcon(R.drawable.ic_up);
@@ -115,6 +122,8 @@ public class ArticleDetailsActivity extends ActionBarActivity implements Observa
         mPhotoView = (ImageView) findViewById(R.id.article_photo);
         mArticleContent = (TextView) findViewById(R.id.article_text);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_articleDetails);
+
         mBundle = getIntent().getExtras();
 
         if(mBundle != null){
@@ -123,6 +132,8 @@ public class ArticleDetailsActivity extends ActionBarActivity implements Observa
             String author = mBundle.getString(AUTHOR);
             String articleURL = mBundle.getString(ARTICLE_URL);
             setUpArticleDetails(photoURL, title, author, articleURL);
+
+            //mProgressBar.setVisibility(View.INVISIBLE);
         }
 
         ViewCompat.setTransitionName(mPhotoView, TRANSITION_NAME_PHOTO);
@@ -256,7 +267,7 @@ public class ArticleDetailsActivity extends ActionBarActivity implements Observa
 
             for(Element e : paragraphs)
             {
-                s += "\t" + Jsoup.parse(e.toString()).text() + "\n";
+                s += "\t\t\t" + Jsoup.parse(e.toString()).text() + "\n";
 
             }
 
@@ -269,6 +280,8 @@ public class ArticleDetailsActivity extends ActionBarActivity implements Observa
         protected void onPostExecute(String results){
             LOGD(TAG, "onPostExecute " + String.valueOf(results.length()));
             mArticleContent.setText(results);
+            setProgressBarIndeterminateVisibility(false);
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 }

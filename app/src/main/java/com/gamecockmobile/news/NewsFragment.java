@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.gamecockmobile.R;
 import com.gamecockmobile.events.Event;
@@ -26,17 +28,22 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
       View view = inflater.inflate(R.layout.news_fragment, container, false);
 
       GridView mGridView = (GridView) view.findViewById(R.id.news_gridView);
+      ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_newsFragment);
+      progressBar.setVisibility(View.VISIBLE);
+
+      getActivity().setProgressBarIndeterminateVisibility(true);
     
       mAdapter = new NewsAdapter(getActivity());
       mGridView.setAdapter(mAdapter);
       mGridView.setOnItemClickListener(this);
+
+      progressBar.setVisibility(View.GONE);
     
     return view;
   }

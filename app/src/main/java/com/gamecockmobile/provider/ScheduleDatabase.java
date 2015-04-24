@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.gamecockmobile.Course;
 import com.gamecockmobile.R;
@@ -324,6 +325,49 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         return adapter;
     }
 
+    public Course getMyCourse(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Course course = new Course();
+
+        String query = "SELECT m._id, d." + DepartmentsColumns.DEPARTMENT_NAME;
+        query += ", c." + CoursesColumns.COURSE_NUMBER + ", c." + CoursesColumns.COURSE_NAME;
+        query += ", s." + SectionsColumns.SECTION_NUM + ", tp." + TimePeriods.TP_DESCRIPTION;
+        query += ", i." + InstructorsColumns.INSTRUCTOR_NAME + ", l." + LocationsColumns.LOCATION_NAME;
+        query += " FROM " + Tables.MY_COURSES + " AS m";
+        query += " JOIN " + Tables.DEPARTMENTS + " AS d";
+        query += " ON m." + MyCoursesColumns.DEPARTMENT_ID + " = d." + DepartmentsColumns.DEPARTMENT_ID;
+        query += " JOIN " + Tables.COURSES + " AS c";
+        query += " ON m." + MyCoursesColumns.COURSE_ID + " = c." + CoursesColumns.COURSE_ID;
+        query += " JOIN " + Tables.SECTIONS + " AS s";
+        query += " ON m." + MyCoursesColumns.SECTION_ID + " = s._id";
+        query += " JOIN " + Tables.TIME_PERIODS + " AS tp";
+        query += " ON s." + SectionsColumns.TP_ID + " = tp." + TimePeriods.TP_ID;
+        query += " JOIN " + Tables.INSTRUCTORS + " AS i";
+        query += " ON s." + SectionsColumns.INSTRUCTOR_ID + " = i." + InstructorsColumns.INSTRUCTOR_ID;
+        query += " JOIN " + Tables.LOCATIONS + " AS l";
+        query += " ON s." + SectionsColumns.LOCATION_ID + " = l." + LocationsColumns.LOCATION_ID;
+        query += " WHERE m._id = " + id;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor != null) {
+            cursor.moveToFirst();
+
+            course.setId(cursor.getInt(0));
+            course.setDept(cursor.getString(1));
+            course.setNumber(cursor.getString(2));
+            course.setName(cursor.getString(3));
+            course.setSection(cursor.getString(4));
+            course.setTime(cursor.getString(5));
+            course.setInstructor(cursor.getString(6));
+            course.setLocation(cursor.getString(7));
+        }
+
+        cursor.close();
+
+        return course;
+
+    }
     public ArrayList<Course> getMyCourses() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Course> courses = new ArrayList<>();
@@ -369,7 +413,48 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             } while(cursor.moveToNext());
         }
 
+        cursor.close();
+
         return courses;
+    }
+
+    public Event getEvent(int id) {
+        Event event = new Event();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT e._id, e." + EventsColumns.TITLE + ", ";
+        query += DepartmentsColumns.DEPARTMENT_NAME + " || ' ' || " + CoursesColumns.COURSE_NUMBER + " AS course";
+        query += ", e." + EventsColumns.TYPE_ID;
+        query += ", e." + EventsColumns.DATE + ", e." + EventsColumns.START_TIME;
+        query += ", e." + EventsColumns.END_TIME + ", e." + EventsColumns.NOTIFICATION;
+        query += " FROM " + Tables.EVENTS + " AS e";
+        query += " JOIN " + Tables.MY_COURSES + " AS mc";
+        query += " ON e." + EventsColumns.COURSE_ID + " = mc._id";
+        query += " JOIN " + Tables.DEPARTMENTS + " AS d";
+        query += " ON mc." + MyCoursesColumns.DEPARTMENT_ID + " = d." + DepartmentsColumns.DEPARTMENT_ID;
+        query += " JOIN " + Tables.COURSES + " AS c";
+        query += " ON mc." + MyCoursesColumns.COURSE_ID + " = c." + CoursesColumns.COURSE_ID;
+        query += " WHERE e." + BaseColumns._ID + " = " + id;
+        query += " ORDER BY " + EventsColumns.DATE + ", " + EventsColumns.START_TIME;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor != null) {
+            cursor.moveToFirst();
+
+            event.setId(cursor.getInt(0));
+            event.setName(cursor.getString(1));
+            event.setCourse(cursor.getString(2));
+            event.setType(cursor.getInt(3));
+            event.setDateFromString(cursor.getString(4));
+            event.setStartTimeFromString(cursor.getString(5));
+            event.setEndTimeFromString(cursor.getString(6));
+            event.setNotificationsFromString(cursor.getString(7));
+        }
+
+        cursor.close();
+
+        return event;
     }
 
     public ArrayList<Event> getAllEvents() {
@@ -378,7 +463,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         String query = "SELECT e._id, e." + EventsColumns.TITLE + ", ";
         query += DepartmentsColumns.DEPARTMENT_NAME + " || ' ' || " + CoursesColumns.COURSE_NUMBER + " AS course";
-        query += ", e." + EventsColumns.TYPE_ID + ", e." + EventsColumns.DATE;
+        query += ", e." + EventsColumns.TYPE_ID;
         query += ", e." + EventsColumns.DATE + ", e." + EventsColumns.START_TIME;
         query += ", e." + EventsColumns.END_TIME + ", e." + EventsColumns.NOTIFICATION;
         query += " FROM " + Tables.EVENTS + " AS e";
@@ -696,5 +781,36 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         db.close();
 
         return returnID;
+    }
+
+    public void deleteMyCourse(Course course) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Tables.MY_COURSES, BaseColumns._ID + " =?", new String[]{String.valueOf(course.getId())});
+        db.close();
+
+        CharSequence text = "Course deleted";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
+
+        this.deleteEventsForCourse(course.getId());
+    }
+
+    public void deleteEvent(Event event) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Tables.EVENTS, BaseColumns._ID + " =?", new String[]{String.valueOf(event.getId())});
+        db.close();
+        CharSequence text = "Event deleted";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
+    }
+
+    public void deleteEventsForCourse(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Tables.EVENTS, EventsColumns.COURSE_ID + " =?", new String[]{String.valueOf(id)});
+        db.close();
     }
 }

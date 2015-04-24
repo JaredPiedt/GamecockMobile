@@ -149,7 +149,7 @@ public class AddEventActivity extends ActionBarActivity implements OnClickListen
         // Create an ArrayAdapter for the 'Spinner' used to select the type using the string array and a
         // default spinner layout
         ArrayAdapter<CharSequence> selectTypeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.types_array, android.R.layout.simple_spinner_item);
+                R.array.types_array, R.layout.spinner_item_large);
         selectTypeAdapter.setDropDownViewResource(R.layout.spinner_item_large);
         mSelectTypeSpinner.setAdapter(selectTypeAdapter);
 

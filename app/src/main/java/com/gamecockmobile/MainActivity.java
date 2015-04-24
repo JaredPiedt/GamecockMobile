@@ -100,15 +100,15 @@ public class MainActivity extends ActionBarActivity {
 
         // adding nav drawer items to array
         // Schedule
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_COURSE_LIST], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_COURSE_LIST], R.drawable.ic_list_grey));
         // Events
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_EVENTS], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_EVENTS], R.drawable.ic_today_grey));
         // Buses
         navDrawerItems.add(new NavDrawerItem("selector", R.drawable.ic_drawer_social));
         // Social
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_SOCIAL], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_SOCIAL], R.drawable.ic_people_grey));
         // News
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_NEWS], R.drawable.ic_drawer_social));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[NAVDRAWER_ITEM_NEWS], R.drawable.ic_trending_up_grey));
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 

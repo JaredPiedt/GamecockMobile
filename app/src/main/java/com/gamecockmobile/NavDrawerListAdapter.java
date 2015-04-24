@@ -58,7 +58,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 //        
 //      imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
       txtTitle.setText(navDrawerItems.get(position).getTitle());
-      icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_drawer_social));
+      icon.setImageDrawable(context.getResources().getDrawable(navDrawerItems.get(position).getResId()));
        
       // displaying count
       // check whether it set visible or not

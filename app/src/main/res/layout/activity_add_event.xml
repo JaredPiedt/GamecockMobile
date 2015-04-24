@@ -39,7 +39,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_person_grey"
+            android:src="@drawable/ic_list_grey"
             android:layout_marginLeft="16dp"
             android:scaleType="fitCenter"/>
 
@@ -47,7 +47,10 @@
             android:id="@+id/selectCourse_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             style="?android:attr/spinnerStyle"/>
 
     </LinearLayout>
@@ -67,15 +70,18 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_person_grey"
+            android:src="@drawable/ic_info_grey"
             android:layout_marginLeft="16dp"
             android:scaleType="fitCenter"/>
 
         <Spinner
             android:id="@+id/selectType_spinner"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             style="?android:attr/spinnerStyle"/>
 
     </LinearLayout>
@@ -95,7 +101,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_person_grey"
+            android:src="@drawable/ic_schedule_grey"
             android:layout_marginLeft="16dp"
             android:scaleType="fitCenter"/>
 
@@ -105,9 +111,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="showDatePickerDialog"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_large"
             android:textColor="@android:color/black"
-            android:padding="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="16dp"
             android:textAllCaps="false"/>
     </LinearLayout>
 
@@ -117,9 +126,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="showTimePickerDialog"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_large"
             android:textColor="@android:color/black"
-            android:padding="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
             android:layout_marginLeft="48dp"/>
 
         <Button
@@ -128,9 +139,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="showTimePickerDialog"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_large"
             android:textColor="@android:color/black"
-            android:padding="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textStyle="normal"
             android:layout_marginLeft="48dp"/>
     <View
         android:layout_width="fill_parent"
@@ -147,7 +161,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_person_grey"
+            android:src="@drawable/ic_notifications_grey"
             android:layout_marginLeft="16dp"
             android:scaleType="fitCenter"/>
 
@@ -157,7 +171,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@dimen/text_size_medium"
-            android:padding="16dp"/>
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
     </LinearLayout>
 
 </LinearLayout>

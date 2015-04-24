@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.gamecockmobile.events.EventDetailsActivity"
+    tools:context="com.gamecockmobile.CourseDetailsActivity"
     android:background="@color/white">
 
     <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar_event_details"
+        android:id="@+id/toolbar_course_details"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
@@ -16,7 +16,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <TextView
-        android:id="@+id/textView_eventTitle"
+        android:id="@+id/textView_course"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="72dp"
@@ -27,7 +27,7 @@
         android:textSize="@dimen/text_size_xlarge"/>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_edit_event"
+        android:id="@+id/fab_add_event"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         fab:fab_size="mini"
@@ -41,7 +41,7 @@
         />
 
     <TextView
-        android:id="@+id/textView_eventCourse"
+        android:id="@+id/textView_courseTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="72dp"
@@ -65,7 +65,7 @@
             android:scaleType="fitCenter"/>
 
         <TextView
-            android:id="@+id/textView_eventDate"
+            android:id="@+id/textView_sectionDetails"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="32dp"
@@ -76,7 +76,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView_eventTime"
+        android:id="@+id/textView_timeDetails"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="72dp"
@@ -93,12 +93,36 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_notifications_grey"
+            android:src="@drawable/ic_person_grey"
             android:layout_marginLeft="@dimen/keyline_1"
             android:scaleType="fitCenter"/>
 
         <TextView
-            android:id="@+id/textView_eventNotification"
+            android:id="@+id/textView_instructorDetails"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="32dp"
+            android:paddingTop="@dimen/keyline_1"
+            android:paddingBottom="@dimen/keyline_1"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_large"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_room_grey"
+            android:layout_marginLeft="@dimen/keyline_1"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:id="@+id/textView_locationDetails"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="32dp"

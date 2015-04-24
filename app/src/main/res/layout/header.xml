@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#000000" >
+    android:background="#000000"
+    android:elevation="4dp">
 
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->
@@ -15,19 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:fontFamily="sans-serif-light"
-        android:textSize="24sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="5dp"
-        android:background="@color/garnet"
-        android:textColor="@color/white"/>
-
-    <View android:id="@+id/header_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="-6dp"
-        android:background="@drawable/bottom_shadow"/>
+        android:background="@color/white"
+        android:textColor="@color/garnet"/>
 
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->

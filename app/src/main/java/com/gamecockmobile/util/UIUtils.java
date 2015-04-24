@@ -247,6 +247,10 @@ public class UIUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
+    public static boolean hasLollipop() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
     public static int scaleColor(int color, float factor, boolean scaleAlpha) {
         return Color.argb(scaleAlpha ? (Math.round(Color.alpha(color) * factor)) : Color.alpha(color),
                 Math.round(Color.red(color) * factor), Math.round(Color.green(color) * factor),

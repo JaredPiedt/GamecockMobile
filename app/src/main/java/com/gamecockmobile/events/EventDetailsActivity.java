@@ -4,25 +4,39 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.ActionBar;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.gamecockmobile.R;
+import com.gamecockmobile.provider.ScheduleDatabase;
 import com.gamecockmobile.util.UIUtils;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 
-public class EventDetailsActivity extends Activity {
+public class EventDetailsActivity extends ActionBarActivity {
 
     Bundle mBundle;
-    EventDatabaseHandler eDB;
+    ScheduleDatabase mDB;
     Event mEvent;
-    TextView mEventNameTextView;
-    TextView mEventCourseTextView;
-    TextView mEventTimeTextView;
+
+    FloatingActionButton mFAB;
+    TextView mTextViewEventTitle;
+    TextView mTextViewEventCourse;
+    TextView mTextViewEventDate;
+    TextView mTextViewEventTime;
+    TextView mTextViewEventNotification;
+
+    Toolbar mToolbar;
 
     private static final String EVENT_ID = "Event ID";
 
@@ -31,20 +45,58 @@ public class EventDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
 
-        eDB = new EventDatabaseHandler(this);
+        mDB = new ScheduleDatabase(this);
 
-        mEventNameTextView = (TextView) findViewById(R.id.event_name_textView);
-        mEventCourseTextView = (TextView) findViewById(R.id.event_course_textView);
-        mEventTimeTextView = (TextView) findViewById(R.id.event_time_textView);
+        mTextViewEventTitle = (TextView) findViewById(R.id.textView_eventTitle);
+        mTextViewEventCourse = (TextView) findViewById(R.id.textView_eventCourse);
+        mTextViewEventDate = (TextView) findViewById(R.id.textView_eventDate);
+        mTextViewEventTime = (TextView) findViewById(R.id.textView_eventTime);
+        mTextViewEventNotification = (TextView) findViewById(R.id.textView_eventNotification);
+
+        mFAB = (FloatingActionButton) findViewById(R.id.fab_edit_event);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_event_details);
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_ab_close));
 
         mBundle = getIntent().getExtras();
 
         if(mBundle != null){
             int id = mBundle.getInt(EVENT_ID);
-            mEvent = eDB.getEvent(id);
+            mEvent = mDB.getEvent(id);
 
             if(mEvent != null){
-                setUpEventDetails();
+                TypedArray notifs = getResources().obtainTypedArray(R.array.reminders_array);
+                TypedArray colors = getResources().obtainTypedArray(R.array.event_colors);
+                int color = colors.getColor(mEvent.getType(), 0);
+                float[] hsv = new float[3];
+                Color.colorToHSV(color, hsv);
+                hsv[2] *= 0.8f;
+                int darkColor = Color.HSVToColor(hsv);
+
+                if(UIUtils.hasLollipop()) {
+                    Window window = this.getWindow();
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    window.setStatusBarColor(darkColor);
+                }
+
+                mToolbar.setBackgroundColor(color);
+                if(mToolbar != null) {
+                    setSupportActionBar(mToolbar);
+                }
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setTitle("");
+
+                mTextViewEventTitle.setText(mEvent.getName());
+                mTextViewEventTitle.setBackgroundColor(color);
+                mTextViewEventCourse.setText(mEvent.getCourse());
+                // set up the flags and initialize the formatted date string
+                int flags = DateUtils.FORMAT_SHOW_DATE;
+                flags |= DateUtils.FORMAT_SHOW_YEAR;
+                String timeString = DateUtils.formatDateTime(getApplicationContext(), mEvent.getDate(), flags);
+                mTextViewEventDate.setText(timeString);
+                mTextViewEventTime.setText(mEvent.getStartTimeAsString(this) + " - " + mEvent.getEndTimeAsString(this));
+                mTextViewEventNotification.setText(notifs.getText(mEvent.getNotifications().get(0)));
             }
 
         }
@@ -63,25 +115,18 @@ public class EventDetailsActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        switch(id) {
-            case R.id.action_discard_event_details:
-                eDB.deleteEvent(mEvent);
-                setResult(1);
-                finish();
-                overridePendingTransition(R.animator.hold, R.animator.slide_right_out);
-                return true;
-            case R.id.action_edit_event_details:
-                // TODO create an activity to edit an event
-                Intent intent = new Intent(this, AddEventActivity.class);
-                intent.putExtra(EVENT_ID, mEvent.getId());
-                startActivityForResult(intent, 1);
-                return true;
-            case R.id.action_settings:
-                return true;
+        switch (item.getItemId()) {
             case android.R.id.home:
+                Intent i = new Intent();
+                setResult(-1, i);
                 finish();
-                overridePendingTransition(R.animator.hold, R.animator.slide_right_out);
+                return true;
+            case R.id.action_delete:
+                System.out.println("Save button pressed");
+                mDB.deleteEvent(mEvent);
+                i = new Intent();
+                setResult(1, i);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -95,25 +140,5 @@ public class EventDetailsActivity extends Activity {
             setResult(1);
             finish();
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void setUpEventDetails(){
-        TypedArray colors = getResources().obtainTypedArray(R.array.event_details_drawables);
-
-        ActionBar actionBar = this.getActionBar();
-        actionBar.setBackgroundDrawable(colors.getDrawable(mEvent.getType()));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        mEventNameTextView.setText(mEvent.getName());
-        if(UIUtils.hasJellybean()) {
-            mEventNameTextView.setBackground(colors.getDrawable(mEvent.getType()));
-        } else {
-            mEventNameTextView.setBackgroundDrawable(colors.getDrawable(mEvent.getType()));
-        }
-        mEventCourseTextView.setText(mEvent.getCourse());
-        mEventTimeTextView.setText(mEvent.getStartTimeAsString(this) + " - " + mEvent.getEndTimeAsString(this));
     }
 }

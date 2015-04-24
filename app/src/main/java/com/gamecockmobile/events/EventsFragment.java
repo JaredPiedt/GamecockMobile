@@ -44,8 +44,6 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
     private static final String EVENT_ID = "Event ID";
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        ActionBar actionBar = getActivity().getActionBar();
         //actionBar.setTitle("Events");
 
         // must call this method in order for the fragment to add items to the action bar
@@ -159,31 +157,31 @@ public class EventsFragment extends Fragment implements OnNavigationListener, On
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, final long id) {
-        final CharSequence[] mDialogList = {"Delete", "Edit"};
-        final Event event = (Event) mAdapter.getItem(position);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle(event.getName());
-        builder.setItems(mDialogList, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                if (which == 0) {
-                    eDB.deleteEvent(event);
-                    // reset the list of events
-                    if (mAdapter != null) {
-                        mAdapter.updateResults();
-                    }
-                } else if (which == 1) {
-                    // the "Edit" option was chosen
-                    Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
-                    intent.putExtra(EVENT_ID, event.getId());
-                    startActivityForResult(intent, 1);
-                }
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+//        final CharSequence[] mDialogList = {"Delete", "Edit"};
+//        final Event event = (Event) mAdapter.getItem(position);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//        builder.setTitle(event.getName());
+//        builder.setItems(mDialogList, new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int which) {
+//                if (which == 0) {
+//                    mDB.deleteEvent(event);
+//                    // reset the list of events
+//                    if (mAdapter != null) {
+//                        mAdapter.updateResults();
+//                    }
+//                } else if (which == 1) {
+//                    // the "Edit" option was chosen
+////                    Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
+////                    intent.putExtra(EVENT_ID, event.getId());
+////                    startActivityForResult(intent, 1);
+//                }
+//            }
+//        });
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
 
         return true;
     }

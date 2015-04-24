@@ -65,6 +65,8 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     return position;
   }
 
+
+
   @SuppressWarnings("deprecation")
   @SuppressLint("NewApi")
   @Override
@@ -75,6 +77,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     String time;
     Event event = mEvents.get(position);
     TypedArray colors = mContext.getResources().obtainTypedArray(R.array.event_backgrounds);
+    //TypedArray colors = mContext.getResources().obtainTypedArray(R.array.event_colors);
 
     if (convertView == null) {
 
@@ -97,7 +100,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
     cal.setTimeInMillis(event.getDate());
 
     if (mHashMap.get(event.getDate()) == position) {
-      weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+      weekday = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US);
       monthDay = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
       time = event.getStartTimeAsString(mContext) + " - " + event.getEndTimeAsString(mContext);
       holder.weekday.setText(weekday);
@@ -120,6 +123,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
       holder.container.setBackgroundDrawable(colors.getDrawable(event.getType()));
     } else {
       holder.container.setBackground(colors.getDrawable(event.getType()));
+      //holder.container.setBackgroundColor(colors.getColor(event.getType(), 0));
     }
     counter++;
     colors.recycle();
@@ -188,7 +192,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
   }
 
   public void updateResults() {
-    mEvents = db.getAllEvents();
+    mEvents = mDB.getAllEvents();
     mHashMap = createHashMap();
     notifyDataSetChanged();
   }
