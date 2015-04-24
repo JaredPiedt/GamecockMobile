@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp"
-        android:layout_gravity="center"
         android:layout_weight="1">
         
         <TextView
@@ -19,13 +18,13 @@
         	android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_large"
             android:textColor="@android:color/darker_gray"
-            android:layout_gravity="center"/>
+            android:layout_gravity="top|center"/>
         <TextView
             android:id="@+id/event_monthDay"
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:textSize="36sp"
-            android:layout_gravity="center"
+            android:layout_gravity="top|center"
             android:layout_marginTop="-8dp"
             android:textColor="@color/accent_garnet"/>      
         

@@ -31,7 +31,6 @@ public class SocialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setTitle("Events");
 
         View view = inflater.inflate(R.layout.social_fragment, container, false);
 
@@ -48,6 +47,7 @@ public class SocialFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         WebView mWebView = (WebView) getActivity().findViewById(R.id.social_webview);
+        mWebView.setVisibility(View.INVISIBLE);
 
         if (mWebView != null) {
             mWebView.getSettings().setDomStorageEnabled(true);
@@ -67,5 +67,6 @@ public class SocialFragment extends Fragment {
 
             mWebView.loadDataWithBaseURL(baseURL, widgetInfo, "text/html", "UTF-8", null);
         }
+        mWebView.setVisibility(View.VISIBLE);
     }
 }

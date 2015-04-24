@@ -171,13 +171,14 @@ public class MainActivity extends ActionBarActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle action bar actions click
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            default:
+//        // Handle action bar actions click
+//        switch (item.getItemId()) {
+//            case R.id.action_settings:
+//                return true;
+//            default:
                 return super.onOptionsItemSelected(item);
-        }
+//        }
+
     }
 
     /**

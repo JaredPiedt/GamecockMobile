@@ -22,21 +22,26 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.gamecockmobile.provider.ScheduleDatabase;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
-public class CourseListFragment extends Fragment implements OnNavigationListener,
+public class CourseListFragment extends Fragment implements AdapterView.OnItemClickListener, OnNavigationListener,
     OnItemLongClickListener {
 
     FloatingActionButton mButtonAddCourse;
+    ListView mCourseListLayout;
     //ArrayAdapter<String> mAdapter;
-    CourseRecyclerAdapter mAdapter;
+    CourseListAdapter mAdapter;
 
     ScheduleDatabase mDB;
 
     RecyclerView mRecyclerView;
+
+    private static final String MYCOURSE_ID = "course_id";
 
  private ArrayList<String> mCourses = new ArrayList<String>();
 
@@ -54,8 +59,8 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
 //    db = new DatabaseHandler(getActivity());
 
       ArrayList<Course> courses = mDB.getMyCourses();
-      mAdapter = new CourseRecyclerAdapter(getActivity(), courses, R.layout.course_list_item);
-
+      //mAdapter = new CourseRecyclerAdapter(getActivity(), courses, R.layout.course_list_item);
+      mAdapter = new CourseListAdapter(getActivity());
 //
 //    ArrayList<Course> courses = db.getAllCourses();
 //    ArrayList<String> courseList = new ArrayList<String>();
@@ -90,23 +95,19 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
           }
       });
 
-      mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.course_recycler_view);
-      mRecyclerView.setHasFixedSize(true);
-      mRecyclerView.setAdapter(mAdapter);
-      mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-      mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+      mCourseListLayout = (ListView) getActivity().findViewById(R.id.layout_courseList);
+      mCourseListLayout.setAdapter(mAdapter);
+      mCourseListLayout.setOnItemClickListener(this);
+//      mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.course_recycler_view);
+//      mRecyclerView.setHasFixedSize(true);
+//      mRecyclerView.setAdapter(mAdapter);
+//      mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//      mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     // call the ListView to set the long click listener for courses
 //    getListView().setOnItemLongClickListener(this);
 //    getListView().setDivider(null);
 //    getListView().setBackgroundColor(getResources().getColor(R.color.gray_background));
   }
-
-    @Override
-    public void onResume() {
-        int position = getActivity().getIntent().getIntExtra("position", 0);
-        System.out.println("onResume " + position);
-        super.onResume();
-    }
 
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.course_list, menu);
@@ -145,15 +146,9 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
     // check if the request code is same as what is passed here it is 2 and check that the Intent is
     // not equal to null so app doesn't crash when back button is pressed
     if (requestCode == 1 && data != null) {
-
-        System.out.println("Course was saved");
       if (mAdapter != null) {
-
+        mAdapter.updateResults();
       }
-    } else if(resultCode == 2 && data != null) {
-        int position = data.getIntExtra("position", 0);
-        System.out.println(position);
-        mAdapter.removeAt(position);
     }
   }
 
@@ -186,24 +181,12 @@ public class CourseListFragment extends Fragment implements OnNavigationListener
     return true;
   }
 
-  /**
-   * Method to update the adapter.
-   * 
-   * Called whenever a course is added or deleted. Clear the adapter and then loop through the
-   * database of courses, adding the course names to the adapter and then notify the adapter that
-   * the data set was changed.
-   */
-  public void updateAdapter() {
-      ArrayList<Course> courses = new ArrayList<>();
-      mAdapter = new CourseRecyclerAdapter(getActivity(), courses, R.layout.course_list_item);
-      mRecyclerView.setAdapter(mAdapter);
-//    int count = db.getCoursesCount();
-//
-//    for (int i = 1; i <= count; i++) {
-//      Course course = db.getCourse(i);
-//      mAdapter.add(course);
-//    }
-
-    mAdapter.notifyDataSetChanged();
-  }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("Item clicked");
+        Course course = (Course) mAdapter.getItem(position);
+        Intent intent = new Intent(getActivity(), CourseDetailsActivity.class);
+        intent.putExtra(MYCOURSE_ID, course.getId());
+        startActivityForResult(intent, 1);
+    }
 }

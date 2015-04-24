@@ -761,6 +761,11 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         returnID = db.insert(Tables.MY_COURSES, null, values);
         db.close();
         System.out.println("Course inserted " + deptID + " " + courseID + " " + sectionID);
+        CharSequence text = "Course added";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
 
         return returnID;
     }
@@ -779,6 +784,11 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         long returnID = db.insert(Tables.EVENTS, null, values);
 
         db.close();
+        CharSequence text = "Event added";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
 
         return returnID;
     }

@@ -378,6 +378,7 @@ public class StickyListHeadersListView extends FrameLayout {
             removeView(mHeader);
         }
         mHeader = newHeader;
+        mHeader.setElevation(4.0f);
         addView(mHeader);
         mHeader.setOnClickListener(new OnClickListener() {
 

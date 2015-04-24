@@ -2,6 +2,7 @@ package com.gamecockmobile.events;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -180,8 +181,12 @@ public class AddEventActivity extends ActionBarActivity implements OnClickListen
         }
 
 
-        Calendar c = Calendar.getInstance();
-        long millis = c.getTimeInMillis();
+        Calendar current = Calendar.getInstance();
+        Time date = new Time(mTimeZone);
+        date.year = current.get(Calendar.YEAR);
+        date.month = current.get(Calendar.MONTH);
+        date.monthDay = current.get(Calendar.DAY_OF_MONTH);
+        long millis = date.normalize(true);
         mEvent.setDate(millis);
 
         int flags = DateUtils.FORMAT_SHOW_DATE;

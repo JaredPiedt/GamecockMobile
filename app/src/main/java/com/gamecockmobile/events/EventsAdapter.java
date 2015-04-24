@@ -177,6 +177,7 @@ public class EventsAdapter extends BaseAdapter implements StickyListHeadersAdapt
       long date = e.getDate();
 
       if (!map.containsKey(date)) {
+        System.out.println("Map doesn't contain key" + date);
         map.put(date, i);
       } else {
         int position = map.get(date);
