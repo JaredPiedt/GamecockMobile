@@ -6,7 +6,7 @@ A prototype Android app that incorporates many university resources in order to 
 * student calendar 
 * Daily Gamecock top stories. 
 
-All mobile apps must employ good design in order to provide both usability and appeal to the app. Gamecock Mobile incorporates the latest Material Design elements to provide an overall enjoyable experience to the user. The main goal of this project is to demonstrate different ways universities can provide mobile functionality to their student population and kick-start the improvement of the University of South Carolina’s mobile presence.
+All mobile apps must employ good design in order to provide both usability and appeal to the app. Gamecock Mobile incorporates the latest Material Design elements to provide an overall enjoyable user experience. The main goal of this project is to demonstrate different ways universities can provide mobile functionality to their students and kick-start the improvement of the University of South Carolina’s mobile presence.
 
 ## Material Design
 
