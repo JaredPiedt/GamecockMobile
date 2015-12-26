@@ -10,5 +10,14 @@
     <color name="statehouse_gray">#B2B4B3</color>
     <color name="secondary_text">#80000000</color>
     <color name="skipline">#33000000</color>
+
+    <color name="body_text_1_inverse">#deffffff</color>
+    <color name="body_text_2_inverse">#8affffff</color>
+    <color name="navdrawer_background">#ffffffff</color>
+    <color name="navdrawer_text_color">#444</color>
+    <color name="navdrawer_text_color_selected">@color/garnet</color>
+    <color name="navdrawer_icon_tint">#444</color>
+    <color name="navdrawer_icon_tint_selected">@color/garnet</color>
+    <color name="navdrawer_selected_item_background">#1a000000</color>
 </resources>
 

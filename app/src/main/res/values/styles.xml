@@ -13,7 +13,7 @@
         <item name="actionBarInsetStart">@dimen/keyline_2</item>
         <item name="colorPrimary">@color/garnet</item>
         <item name="colorPrimaryDark">@color/stacked_garnet</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">#fff</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
@@ -23,6 +23,8 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
+    <style name="AppTheme.WithNavDrawer" parent="AppTheme" />
 
     <style name="ActionBarThemeOverlay" parent="">
         <item name="android:textColorPrimary">#fff</item>
